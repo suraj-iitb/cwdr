@@ -5,8 +5,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Button from '@mui/material/Button';
+import { collection, addDoc } from "firebase/firestore";
+import {db} from '../backend/firestore';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function Form1() {
+  const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState(null);
   const [address, setAddress] = React.useState(null);
   const [date, setDate] = React.useState(null);
@@ -19,6 +26,56 @@ export default function Form1() {
   const [occupation, setOccupation] = React.useState(null);
   const [experience, setExperience] = React.useState(null);
   const [fieldStaffName, setFieldStaffName] = React.useState(null);
+
+  const addFormdata = async (e) => {
+    e.preventDefault();  
+    setOpen(true);
+
+    try {
+        const docRef = await addDoc(collection(db, "mythri1"), {
+            name: name,
+            address: address,
+            // date: date,
+            aadhar: aadhar,
+            phone: phone,
+            bill: bill,
+            reference: reference,
+            dependents: dependents,
+            company: company,
+            occupation: occupation,
+            experience: experience,
+            fieldStaffName: fieldStaffName
+         });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
 
   return (
     <Box
@@ -164,7 +221,21 @@ export default function Form1() {
         variant="outlined"
         fullWidth
       />
-      <Button variant="contained">Submit</Button>
+      <div >
+        <Button 
+          variant="contained"
+          onClick={addFormdata}
+        >
+          Submit
+        </Button>
+        <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Form data saved"
+        action={action}
+      />
+      </div>
 
     </Box>
   );
