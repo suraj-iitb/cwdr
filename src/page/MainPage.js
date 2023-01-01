@@ -21,7 +21,7 @@ export default function MainPage() {
       <Grid container spacing={3}>
         <Grid xs>
           <Item>
-            <Link to="/hello">
+            <Link to="/form">
               <ImageListItem key={1}>
                 <img
                   src={require('../images/manushi.jpeg')}
@@ -38,6 +38,7 @@ export default function MainPage() {
         </Grid>
         <Grid xs>
           <Item>
+          <Link to="/form">
             <ImageListItem key={2}>
               <img
                 src={require('../images/manushi.jpeg')}
@@ -49,10 +50,12 @@ export default function MainPage() {
                 position="below"
               />
             </ImageListItem>
+            </Link>
           </Item>
         </Grid>
         <Grid xs>
           <Item>
+          <Link to="/form">
             <ImageListItem key={1}>
               <img
                 src={require('../images/snehidhi.jpeg')}
@@ -64,6 +67,7 @@ export default function MainPage() {
                 position="below"
               />
             </ImageListItem>
+            </Link>
           </Item>
         </Grid>
       </Grid>
