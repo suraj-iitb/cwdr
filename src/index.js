@@ -2,33 +2,16 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 
-import Form1 from './page/Form1';
-
+import MyRouter from './MyRouter';
 const container = document.getElementById('root');
 const root = createRoot(container);
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "/form",
-    element: <Form1 />,
-  },
-]);
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <MyRouter />
     </Provider>
   </React.StrictMode>
 );
