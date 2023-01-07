@@ -1,8 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
-import { auth, createUserProfileDocument } from "../backend/firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+
+import { auth, createUserProfileDocument } from "_firebase";
 
 export const AuthContext = createContext();
 
