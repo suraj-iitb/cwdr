@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-import { auth, createUserProfileDocument } from "_firebase";
+import { auth, createUserProfileDocument } from "../firebase";
 
 export const AuthContext = createContext();
 
