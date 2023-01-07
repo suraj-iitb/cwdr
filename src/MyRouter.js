@@ -13,15 +13,18 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function MyRouter() {
+  const login = useSelector(selectLogin);
 
   const router = createBrowserRouter([
     {
       path: "/home",
-      element: <App />,
+      element: login === "true" ? <App /> : 
+      <Navigate to="/login" />,
     },
     {
       path: "/form",
-      element: <Form1 />,
+      element: login === "true" ? <Form1 /> : 
+      <Navigate to="/login" />,
     },
     {
       path: "/login",
