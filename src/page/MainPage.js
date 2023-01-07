@@ -5,7 +5,8 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,6 +17,20 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function MainPage() {
+
+  let navigate = useNavigate();
+    useEffect(() => {
+        let authToken = sessionStorage.getItem('Auth Token')
+
+        if (authToken) {
+            navigate('/home')
+        }
+
+        if (!authToken) {
+            navigate('/login')
+        }
+    }, [])
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3}>

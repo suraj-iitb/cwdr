@@ -10,7 +10,8 @@ import {db} from '../backend/firestore';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 export default function Form1() {
   const [open, setOpen] = React.useState(false);
@@ -26,6 +27,19 @@ export default function Form1() {
   const [occupation, setOccupation] = React.useState(null);
   const [experience, setExperience] = React.useState(null);
   const [fieldStaffName, setFieldStaffName] = React.useState(null);
+
+  let navigate = useNavigate();
+  useEffect(() => {
+      let authToken = sessionStorage.getItem('Auth Token')
+
+      if (authToken) {
+          navigate('/form')
+      }
+
+      if (!authToken) {
+          navigate('/login')
+      }
+  }, [])
 
   const addFormdata = async (e) => {
     e.preventDefault();  

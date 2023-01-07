@@ -46,8 +46,9 @@ export default function SignIn() {
       password: data.get('password'),
     });
     signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-    .then((userCredential) => {
-      console.log(userCredential);
+    .then((response) => {
+      sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+      console.log(response);
       dispatch(loginUser());
       navigate('/home')
     })
