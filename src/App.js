@@ -1,14 +1,7 @@
 import React from 'react';
-import MainPage from './page/MainPage';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <MainPage />        
-      </header>
-    </div>
+    <div>Hello World</div>
   );
 }
-
-export default App;
