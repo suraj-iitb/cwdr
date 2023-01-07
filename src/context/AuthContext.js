@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   let navigate = useNavigate();
 
-  const signinWithEmail = (email, password) => {
+  const signInWithEmail = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
       setCurrentUser(userAuth.user);
       localStorage.setItem("userAuth", JSON.stringify(userAuth.user));
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  const signout = () => {
+  const signOut = () => {
     signOut(auth)
       .then(() => {
         setCurrentUser(null);
@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }) => {
 
   const authValue = {
     currentUser,
-    signinWithEmail,
-    signout,
+    signInWithEmail,
+    signOut,
   };
 
   return <AuthContext.Provider value={authValue}>{!loading && children}</AuthContext.Provider>;
