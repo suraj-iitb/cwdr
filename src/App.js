@@ -7,8 +7,10 @@ import { SignIn, LandingPage, Home } from "./pages";
 export default function App() {
   return (
       <Routes>
+
+        <Route exact path="/" element={<LandingPage />} />
+
         <Route element={<UnauthenticatedRoutes />}>
-          <Route exact path="/" element={<LandingPage />} />
           <Route exact path="/signin" element={<SignIn />} />
         </Route>
 
