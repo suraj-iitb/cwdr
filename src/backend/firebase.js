@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
-import { getAuth } from "firebase/auth"
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -19,3 +19,20 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+export const createUserProfileDocument = async (userAuth) => {
+  if (!userAuth) return;
+
+  const userRef = doc(db, "user", userAuth.uid);
+
+  const userSnapshot = await getDoc(userRef);
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    setDoc(userRef, { displayName, createdAt, email })
+      .catch((err) => console.log(err));
+  }
+  return userRef;
+};
