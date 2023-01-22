@@ -104,12 +104,17 @@ export function SideBar(props) {
         <ListItemText primary="Review Data" />
       </ListItemButton>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <FileDownloadOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Download Data" />
-      </ListItemButton>
+      <Link
+            to="downloadData"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+        <ListItemButton>
+          <ListItemIcon>
+            <FileDownloadOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Download Data" />
+        </ListItemButton>
+      </Link>
 
       <ListItemButton>
         <ListItemIcon>

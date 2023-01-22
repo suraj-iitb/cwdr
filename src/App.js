@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, EnhancedTable } from "./components";
+import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, EnhancedTable, DownloadData } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
 
 export default function App() {
@@ -18,6 +18,7 @@ export default function App() {
           <Route exact path="/admin" element={<AdminPage />} >
             <Route exact path="addUser" element={<AddUser />} />
             <Route exact path="getUser" element={<EnhancedTable />} />
+            <Route exact path="downloadData" element={<DownloadData />} />
           </Route>
         </Route>
 
