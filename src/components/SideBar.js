@@ -18,27 +18,20 @@ import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { setOpenAddUser } from "../redux/slices/openAddUserSlice";
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { drawerWidth } from "../constants/constants";
 
 export function SideBar(props) {
   const [openManageUser, setOpenManageUser] = React.useState(true);
 
-  const openAddUser = useSelector((state) => state.openAddUserReducer.value);
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
   const dispatch = useDispatch();
 
   const handleManageUser = () => {
     setOpenManageUser(!openManageUser);
-  };
-
-  const handleAddUser = () => {
-    if (!openAddUser) {
-      dispatch(setOpenAddUser(true));
-    }
   };
 
   const handleDrawerToggle = () => (event) => {
@@ -79,18 +72,28 @@ export function SideBar(props) {
 
       <Collapse in={openManageUser} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton onClick={handleAddUser} sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PersonAddAltOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add User" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PeopleAltOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Get User" />
-          </ListItemButton>
+          <Link
+            to="addUser"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <PersonAddAltOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add User" />
+            </ListItemButton>
+          </Link>
+          <Link
+            to="getUser"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <PeopleAltOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Get User" />
+            </ListItemButton>
+          </Link>
         </List>
       </Collapse>
 

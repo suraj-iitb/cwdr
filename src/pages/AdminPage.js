@@ -2,14 +2,12 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
-import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 
-import { SideBar, Header, AddUser } from "../components";
+import { SideBar, Header } from "../components";
 import { drawerWidth } from "../constants/constants";
 
 export const AdminPage = () => {
-  const openAddUser = useSelector((state) => state.openAddUserReducer.value);
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -27,7 +25,8 @@ export const AdminPage = () => {
         }}
       >
         <Toolbar />
-        {openAddUser ? <AddUser /> : null}
+
+        <Outlet />
       </Box>
     </Box>
   );
