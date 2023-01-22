@@ -6,8 +6,8 @@ export const openAddUserSlice = createSlice({
     value: false,
   },
   reducers: {
-    setOpenAddUser: (state) => {
-      state.value = true
+    setOpenAddUser: (state, action) => {
+      state.value = action.payload
     },
   },
 })

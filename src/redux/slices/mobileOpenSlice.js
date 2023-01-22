@@ -6,8 +6,8 @@ export const mobileOpenSlice = createSlice({
     value: false,
   },
   reducers: {
-    setMobileOpen: (state) => {
-      state.value = true
+    setMobileOpen: (state, action) => {
+      state.value = action.payload
     },
   },
 })

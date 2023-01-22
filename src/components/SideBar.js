@@ -31,10 +31,6 @@ export function SideBar(props) {
 
   const dispatch = useDispatch();
 
-  const handleDrawerToggle = () => {
-    dispatch(setMobileOpen(!mobileOpen));
-  };
-
   const handleManageUser = () => {
     setOpenManageUser(!openManageUser);
   };
@@ -42,8 +38,15 @@ export function SideBar(props) {
   const handleAddUser = () => {
     if (!openAddUser) {
       dispatch(setOpenAddUser(true));
-      dispatch(setMobileOpen(!mobileOpen));
     }
+  };
+
+  const handleDrawerToggle = () => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    dispatch(setMobileOpen(!mobileOpen));
   };
 
   const drawer = (
@@ -115,14 +118,15 @@ export function SideBar(props) {
     <Box
       component="nav"
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
+      onClick={handleDrawerToggle()}
+      onKeyDown={handleDrawerToggle()}
     >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
       <Drawer
         container={window.document.body}
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={handleDrawerToggle()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
