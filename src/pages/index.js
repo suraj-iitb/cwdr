@@ -1,3 +1,3 @@
 export { SignIn } from './SignIn';
-export { LandingPage } from './LandingPage';
+export { AdminPage } from './AdminPage';
 export { Home } from './Home';
