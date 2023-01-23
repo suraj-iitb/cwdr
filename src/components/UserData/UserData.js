@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
-import { userRows as rows } from "../../data/dummyUserData";
+import { userRows as rows } from "../../data/dummyFieldWorkerData";
 import './UserData.scss'
 
 export function UserData() {
