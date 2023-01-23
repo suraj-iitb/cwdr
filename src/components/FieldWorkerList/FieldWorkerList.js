@@ -34,9 +34,9 @@ export function FieldWorkerList() {
         return (
           <>
             <Link to={`/user/${params.row.id}`}>
-              <button className="editButton ">Edit</button>
+              <button className="fieldWorkerEditButton ">Edit</button>
             </Link>
-            <DeleteOutline className='deleteButton' onClick={() => handleDelete(params.row.id)}/>
+            <DeleteOutline className='fieldWorkerDeleteButton' onClick={() => handleDelete(params.row.id)}/>
           </>
         )
       }
@@ -46,7 +46,7 @@ export function FieldWorkerList() {
   return (
     <div style={{ height: 670, width: "100%" }}>
       <DataGrid
-        className='userListPage'
+        className='fieldWorkerListPage'
         rows={data}
         columns={columns}
         components={{ Toolbar: GridToolbar }}

@@ -1,19 +1,7 @@
-.userListPage {
+.fieldWorkerListPage {
     flex: 4;
   
-    .userListField {
-      display: flex;
-      align-items: center;
-      img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 10px;
-      }
-    }
-  
-    .editButton {
+    .fieldWorkerEditButton {
       border: none;
       border-radius: 10px;
       padding: 5px 10px;
@@ -24,7 +12,7 @@
   
     }
   
-    .deleteButton {
+    .fieldWorkerDeleteButton {
       cursor: pointer;
       color: rgb(182, 0, 0);
     }
