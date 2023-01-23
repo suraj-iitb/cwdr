@@ -66,32 +66,32 @@ export function SideBar(props) {
         <ListItemIcon>
           <ManageAccountsOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="Manage User" />
+        <ListItemText primary="Manage Field Worker" />
         {openManageUser ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
       <Collapse in={openManageUser} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <Link
-            to="addUser"
+            to="addFieldWorker"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <PersonAddAltOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Add User" />
+              <ListItemText primary="Add Field Worker" />
             </ListItemButton>
           </Link>
           <Link
-            to="getUser"
+            to="getFieldWorker"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <PeopleAltOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Get User" />
+              <ListItemText primary="Get Field Worker" />
             </ListItemButton>
           </Link>
         </List>
@@ -101,7 +101,7 @@ export function SideBar(props) {
         <ListItemIcon>
           <ThumbUpOffAltOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="Review Data" />
+        <ListItemText primary="Review User Data" />
       </ListItemButton>
 
       <Link
@@ -112,7 +112,7 @@ export function SideBar(props) {
           <ListItemIcon>
             <FileDownloadOutlinedIcon />
           </ListItemIcon>
-          <ListItemText primary="Download Data" />
+          <ListItemText primary="Download User Data" />
         </ListItemButton>
       </Link>
 

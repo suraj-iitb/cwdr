@@ -16,8 +16,8 @@ export default function App() {
 
         <Route element={<AuthenticatedRoutes />}>
           <Route exact path="/admin" element={<AdminPage />} >
-            <Route exact path="addUser" element={<AddUser />} />
-            <Route exact path="getUser" element={<UserData />} />
+            <Route exact path="addFieldWorker" element={<AddUser />} />
+            <Route exact path="getFieldWorker" element={<UserData />} />
             <Route exact path="downloadData" element={<DownloadData />} />
           </Route>
         </Route>
