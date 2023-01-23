@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, DownloadData, UserData } from "./components";
+import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, DownloadData, FieldWorkerList } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
         <Route element={<AuthenticatedRoutes />}>
           <Route exact path="/admin" element={<AdminPage />} >
             <Route exact path="addFieldWorker" element={<AddUser />} />
-            <Route exact path="getFieldWorker" element={<UserData />} />
+            <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
             <Route exact path="downloadData" element={<DownloadData />} />
           </Route>
         </Route>

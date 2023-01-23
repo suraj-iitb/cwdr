@@ -5,9 +5,9 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 import { userRows as rows } from "../../data/dummyFieldWorkerData";
-import './UserData.scss'
+import './FieldWorkerList.scss'
 
-export function UserData() {
+export function FieldWorkerList() {
   const [pageSize, setPageSize] = React.useState(5);
 
   const [data, setData] = useState(rows);
@@ -17,9 +17,10 @@ export function UserData() {
   }
   
   const columns = [
-    { field: "email", headerName: "Email", width: 200 },
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "noOfApplicants", headerName: "No of Applicants", width: 200 },
     {
       field: "status",
       headerName: "Status",
@@ -48,7 +49,6 @@ export function UserData() {
         className='userListPage'
         rows={data}
         columns={columns}
-        checkboxSelection
         components={{ Toolbar: GridToolbar }}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

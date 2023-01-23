@@ -5,4 +5,4 @@ export { Header } from "./Header";
 export { AddUser } from "./AddUser";
 export { EnhancedTable } from "./EnhancedTable";
 export { DownloadData } from "./DownloadData";
-export { UserData } from './UserData/UserData';
+export { FieldWorkerList } from './FieldWorkerList/FieldWorkerList';

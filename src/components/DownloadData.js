@@ -5,7 +5,7 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 import { userRows as rows } from "../data/dummyFieldWorkerData";
-import './UserData/UserData.scss'
+import './FieldWorkerList/FieldWorkerList.scss'
 
 export function DownloadData() {
   const [pageSize, setPageSize] = React.useState(5);

@@ -5,6 +5,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'aria@gmail.com',
       status: 'active',
+      noOfApplicants: 120,
     },
     {
       id: 2,
@@ -12,6 +13,7 @@ export const userRows = [
       lastName: 'Kumar',
       email: 'ravi@gmail.com',
       status: 'active',
+      noOfApplicants: 120,
     },
     {
       id: 3,
@@ -19,6 +21,7 @@ export const userRows = [
       lastName: 'Kumar',
       email: 'suraj@gmail.com',
       status: 'inactive',
+      noOfApplicants: 120,
     },
     {
       id: 4,
@@ -26,6 +29,7 @@ export const userRows = [
       lastName: 'Shri',
       email: 'poori@gmail.com',
       status: 'active',
+      noOfApplicants: 1220,
     },
     {
       id: 5,
@@ -33,6 +37,7 @@ export const userRows = [
       lastName: 'S',
       email: 'anu@gmail.com',
       status: 'active',
+      noOfApplicants: 120,
     },
     {
       id: 6,
@@ -40,6 +45,7 @@ export const userRows = [
       lastName: 'Shri',
       email: 'ram@gmail.com',
       status: 'active',
+      noOfApplicants: 190,
     },
     {
       id: 7,
@@ -47,6 +53,7 @@ export const userRows = [
       lastName: 'Bro',
       email: 'bro@gmail.com',
       status: 'active',
+      noOfApplicants: 110,
     },
     {
       id: 8,
@@ -54,6 +61,7 @@ export const userRows = [
       lastName: 'Namma',
       email: 'hari@gmail.com',
       status: 'active',
+      noOfApplicants: 120,
     },
     {
       id: 9,
@@ -61,6 +69,7 @@ export const userRows = [
       lastName: 'Dank',
       email: 'lopo@gmail.com',
       status: 'active',
+      noOfApplicants: 170,
     },
     {
       id: 10,
@@ -68,6 +77,7 @@ export const userRows = [
       lastName: 'Chadda',
       email: 'dolly@gmail.com',
       status: 'active',
+      noOfApplicants: 100,
     },
     {
       id: 11,
@@ -75,6 +85,7 @@ export const userRows = [
       lastName: 'Gupta',
       email: 'sen@gmail.com',
       status: 'active',
+      noOfApplicants: 150,
     },
     {
       id: 12,
@@ -82,6 +93,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'sety@gmail.com',
       status: 'active',
+      noOfApplicants: 110,
     },
     {
       id: 13,
@@ -89,6 +101,7 @@ export const userRows = [
       lastName: 'Stark5',
       email: 'aria@gmail.com',
       status: 'active',
+      noOfApplicants: 120,
     },
     {
       id: 14,
@@ -96,6 +109,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'aria4@gmail.com',
       status: 'active',
+      noOfApplicants: 130,
     },
     {
       id: 15,
@@ -103,6 +117,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'aria3@gmail.com',
       status: 'active',
+      noOfApplicants: 110,
     },
     {
       id: 16,
@@ -110,6 +125,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'aria2@gmail.com',
       status: 'active',
+      noOfApplicants: 210,
     },
     {
       id: 17,
@@ -117,6 +133,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'aria1@gmail.com',
       status: 'active',
+      noOfApplicants: 310,
     },
     {
       id: 18,
@@ -124,6 +141,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'kunal@gmail.com',
       status: 'active',
+      noOfApplicants: 210,
     },
     {
       id: 19,
@@ -131,6 +149,7 @@ export const userRows = [
       lastName: 'Stark',
       email: 'sheety@gmail.com',
       status: 'active',
+      noOfApplicants: 110,
     },
     {
       id: 20,
@@ -138,6 +157,7 @@ export const userRows = [
       lastName: 'Shaw',
       email: 'mony@gmail.com',
       status: 'active',
+      noOfApplicants: 101,
     },
     {
       id: 21,
@@ -145,6 +165,7 @@ export const userRows = [
       lastName: 'Lopo',
       email: 'lopo@gmail.com',
       status: 'active',
+      noOfApplicants: 100,
     },
     {
       id: 22,
@@ -152,5 +173,6 @@ export const userRows = [
       lastName: 'Gupta',
       email: 'harish@gmail.com',
       status: 'active',
+      noOfApplicants: 12,
     },
   ]
