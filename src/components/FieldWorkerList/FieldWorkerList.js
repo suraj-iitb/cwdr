@@ -19,17 +19,17 @@ export function FieldWorkerList() {
   const columns = [
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "noOfApplicants", headerName: "No of Applicants", width: 200 },
+    { field: "email", headerName: "Email", width: 300 },
+    { field: "noOfApplicants", headerName: "No of Applicants", width: 150 },
     {
       field: "status",
       headerName: "Status",
-      width: 90,
+      width: 100,
     },
     {
       field: 'action',
       headerName: 'Action',
-      width: 150,
+      width: 100,
       renderCell: (params) => {
         return (
           <>
