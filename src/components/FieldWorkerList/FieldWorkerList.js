@@ -8,7 +8,7 @@ import { userRows as rows } from "../../data/dummyFieldWorkerData";
 import './FieldWorkerList.scss'
 
 export function FieldWorkerList() {
-  const [pageSize, setPageSize] = React.useState(5);
+  const [pageSize, setPageSize] = React.useState(10);
 
   const [data, setData] = useState(rows);
   
@@ -44,7 +44,7 @@ export function FieldWorkerList() {
   ];
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
+    <div style={{ height: 670, width: "100%" }}>
       <DataGrid
         className='userListPage'
         rows={data}
@@ -52,7 +52,7 @@ export function FieldWorkerList() {
         components={{ Toolbar: GridToolbar }}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         pagination
       />
     </div>
