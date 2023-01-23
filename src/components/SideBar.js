@@ -167,7 +167,7 @@ export function SideBar(props) {
       <Collapse in={openDownloadUserData} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <Link
-            to=""
+            to="getUserData/manushi"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
@@ -178,7 +178,7 @@ export function SideBar(props) {
             </ListItemButton>
           </Link>
           <Link
-            to=""
+            to="getUserData/mythri"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
@@ -189,7 +189,7 @@ export function SideBar(props) {
             </ListItemButton>
           </Link>
           <Link
-            to=""
+            to="getUserData/snehdi"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>

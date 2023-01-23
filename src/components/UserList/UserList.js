@@ -2,15 +2,17 @@ import * as React from "react";
 import { useState } from 'react';
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { userRows as rows } from "../../data/dummyFieldWorkerData";
-import './FieldWorkerList.scss'
+import './UserList.scss'
 
-export function FieldWorkerList() {
+export function UserList() {
   const [pageSize, setPageSize] = React.useState(10);
   const [data, setData] = useState(rows);
-  
+
+  let { org } = useParams();
+ 
   const handleDelete = (id) => {
     setData(data.filter(item => item.id !== id))
   }
@@ -33,9 +35,9 @@ export function FieldWorkerList() {
         return (
           <>
             <Link to={`/user/${params.row.id}`}>
-              <button className="fieldWorkerEditButton ">Edit</button>
+              <button className="userListEditButton ">Edit</button>
             </Link>
-            <DeleteOutline className='fieldWorkerDeleteButton' onClick={() => handleDelete(params.row.id)}/>
+            <DeleteOutline className='userListDeleteButton' onClick={() => handleDelete(params.row.id)}/>
           </>
         )
       }
@@ -45,7 +47,7 @@ export function FieldWorkerList() {
   return (
     <div style={{ height: 670, width: "100%" }}>
       <DataGrid
-        className='fieldWorkerListPage'
+        className='userListPage'
         rows={data}
         columns={columns}
         components={{ Toolbar: GridToolbar }}
@@ -53,7 +55,6 @@ export function FieldWorkerList() {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[10, 25, 50, 100]}
         pagination
-        disableSelectionOnClick
       />
     </div>
   );

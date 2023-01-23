@@ -6,3 +6,4 @@ export { AddUser } from "./AddUser";
 export { EnhancedTable } from "./EnhancedTable";
 export { DownloadData } from "./DownloadData";
 export { FieldWorkerList } from './FieldWorkerList/FieldWorkerList';
+export { UserList } from './UserList/UserList';
