@@ -2,44 +2,42 @@ import * as React from "react";
 import { useState } from 'react';
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import { userRows as rows } from "../data/dummyFieldWorkerData";
-import './FieldWorkerList/FieldWorkerList.scss'
+import { userRows as rows } from "../../data/dummyFieldWorkerData";
+import './UserList.scss'
 
-export function DownloadData() {
-  const [pageSize, setPageSize] = React.useState(5);
+export function UserList() {
+  const [pageSize, setPageSize] = React.useState(10);
   const [data, setData] = useState(rows);
-  
+
+  let { org } = useParams();
+ 
   const handleDelete = (id) => {
     setData(data.filter(item => item.id !== id))
   }
   
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "username", headerName: "Username", width: 200 },
-    { field: "email", headerName: "Email", width: 200 },
+    { field: "firstName", headerName: "First Name", width: 200 },
+    { field: "lastName", headerName: "Last Name", width: 200 },
+    { field: "email", headerName: "Email", width: 300 },
+    { field: "noOfApplicants", headerName: "No of Applicants", width: 150 },
     {
       field: "status",
       headerName: "Status",
-      width: 90,
-    },
-    {
-      field: "transaction",
-      headerName: "Transaction Volume",
-      width: 160,
+      width: 100,
     },
     {
       field: 'action',
       headerName: 'Action',
-      width: 150,
+      width: 100,
       renderCell: (params) => {
         return (
           <>
             <Link to={`/user/${params.row.id}`}>
-              <button className="editButton ">Edit</button>
+              <button className="userListEditButton ">Edit</button>
             </Link>
-            <DeleteOutline className='deleteButton' onClick={() => handleDelete(params.row.id)}/>
+            <DeleteOutline className='userListDeleteButton' onClick={() => handleDelete(params.row.id)}/>
           </>
         )
       }
@@ -47,16 +45,15 @@ export function DownloadData() {
   ];
 
   return (
-    <div style={{ height: 500, width: "100%" }}>
+    <div style={{ height: 670, width: "100%" }}>
       <DataGrid
         className='userListPage'
         rows={data}
         columns={columns}
-        checkboxSelection
         components={{ Toolbar: GridToolbar }}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[5, 10, 20]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         pagination
       />
     </div>

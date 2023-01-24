@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, DownloadData, UserData } from "./components";
+import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, FieldWorkerList, UserList } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
 import FieldWorkerForm from './pages/FieldWorkerForm'
 
@@ -17,17 +17,16 @@ export default function App() {
 
         <Route element={<AuthenticatedRoutes />}>
           <Route exact path="/admin" element={<AdminPage />} >
-            <Route exact path="addUser" element={<AddUser />} />
-            <Route exact path="getUser" element={<UserData />} />
-            <Route exact path="downloadData" element={<DownloadData />} />
+            <Route exact path="addFieldWorker" element={<AddUser />} />
+            <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
+            <Route exact path="getUserData/:org" element={<UserList />} />
           </Route>
         </Route>
 
         <Route element={<AuthenticatedRoutes />}>
           <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
         </Route>
-
-        <Route path="*" element={<>ERROR!!!!</>} />
+        <Route path="*" element={<>Not Implemented!!!!</>} />
       </Routes>
   );
 };
