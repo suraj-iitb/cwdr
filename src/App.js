@@ -11,6 +11,9 @@ export default function App() {
 
         <Route exact path="/" element={<Home />} />
 
+        <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
+
+
         <Route element={<UnauthenticatedRoutes />}>
           <Route exact path="/signin" element={<SignIn />} />
         </Route>
@@ -21,9 +24,6 @@ export default function App() {
             <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
             <Route exact path="getUserData/:org" element={<UserList />} />
           </Route>
-
-          <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
-
         </Route>
 
         <Route path="*" element={<>Not Implemented!!!!</>} />

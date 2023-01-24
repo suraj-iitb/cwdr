@@ -36,10 +36,13 @@ export function UserList() {
     {
       field: 'action',
       headerName: 'Action',
-      width: 100,
+      width: 250,
       renderCell: (params) => {
         return (
           <>
+            <Link to={`/user/${params.row.id}`}>
+              <button className="userListEditButton ">Approve</button>
+            </Link>
             <Link to={`/user/${params.row.id}`}>
               <button className="userListEditButton ">Edit</button>
             </Link>
