@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
 
-import { userRows as rows } from "../../data/dummyFieldWorkerData";
+import { userRows as rows } from "../../data/dummyUserData";
 import './UserList.scss'
 
 export function UserList() {
@@ -20,13 +20,19 @@ export function UserList() {
   const columns = [
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
-    { field: "email", headerName: "Email", width: 300 },
-    { field: "noOfApplicants", headerName: "No of Applicants", width: 150 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 100,
-    },
+    { field: "address", headerName: "Address", width: 200 },
+    { field: "dob", headerName: "Date of Birth", width: 200 },
+    { field: "aadhar", headerName: "Aadhar", width: 200 },
+    { field: "mobile", headerName: "Mobile", width: 200 },
+    { field: "billNo", headerName: "Bill No", width: 200 },
+    { field: "referenceNo", headerName: "Reference No", width: 200 },
+    { field: "dependents", headerName: "Dependents", width: 200 },
+    { field: "employed", headerName: "Employed", width: 200 },
+    { field: "company", headerName: "Company", width: 200 },
+    { field: "occupation", headerName: "Occupation", width: 200 },
+    { field: "experiecne", headerName: "Experiecne", width: 200 },
+    { field: "fieldWorkerEmail", headerName: "Field Worker Email", width: 200 },
+    { field: "nextRenewalDate", headerName: "Next Renewal Date", width: 200 },
     {
       field: 'action',
       headerName: 'Action',
