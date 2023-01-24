@@ -18,32 +18,31 @@ import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { setOpenAddUser } from "../redux/slices/openAddUserSlice";
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { drawerWidth } from "../constants/constants";
 
 export function SideBar(props) {
   const [openManageUser, setOpenManageUser] = React.useState(true);
 
-  const openAddUser = useSelector((state) => state.openAddUserReducer.value);
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
   const dispatch = useDispatch();
-
-  const handleDrawerToggle = () => {
-    dispatch(setMobileOpen(!mobileOpen));
-  };
 
   const handleManageUser = () => {
     setOpenManageUser(!openManageUser);
   };
 
-  const handleAddUser = () => {
-    if (!openAddUser) {
-      dispatch(setOpenAddUser(true));
-      dispatch(setMobileOpen(!mobileOpen));
+  const handleDrawerToggle = () => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
     }
+
+    dispatch(setMobileOpen(!mobileOpen));
   };
 
   const drawer = (
@@ -73,18 +72,28 @@ export function SideBar(props) {
 
       <Collapse in={openManageUser} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton onClick={handleAddUser} sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PersonAddAltOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Add User" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <PeopleAltOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Get User" />
-          </ListItemButton>
+          <Link
+            to="addUser"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <PersonAddAltOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Add User" />
+            </ListItemButton>
+          </Link>
+          <Link
+            to="getUser"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <PeopleAltOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Get User" />
+            </ListItemButton>
+          </Link>
         </List>
       </Collapse>
 
@@ -95,12 +104,17 @@ export function SideBar(props) {
         <ListItemText primary="Review Data" />
       </ListItemButton>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <FileDownloadOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Download Data" />
-      </ListItemButton>
+      <Link
+            to="downloadData"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+        <ListItemButton>
+          <ListItemIcon>
+            <FileDownloadOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Download Data" />
+        </ListItemButton>
+      </Link>
 
       <ListItemButton>
         <ListItemIcon>
@@ -115,14 +129,15 @@ export function SideBar(props) {
     <Box
       component="nav"
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
+      onClick={handleDrawerToggle()}
+      onKeyDown={handleDrawerToggle()}
     >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
       <Drawer
         container={window.document.body}
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={handleDrawerToggle()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}

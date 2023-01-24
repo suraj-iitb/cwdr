@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
       setCurrentUser(userAuth.user);
       localStorage.setItem("userAuth", JSON.stringify(userAuth.user));
-      navigate("/home");
+      navigate("/admin");
     });
   };
 
