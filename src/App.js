@@ -20,12 +20,10 @@ export default function App() {
             <Route exact path="addFieldWorker" element={<AddUser />} />
             <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
             <Route exact path="getUserData/:org" element={<UserList />} />
+            <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
           </Route>
         </Route>
 
-        <Route element={<AuthenticatedRoutes />}>
-          <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
-        </Route>
         <Route path="*" element={<>Not Implemented!!!!</>} />
       </Routes>
   );
