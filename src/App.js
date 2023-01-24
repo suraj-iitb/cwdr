@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, FieldWorkerList, UserList } from "./components";
+import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, FieldWorkerList, UserList, Statistics, } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
 import FieldWorkerForm from './pages/FieldWorkerForm'
 
@@ -23,6 +23,7 @@ export default function App() {
             <Route exact path="addFieldWorker" element={<AddUser />} />
             <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
             <Route exact path="getUserData/:org" element={<UserList />} />
+            <Route exact path="statistics" element={<Statistics />} />
           </Route>
         </Route>
 

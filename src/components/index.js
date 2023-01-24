@@ -8,3 +8,4 @@ export { DownloadData } from "./DownloadData";
 export { FormPageHeader } from './FormPageHeader';
 export { FieldWorkerList } from './FieldWorkerList/FieldWorkerList';
 export { UserList } from './UserList/UserList';
+export { Statistics } from './Statistics/Statistics';

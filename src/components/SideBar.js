@@ -151,12 +151,17 @@ export function SideBar(props) {
         </List>
       </Collapse>
 
-      <ListItemButton>
-        <ListItemIcon>
-          <InsertChartOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Statistics" />
-      </ListItemButton>
+      <Link
+        to="statistics"
+        style={{ textDecoration: "none", color: "inherit" }}
+      >
+        <ListItemButton>
+          <ListItemIcon>
+            <InsertChartOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Statistics" />
+        </ListItemButton>
+      </Link>
     </List>
   );
 
