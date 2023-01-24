@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { UnauthenticatedRoutes, AuthenticatedRoutes, AddUser, DownloadData, UserData } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
+import FieldWorkerForm from './pages/FieldWorkerForm'
 
 export default function App() {
   return (
@@ -20,6 +21,10 @@ export default function App() {
             <Route exact path="getUser" element={<UserData />} />
             <Route exact path="downloadData" element={<DownloadData />} />
           </Route>
+        </Route>
+
+        <Route element={<AuthenticatedRoutes />}>
+          <Route exact path="/field_worker_form" element={<FieldWorkerForm />} />
         </Route>
 
         <Route path="*" element={<>ERROR!!!!</>} />
