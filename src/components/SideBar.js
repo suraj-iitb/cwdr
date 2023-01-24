@@ -26,9 +26,8 @@ import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { drawerWidth } from "../constants/constants";
 
 export function SideBar(props) {
-  const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(false);
-  const [openReviewUserData, setOpenReviewUserData] = React.useState(false);
-  const [openDownloadUserData, setOpenDownloadUserData] = React.useState(false);
+  const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(true);
+  const [openUserData, setOpenUserData] = React.useState(true);
 
 
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
@@ -39,12 +38,8 @@ export function SideBar(props) {
     setOpenManageFieldWorker(!openManageFieldWorker);
   };
 
-  const handleReviewUserData = () => {
-    setOpenReviewUserData(!openReviewUserData);
-  };
-
-  const handleDownloadUserData = () => {
-    setOpenDownloadUserData(!openDownloadUserData);
+  const handleUserData = () => {
+    setOpenUserData(!openUserData);
   };
 
   const handleDrawerToggle = () => (event) => {
@@ -110,61 +105,15 @@ export function SideBar(props) {
         </List>
       </Collapse>
 
-      <ListItemButton onClick={handleReviewUserData}>
-        <ListItemIcon>
-          <ThumbUpOffAltOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Review User Data" />
-        {openReviewUserData ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-
-      <Collapse in={openReviewUserData} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <Link
-            to=""
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <WomanIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Manushi" />
-            </ListItemButton>
-          </Link>
-          <Link
-            to=""
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <WomanIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Mythri" />
-            </ListItemButton>
-          </Link>
-          <Link
-            to=""
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <GirlIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Snehdi" />
-            </ListItemButton>
-          </Link>
-        </List>
-      </Collapse>
-
-      <ListItemButton onClick={handleDownloadUserData}>
+      <ListItemButton onClick={handleUserData}>
         <ListItemIcon>
           <FileDownloadOutlinedIcon />
         </ListItemIcon>
-        <ListItemText primary="Download User Data" />
-        {openDownloadUserData ? <ExpandLess /> : <ExpandMore />}
+        <ListItemText primary="Manage User Data" />
+        {openUserData ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
 
-      <Collapse in={openDownloadUserData} timeout="auto" unmountOnExit>
+      <Collapse in={openUserData} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <Link
             to="getUserData/manushi"
