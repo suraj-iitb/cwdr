@@ -15,7 +15,7 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <App/>
         </AuthProvider>
       </BrowserRouter>
     </Provider>
