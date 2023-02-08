@@ -19,11 +19,13 @@ import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import Logout from "@mui/icons-material/Logout"
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { drawerWidth } from "../constants/constants";
+import { useAuth } from '../hooks';
 
 export function SideBar(props) {
   const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(true);
@@ -34,8 +36,15 @@ export function SideBar(props) {
 
   const dispatch = useDispatch();
 
+  const { _signOut } = useAuth();
+
   const handleManageFieldWorker = () => {
     setOpenManageFieldWorker(!openManageFieldWorker);
+  };
+
+  const handleSignOut = (event) => {
+    event.preventDefault();
+    _signOut();
   };
 
   const handleUserData = () => {
@@ -162,6 +171,12 @@ export function SideBar(props) {
           <ListItemText primary="Statistics" />
         </ListItemButton>
       </Link>
+      <ListItemButton onClick={handleSignOut}>
+        <ListItemIcon>
+          <Logout />
+        </ListItemIcon>
+        <ListItemText primary="Sign Out" />
+      </ListItemButton>
     </List>
   );
 
