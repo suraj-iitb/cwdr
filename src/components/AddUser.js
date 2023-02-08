@@ -24,7 +24,7 @@ export function AddUser() {
         email: email,
         password: password,
         noOfApplicants: 0,
-        status: "inactive",
+        status: "active",
       });
     } catch (e) {
       console.error("Error adding document: ", e);
