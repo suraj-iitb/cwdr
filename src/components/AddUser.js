@@ -5,8 +5,36 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import { collection, addDoc } from "firebase/firestore";
+
+import { db } from "../firebase";
 
 export function AddUser() {
+  const [firstName, setFirstName] = React.useState(null);
+  const [lastName, setLastName] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+
+  const addUserInDB = async (e) => {
+    e.preventDefault();
+    try {
+      await addDoc(collection(db, "mythri-me"), {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        noOfApplicants: 0,
+        status: "inactive",
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
       <Paper
@@ -24,6 +52,8 @@ export function AddUser() {
                 id="firstName"
                 name="firstName"
                 label="First name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 fullWidth
                 autoComplete="given-name"
                 variant="standard"
@@ -35,6 +65,8 @@ export function AddUser() {
                 id="lastName"
                 name="lastName"
                 label="Last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -47,6 +79,8 @@ export function AddUser() {
                 id="email"
                 name="email"
                 label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 fullWidth
                 autoComplete="email"
                 variant="standard"
@@ -59,6 +93,8 @@ export function AddUser() {
                 id="password"
                 name="password"
                 label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 fullWidth
                 autoComplete="password"
                 variant="standard"
@@ -66,7 +102,12 @@ export function AddUser() {
             </Grid>
           </Grid>
           <Grid sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="contained" sx={{ mt: 3, ml: 1 }} size="large">
+            <Button
+              variant="contained"
+              sx={{ mt: 3, ml: 1 }}
+              size="large"
+              onClick={addUserInDB}
+            >
               Add User
             </Button>
           </Grid>
