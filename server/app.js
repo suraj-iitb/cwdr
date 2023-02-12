@@ -16,7 +16,7 @@ let uid;
 admin
   .auth()
   .createUser({
-    email: "user12@example.com",
+    email: "user13@example.com",
     emailVerified: false,
     password: "secretPassword",
     displayName: "John Doe",

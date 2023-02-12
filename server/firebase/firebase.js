@@ -1,6 +1,6 @@
 var appn = require("firebase/app");
-var authn = require("firebase/auth");
 var firestore = require("firebase/firestore");
+var config = require("../config/config")
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -15,27 +15,20 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = appn.initializeApp(firebaseConfig);
-
-const auth = authn.getAuth(app);
 const db = firestore.getFirestore(app);
 
 const createUserProfileDocument = async (userAuth) => {
   if (!userAuth) return;
 
-  console.log("creating profile");
-  console.log(userAuth.uid);
   const userRef = firestore.doc(db, "user", userAuth.uid);
-
   const userSnapshot = await firestore.getDoc(userRef);
 
-  console.log(userSnapshot.data());
   if (!userSnapshot.exists()) {
-    console.log("does not exists");
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
     firestore
-      .setDoc(userRef, { displayName, createdAt, email, role: ["admin"] })
+      .setDoc(userRef, { createdAt, displayName, email, roles: [config.ROLES.FIELD] })
       .catch((err) => console.log(err));
   }
   return userRef;
