@@ -8,49 +8,57 @@ import { auth, createUserProfileDocument } from "../firebase";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(sessionStorage.getItem("user"))
+  );
   const [loading, setLoading] = useState(true);
 
-  let navigate = useNavigate();
-
-  const signInWithEmail = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
-      setCurrentUser(userAuth.user);
-      localStorage.setItem("userAuth", JSON.stringify(userAuth.user));
-      navigate("/admin");
-    });
-  };
-
-  const _signOut = () => {
-    signOut(auth)
-      .then(() => {
-        setCurrentUser(null);
-        localStorage.removeItem("userAuth");
-      })
-      .finally(() => navigate("/"));
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (userAuth) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setLoading(false);
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        onSnapshot(userRef, (snapshot) => {
-          const user = {
-            ...snapshot.data(),
-            id: snapshot.id,
-          };
-          setCurrentUser(user);
-
-          localStorage.setItem("userAuth", JSON.stringify(user));
-        });
+      if (user) {
+        setSessionStorageForUser(user);
       } else {
-        setCurrentUser(null);
-        localStorage.removeItem("userAuth");
+        removeSessionStorageForUser();
       }
     });
     return () => unsubscribe();
   }, []);
+
+  const setSessionStorageForUser = async (user) => {
+    const userRef = await createUserProfileDocument(user);
+    onSnapshot(userRef, (snapshot) => {
+      const currUser = {
+        ...snapshot.data(),
+        id: snapshot.id,
+      };
+      setCurrentUser(currUser);
+      sessionStorage.setItem("user", JSON.stringify(currUser));
+    });
+  };
+
+  const removeSessionStorageForUser = () => {
+    setCurrentUser(null);
+    sessionStorage.removeItem("user");
+  };
+
+  const signInWithEmail = async (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password).then(
+      async (userAuth) => {
+        await setSessionStorageForUser(userAuth.user, setCurrentUser);
+        navigate("/admin");
+      }
+    );
+  };
+  const _signOut = () => {
+    signOut(auth)
+      .then(() => {
+        removeSessionStorageForUser();
+      })
+      .finally(() => navigate("/"));
+  };
 
   const authValue = {
     currentUser,
@@ -58,5 +66,9 @@ export const AuthProvider = ({ children }) => {
     _signOut,
   };
 
-  return <AuthContext.Provider value={authValue}>{!loading && children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authValue}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 };
