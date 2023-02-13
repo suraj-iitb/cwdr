@@ -15,10 +15,10 @@ import { ROLES } from "./config";
 export default function App() {
   return (
     <Routes>
-      <Route exact path="/" element={<Home />} />
       <Route exact path="/signin" element={<SignIn />} />
 
       <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN, ROLES.FIELD]} />}>
+        <Route exact path="/" element={<Home />} />
         <Route exact path="/fieldWorkerForm" element={<FieldWorkerForm />} />
       </Route>
 
