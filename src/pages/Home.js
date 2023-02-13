@@ -44,7 +44,7 @@ export const Home = () => {
             src: require('../images/maithri.jpeg'),
             alt: 'Mythri',
             title: 'Mythri',
-            link: '/field_worker_form'
+            link: '/fieldworkerform'
         },
         {
             src: require('../images/manushi.jpeg'),
