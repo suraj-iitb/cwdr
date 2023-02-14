@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
       .then(() => {
         removeSessionStorageForUser();
       })
-      .finally(() => navigate("/"));
+      .finally(() => navigate("/signin"));
   };
 
   const authValue = {
