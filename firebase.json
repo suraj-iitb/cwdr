@@ -14,5 +14,11 @@
         "firebase-debug.*.log"
       ]
     }
-  ]
+  ],
+  "emulators": {
+    "firestore": {
+      "host": "localhost",
+      "port": "4002"
+    }
+  }
 }

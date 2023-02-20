@@ -26,6 +26,7 @@ const functions = getFunctions(app);
 connectFunctionsEmulator(functions, "localhost", "5001");
 
 export const addNumbers = httpsCallable(functions, 'addNumbers');
+export const addMessageCall = httpsCallable(functions, 'addMessageCall');
 
 export const createUserProfileDocument = async (userAuth) => {
   if (!userAuth) return;

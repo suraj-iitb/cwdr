@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db, addNumbers } from "../firebase";
+import { db, addNumbers, addMessageCall } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -25,6 +25,23 @@ export function AddUser() {
         const data = result.data;
         console.log(data);
         // const sanitizedMessage = data.text;
+      });
+
+
+      addMessageCall({ text: "Hello world" })
+      .then((result) => {
+        // Read result of the Cloud Function.
+        /** @type {any} */
+        const data = result.data;
+        const sanitizedMessage = data.text;
+        console.log(sanitizedMessage);
+      })
+      .catch((error) => {
+        // Getting the Error details.
+        const code = error.code;
+        const message = error.message;
+        const details = error.details;
+        console.log(code, message, details)
       });
 
     try {
