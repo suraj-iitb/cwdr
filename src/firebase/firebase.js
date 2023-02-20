@@ -22,6 +22,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 const functions = getFunctions(app);
 
+// Remove this line before deployment
 connectFunctionsEmulator(functions, "localhost", "5001");
 
 export const addNumbers = httpsCallable(functions, 'addNumbers');
