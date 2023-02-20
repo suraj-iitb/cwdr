@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db } from "../firebase";
+import { db, addNumbers } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -17,6 +17,16 @@ export function AddUser() {
 
   const addUserInDB = async (e) => {
     e.preventDefault();
+    
+    addNumbers({ firstNumber: 1, secondNumber: 2 })
+      .then((result) => {
+        // Read result of the Cloud Function.
+        /** @type {any} */
+        const data = result.data;
+        console.log(data);
+        // const sanitizedMessage = data.text;
+      });
+
     try {
       await addDoc(collection(db, "mythri-me"), {
         firstName: firstName,
