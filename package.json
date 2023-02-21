@@ -15,8 +15,6 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "bad-words": "^3.0.4",
-    "capitalize-sentence": "^0.1.5",
     "dayjs": "^1.11.7",
     "firebase": "^9.15.0",
     "localforage": "^1.10.0",

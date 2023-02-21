@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db, addNumbers, addMessageCall } from "../firebase";
+import { db, addNumbers, addNumbers1 } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -18,7 +18,7 @@ export function AddUser() {
   const addUserInDB = async (e) => {
     e.preventDefault();
     
-    addNumbers({ firstNumber: 1, secondNumber: 2 })
+    await addNumbers({ firstNumber: 1, secondNumber: 2 })
       .then((result) => {
         // Read result of the Cloud Function.
         /** @type {any} */
@@ -27,22 +27,30 @@ export function AddUser() {
         // const sanitizedMessage = data.text;
       });
 
-
-      addMessageCall({ text: "Hello world" })
+      await addNumbers1({ firstNumber: 1, secondNumber: 2 })
       .then((result) => {
         // Read result of the Cloud Function.
         /** @type {any} */
         const data = result.data;
-        const sanitizedMessage = data.text;
-        console.log(sanitizedMessage);
-      })
-      .catch((error) => {
-        // Getting the Error details.
-        const code = error.code;
-        const message = error.message;
-        const details = error.details;
-        console.log(code, message, details)
+        console.log(data);
+        // const sanitizedMessage = data.text;
       });
+
+      // await addMessageCall({ firstNumber: 10, secondNumber: 20 })
+      // .then((result) => {
+      //   // Read result of the Cloud Function.
+      //   /** @type {any} */
+      //   const data = result.data;
+      //   const sanitizedMessage = data.text;
+      //   console.log(sanitizedMessage);
+      // })
+      // .catch((error) => {
+      //   // Getting the Error details.
+      //   const code = error.code;
+      //   const message = error.message;
+      //   const details = error.details;
+      //   console.log(code, message, details)
+      // });
 
     try {
       await addDoc(collection(db, "mythri-me"), {
