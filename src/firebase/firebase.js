@@ -28,6 +28,9 @@ const functions = getFunctions(app);
 export const addNumbers = httpsCallable(functions, 'addNumbers');
 export const addNumbers1 = httpsCallable(functions, 'addNumbers1');
 export const addMessageCall = httpsCallable(functions, 'addMessageCall');
+export const addUsers = httpsCallable(functions, 'addUsers');
+export const addUser = httpsCallable(functions, 'addUser');
+
 
 export const createUserProfileDocument = async (userAuth) => {
   if (!userAuth) return;

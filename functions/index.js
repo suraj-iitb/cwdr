@@ -7,6 +7,55 @@ admin.initializeApp();
 
 const sanitizer = require('./sanitizer');
 
+exports.addUsers = functions.https.onCall(async (data, context) => {
+    const userDoc = await admin.firestore().collection('users').add({ 
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        noOfApplicants: 0,
+        status: 'active'
+    });
+
+    const output = { result: `User with ID: ${userDoc.id} added.` }
+    console.log(output);
+    return output;
+});
+
+exports.addUserTrigger = functions.auth.user().onCreate((user) => {
+    displayName = user.displayName.split(' ');
+    admin.firestore().collection('user').doc(user.uid).set({ 
+        firstName: displayName[0],
+        lastName: displayName[1],
+        email: user.email,
+        noOfApplicants: 0,
+        status: 'active'
+    });
+
+    const output = { result: `User with ID: ${user.uid} added.` }
+    console.log(output);
+    return output;
+});
+
+
+exports.addUser = functions.https.onCall((data) => {
+   admin.auth().createUser({
+        email: data.email,
+        password: data.password,
+        displayName: data.firstName + ' ' + data.lastName,
+        emailVerified: true,
+        disabled: false,
+  })
+  .then((userRecord) => {
+    const output = { result: `User with ID: ${userRecord.uid} added.` }
+    console.log(output);
+    return output;
+  })
+  .catch((error) => {
+    console.log('Error creating new user:', error);
+  });
+})
+
+
 // Create and deploy your first functions
 // https://firebase.google.com/docs/functions/get-started
 

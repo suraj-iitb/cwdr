@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db, addNumbers, addNumbers1 } from "../firebase";
+import { db, addNumbers, addNumbers1, addUser } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -18,23 +18,32 @@ export function AddUser() {
   const addUserInDB = async (e) => {
     e.preventDefault();
     
-    await addNumbers({ firstNumber: 1, secondNumber: 2 })
-      .then((result) => {
-        // Read result of the Cloud Function.
-        /** @type {any} */
-        const data = result.data;
-        console.log(data);
-        // const sanitizedMessage = data.text;
-      });
+    addUser({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    }).then((result) => {
+      console.log(result)
+    })
 
-      await addNumbers1({ firstNumber: 1, secondNumber: 2 })
-      .then((result) => {
-        // Read result of the Cloud Function.
-        /** @type {any} */
-        const data = result.data;
-        console.log(data);
-        // const sanitizedMessage = data.text;
-      });
+    // await addNumbers({ firstNumber: 1, secondNumber: 2 })
+    //   .then((result) => {
+    //     // Read result of the Cloud Function.
+    //     /** @type {any} */
+    //     const data = result.data;
+    //     console.log(data);
+    //     // const sanitizedMessage = data.text;
+    //   });
+
+    //   await addNumbers1({ firstNumber: 1, secondNumber: 2 })
+    //   .then((result) => {
+    //     // Read result of the Cloud Function.
+    //     /** @type {any} */
+    //     const data = result.data;
+    //     console.log(data);
+    //     // const sanitizedMessage = data.text;
+    //   });
 
       // await addMessageCall({ firstNumber: 10, secondNumber: 20 })
       // .then((result) => {
