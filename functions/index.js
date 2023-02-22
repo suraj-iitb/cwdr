@@ -6,6 +6,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const sanitizer = require('./sanitizer');
+const constants = require('./constants')
 
 exports.addUsers = functions.https.onCall(async (data, context) => {
     const userDoc = await admin.firestore().collection('users').add({ 
@@ -22,13 +23,26 @@ exports.addUsers = functions.https.onCall(async (data, context) => {
 });
 
 exports.addUserTrigger = functions.auth.user().onCreate((user) => {
-    displayName = user.displayName.split(' ');
+    let displayName = user.displayName;
+    let firstName = '';
+    let lastName = '';
+    if(user.displayName != null) {
+        displayName = displayName.split(' ');
+        if(displayName.length == 2) {
+            firstName = displayName[0]; 
+            lastName = displayName[1];
+        } else if (displayName.length == 1) {
+            firstName = displayName[0];
+        }
+    }
+    
     admin.firestore().collection('user').doc(user.uid).set({ 
-        firstName: displayName[0],
-        lastName: displayName[1],
+        firstName: firstName,
+        lastName: lastName,
         email: user.email,
         noOfApplicants: 0,
-        status: 'active'
+        status: 'active',
+        roles: [constants.FIELD]
     });
 
     const output = { result: `User with ID: ${user.uid} added.` }
