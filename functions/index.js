@@ -1,5 +1,6 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 const functions = require('firebase-functions');
+var cryptoJS = require("crypto-js");
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require('firebase-admin');
@@ -199,3 +200,14 @@ exports.addMessageCall = functions.https.onCall((data) => {
     };
     
   });
+
+exports.encrypt = functions.https.onCall((data) => {  
+    let ciphertext = cryptoJS.AES.encrypt(data.text, 'secret key 123').toString();
+    return {data: ciphertext};
+});
+
+exports.decrypt = functions.https.onCall((data) => {  
+    let bytes  = cryptoJS.AES.decrypt(data.text, 'secret key 123');
+    let originalText = bytes.toString(cryptoJS.enc.Utf8);
+    return {data: originalText}
+});

@@ -15,6 +15,7 @@
   "dependencies": {
     "bad-words": "^3.0.4",
     "capitalize-sentence": "^0.1.5",
+    "crypto-js": "^4.1.1",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0"
   },

@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db, addNumbers, addNumbers1, addUser } from "../firebase";
+import { db, addNumbers, addNumbers1, addUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -16,9 +16,10 @@ export function AddUser() {
   const [password, setPassword] = React.useState(null);
 
   const addUserInDB = async (e) => {
+    let v;
     e.preventDefault();
     
-    addUser({
+    await addUser({
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -27,15 +28,27 @@ export function AddUser() {
       console.log(result)
     })
 
-    // await addNumbers({ firstNumber: 1, secondNumber: 2 })
-    //   .then((result) => {
-    //     // Read result of the Cloud Function.
-    //     /** @type {any} */
-    //     const data = result.data;
-    //     console.log(data);
-    //     // const sanitizedMessage = data.text;
-    //   });
 
+
+    await encrypt({ text: firstName })
+      .then((result) => {
+        // Read result of the Cloud Function.
+        /** @type {any} */
+        const data = result.data;
+        v = data.data;
+        console.log(data);
+        // const sanitizedMessage = data.text;
+      });
+
+      console.log(v);
+      await decrypt({ text: v })
+      .then((result) => {
+        // Read result of the Cloud Function.
+        /** @type {any} */
+        const data = result.data;
+        console.log(data);
+        // const sanitizedMessage = data.text;
+      });
     //   await addNumbers1({ firstNumber: 1, secondNumber: 2 })
     //   .then((result) => {
     //     // Read result of the Cloud Function.

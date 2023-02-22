@@ -30,6 +30,8 @@ export const addNumbers1 = httpsCallable(functions, 'addNumbers1');
 export const addMessageCall = httpsCallable(functions, 'addMessageCall');
 export const addUsers = httpsCallable(functions, 'addUsers');
 export const addUser = httpsCallable(functions, 'addUser');
+export const encrypt = httpsCallable(functions, 'encrypt');
+export const decrypt = httpsCallable(functions, 'decrypt');
 
 
 export const createUserProfileDocument = async (userAuth) => {
