@@ -15,38 +15,15 @@ export function AddUser() {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
 
-  const addUserInDB = async (e) => {
-    let v;
+  const addUserInDB = (e) => {
     e.preventDefault();
     
-    await addUser({
+    addUser({
       firstName: firstName,
       lastName: lastName,
       email: email,
       password: password,
-    })
-
-    await deleteUser({uid: 'kJKM7odNPwUzsVhdPKdq1dKxNRc2'})
-
-    await encrypt({ text: firstName })
-      .then((result) => {
-        // Read result of the Cloud Function.
-        /** @type {any} */
-        const data = result.data;
-        v = data.cipherText;
-        console.log(data);
-        // const sanitizedMessage = data.text;
-      });
-
-      console.log(v);
-      await decrypt({ text: v })
-      .then((result) => {
-        // Read result of the Cloud Function.
-        /** @type {any} */
-        const data = result.data;
-        console.log(data);
-        // const sanitizedMessage = data.text;
-      });
+    })    
    
     setFirstName("");
     setLastName("");
