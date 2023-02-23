@@ -7,6 +7,8 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 import { db } from "../../firebase";
+import { COLLECTIONS } from '../../constants/constants';
+
 import "./FieldWorkerList.scss";
 
 export function FieldWorkerList() {
@@ -18,7 +20,7 @@ export function FieldWorkerList() {
   const [selectedWorkerName, setSelectedWorkerName] = React.useState();
 
   const fetchData = async () => {
-    await getDocs(collection(db, "mythri-me")).then((querySnapshot) => {
+    await getDocs(collection(db, COLLECTIONS.USER)).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
@@ -34,7 +36,7 @@ export function FieldWorkerList() {
 
   const handleDelete = async (id) => {
     setDisableForm(true);
-    await deleteDoc(doc(db, "mythri-me", id));
+    await deleteDoc(doc(db, COLLECTIONS.USER, id));
     fetchData();
     setOpenDialog(false);
     setDisableForm(false);
