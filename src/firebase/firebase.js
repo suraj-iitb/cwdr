@@ -25,11 +25,8 @@ const functions = getFunctions(app);
 // Remove this line before deployment
 // connectFunctionsEmulator(functions, "localhost", "5001");
 
-export const addNumbers = httpsCallable(functions, 'addNumbers');
-export const addNumbers1 = httpsCallable(functions, 'addNumbers1');
-export const addMessageCall = httpsCallable(functions, 'addMessageCall');
-export const addUsers = httpsCallable(functions, 'addUsers');
 export const addUser = httpsCallable(functions, 'addUser');
+export const deleteUser = httpsCallable(functions, 'deleteUser');
 export const encrypt = httpsCallable(functions, 'encrypt');
 export const decrypt = httpsCallable(functions, 'decrypt');
 

@@ -52,6 +52,21 @@ exports.addUser = functions.https.onCall((data) => {
     });
 })
 
+exports.deleteUserTrigger = functions.auth.user().onCreate((user) => {
+    admin.firestore().collection(constants.COLLECTIONS.USER).doc(user.uid).delete();
+    console.log(`User with ID: ${user.uid} deleted.`);
+});
+
+exports.deleteUser = functions.https.onCall((data) => {
+    admin.auth().deleteUser(data.uid)
+    .then(() => {
+        console.log('Successfully deleted user');
+    })
+    .catch((error) => {
+        console.log('Error deleting user:', error);
+    });
+})
+
 exports.encrypt = functions.https.onCall((data) => {
     let cipherText = cryptoJS.AES.encrypt(data.text, 'secret key').toString();
     return { cipherText: cipherText };

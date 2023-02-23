@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 
-import { db, addNumbers, addNumbers1, addUser, encrypt, decrypt } from "../firebase";
+import { db, addUser, deleteUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
   const [firstName, setFirstName] = React.useState(null);
@@ -28,7 +28,7 @@ export function AddUser() {
       console.log(result)
     })
 
-
+    await deleteUser({uid: '4ZYkwu2S8dPTfaw9ys24zaxSBA83'})
 
     await encrypt({ text: firstName })
       .then((result) => {
