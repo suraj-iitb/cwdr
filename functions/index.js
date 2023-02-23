@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cryptoJS = require("crypto-js");
 
-import { COLLECTIONS, ROLES } from '../src/constants/constants';
+const constants = require("./constants");
 
 admin.initializeApp();
 
@@ -20,13 +20,13 @@ exports.addUserTrigger = functions.auth.user().onCreate((user) => {
         }
     }
 
-    admin.firestore().collection(COLLECTIONS.USER).doc(user.uid).set({
+    admin.firestore().collection(constants.COLLECTIONS.USER).doc(user.uid).set({
         firstName: firstName,
         lastName: lastName,
         email: user.email,
         noOfApplicants: 0,
         status: 'active',
-        roles: [ROLES.FIELD]
+        roles: [constants.ROLES.FIELD]
     });
 
     const output = { message: `User with ID: ${user.uid} added.` }
