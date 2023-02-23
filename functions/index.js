@@ -52,7 +52,7 @@ exports.addUser = functions.https.onCall((data) => {
     });
 })
 
-exports.deleteUserTrigger = functions.auth.user().onCreate((user) => {
+exports.deleteUserTrigger = functions.auth.user().onDelete((user) => {
     admin.firestore().collection(constants.COLLECTIONS.USER).doc(user.uid).delete();
     console.log(`User with ID: ${user.uid} deleted.`);
 });

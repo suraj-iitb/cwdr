@@ -28,7 +28,7 @@ export function AddUser() {
       console.log(result)
     })
 
-    await deleteUser({uid: '4ZYkwu2S8dPTfaw9ys24zaxSBA83'})
+    await deleteUser({uid: 'GPktncUGhtf4z3woVHqKvoVuuUY2'})
 
     await encrypt({ text: firstName })
       .then((result) => {
