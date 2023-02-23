@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { green } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useAuth } from '../hooks';
@@ -92,6 +93,7 @@ export const SignIn = () => {
             <CircularProgress
               size={25}
               sx={{
+                color: green[500],
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
