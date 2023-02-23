@@ -44,19 +44,19 @@ export const Home = () => {
             src: require('../images/maithri.jpeg'),
             alt: 'Mythri',
             title: 'Mythri',
-            link: '/fieldworkerform'
+            link: '/fieldworkerform?name=mythri'
         },
         {
             src: require('../images/manushi.jpeg'),
             alt: 'Manushi',
             title: 'Manushi',
-            link: '/fw_form'
+            link: '/fieldworkerform?name=manushi'
         },
         {
             src: require('../images/snehidhi.jpeg'),
             alt: 'Snehidhi',
             title: 'Snehidhi',
-            link: '/fw_form'
+            link: '/fieldworkerform?name=snehidi'
         }
     ]
 
