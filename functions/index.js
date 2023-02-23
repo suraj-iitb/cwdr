@@ -29,9 +29,7 @@ exports.addUserTrigger = functions.auth.user().onCreate((user) => {
         roles: [constants.ROLES.FIELD]
     });
 
-    const output = { message: `User with ID: ${user.uid} added.` }
-    console.log(output);
-    return output;
+    console.log(`User with ID: ${user.uid} added.`);
 });
 
 exports.addUser = functions.https.onCall((data) => {
@@ -42,10 +40,8 @@ exports.addUser = functions.https.onCall((data) => {
         emailVerified: true,
         disabled: false,
     })
-    .then((userRecord) => {
-        const output = { message: `User with ID: ${userRecord.uid} added.` }
-        console.log(output);
-        return output;
+    .then(() => {
+        console.log(`User with ID: ${user.uid} added.`);
     })
     .catch((error) => {
         console.log('Error creating new user:', error);
