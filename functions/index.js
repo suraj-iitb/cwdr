@@ -53,8 +53,8 @@ exports.addUser = functions.https.onCall((data) => {
 })
 
 exports.encrypt = functions.https.onCall((data) => {
-    let ciphertext = cryptoJS.AES.encrypt(data.text, 'secret key').toString();
-    return { ciphertext: ciphertext };
+    let cipherText = cryptoJS.AES.encrypt(data.text, 'secret key').toString();
+    return { cipherText: cipherText };
 });
 
 exports.decrypt = functions.https.onCall((data) => {
