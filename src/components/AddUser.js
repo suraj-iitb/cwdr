@@ -24,11 +24,9 @@ export function AddUser() {
       lastName: lastName,
       email: email,
       password: password,
-    }).then((result) => {
-      console.log(result)
     })
 
-    await deleteUser({uid: 'GPktncUGhtf4z3woVHqKvoVuuUY2'})
+    await deleteUser({uid: 'kJKM7odNPwUzsVhdPKdq1dKxNRc2'})
 
     await encrypt({ text: firstName })
       .then((result) => {
@@ -49,43 +47,7 @@ export function AddUser() {
         console.log(data);
         // const sanitizedMessage = data.text;
       });
-    //   await addNumbers1({ firstNumber: 1, secondNumber: 2 })
-    //   .then((result) => {
-    //     // Read result of the Cloud Function.
-    //     /** @type {any} */
-    //     const data = result.data;
-    //     console.log(data);
-    //     // const sanitizedMessage = data.text;
-    //   });
-
-      // await addMessageCall({ firstNumber: 10, secondNumber: 20 })
-      // .then((result) => {
-      //   // Read result of the Cloud Function.
-      //   /** @type {any} */
-      //   const data = result.data;
-      //   const sanitizedMessage = data.text;
-      //   console.log(sanitizedMessage);
-      // })
-      // .catch((error) => {
-      //   // Getting the Error details.
-      //   const code = error.code;
-      //   const message = error.message;
-      //   const details = error.details;
-      //   console.log(code, message, details)
-      // });
-
-    try {
-      await addDoc(collection(db, "mythri-me"), {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-        noOfApplicants: 0,
-        status: "active",
-      });
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+   
     setFirstName("");
     setLastName("");
     setEmail("");
