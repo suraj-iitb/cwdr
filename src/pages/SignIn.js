@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import { green } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import { Header } from "../components";
 import { useAuth } from '../hooks';
 
 const theme = createTheme();
@@ -44,12 +45,14 @@ export const SignIn = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 16,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
+          <Header drawerWidth={0} />
+
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

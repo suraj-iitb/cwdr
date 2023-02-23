@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
-import { drawerWidth } from "../constants/constants";
 
 export function Header(props) {
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
@@ -22,8 +21,8 @@ export function Header(props) {
     <AppBar
       position="fixed"
       sx={{
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        ml: { sm: `${drawerWidth}px` },
+        width: { sm: `calc(100% - ${props.drawerWidth}px)` },
+        ml: { sm: `${props.drawerWidth}px` },
       }}
     >
       <Toolbar>

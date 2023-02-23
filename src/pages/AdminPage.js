@@ -5,14 +5,14 @@ import Toolbar from "@mui/material/Toolbar";
 import { Outlet } from "react-router-dom";
 
 import { SideBar, Header } from "../components";
-import { drawerWidth } from "../constants/constants";
+import { adminDrawerWidth } from "../constants/constants";
 
 export const AdminPage = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <Header />
+      <Header drawerWidth={adminDrawerWidth}/>
 
       <SideBar />
 
@@ -21,7 +21,7 @@ export const AdminPage = () => {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: { sm: `calc(100% - ${adminDrawerWidth}px)` },
         }}
       >
         <Toolbar />
