@@ -35,7 +35,7 @@ export function AddUser() {
         // Read result of the Cloud Function.
         /** @type {any} */
         const data = result.data;
-        v = data.data;
+        v = data.cipherText;
         console.log(data);
         // const sanitizedMessage = data.text;
       });

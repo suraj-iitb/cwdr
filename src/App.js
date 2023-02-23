@@ -10,7 +10,7 @@ import {
 } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
 import FieldWorkerForm from "./pages/FieldWorkerForm";
-import { ROLES } from "./config";
+import { ROLES } from "./constants/constants";
 
 export default function App() {
   return (
