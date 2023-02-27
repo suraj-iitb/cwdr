@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import FieldWorkerForm from "./FieldWorkerForm";
 import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
-import { storeData } from "../../firebase/commonUtil";
+import { storeData, fetchData } from "../../firebase/commonUtil";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 import {
@@ -16,13 +16,9 @@ import { FormPageHeader } from "..";
 const FieldWorkerRoot = (props) => {
   const theme = createTheme();
   const showHeader = props.showHeader ?? true;
-
-  console.log('data', props.data)
-
-
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const name = query.get("name") || props.name;
+  const org = query.get("org") || props.org;
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     state: "error",
@@ -37,8 +33,7 @@ const FieldWorkerRoot = (props) => {
 
   const saveData = async (data, objectName) => {
     try {
-      console.log(data)
-      await storeData({...data, name: name}, objectName);
+      await storeData({...data, name: org}, objectName);
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -52,6 +47,10 @@ const FieldWorkerRoot = (props) => {
       });
     }
   };
+
+  const fetchData = async (memberID) =>{
+    return await fetchData(memberID);
+  }
 
   return (
     <>
@@ -72,11 +71,11 @@ const FieldWorkerRoot = (props) => {
             </Toolbar>
           </AppBar>
         )}
-        {(name === "manushi" || name === "mythri") && (
-          <FieldWorkerForm name={name} saveData={saveData} data={props.data}  />
+        {(org === "manushi" || org === "mythri") && (
+          <FieldWorkerForm org={org} saveData={saveData} data={props.data}  />
         )}
-        {name === "snehidi" && (
-          <FieldWorkerFormSnehidi name={name} saveData={saveData} data={props.data} />
+        {org === "snehidi" && (
+          <FieldWorkerFormSnehidi org={org} saveData={saveData} fetchData={fetchData} memberID={props.memberID} />
         )}
 
         <Snackbar

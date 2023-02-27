@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 
-const useInput = (validateValue) => {
-  const [enteredValue, setEnteredValue] = useState('');
+const useInput = (validateValue, data) => {
+  const [enteredValue, setEnteredValue] = useState(data ?? "");
+
   const [isTouched, setIsTouched] = useState(false);
 
   const valueIsValid = validateValue(enteredValue);
   const hasError = !valueIsValid && isTouched;
 
+  useEffect(() => {
+    setEnteredValue(data ?? "");
+  }, [data]);
+
+
+  const setValue = (value) => {
+    setEnteredValue(value);
+  };
   const valueChangeHandler = (event) => {
-    setEnteredValue(event.target?.value );
+    setEnteredValue(event.target?.value);
+    if (!event.target) {
+      setEnteredValue(event.toDate().toLocaleDateString("en-GB"));
+    }
   };
 
   const inputBlurHandler = (event) => {
@@ -16,7 +28,7 @@ const useInput = (validateValue) => {
   };
 
   const reset = () => {
-    setEnteredValue('');
+    setEnteredValue("");
     setIsTouched(false);
   };
 
@@ -26,7 +38,8 @@ const useInput = (validateValue) => {
     hasError,
     valueChangeHandler,
     inputBlurHandler,
-    reset
+    reset,
+    setValue,
   };
 };
 

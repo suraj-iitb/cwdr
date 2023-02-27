@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline, EditOutlined, DoneOutline } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import {
   Button,
   Dialog,
@@ -16,6 +16,7 @@ import {
 import { db } from "../../firebase";
 import "./UserList.scss";
 import FieldWorkerRoot from "../FieldWorkerForms/FieldWorker.root";
+import { fetchAllUsersData } from "../../firebase/commonUtil";
 
 export function UserList() {
   const [pageSize, setPageSize] = React.useState(10);
@@ -29,25 +30,28 @@ export function UserList() {
   const [openFormDialog, setOpenFormDialog] = React.useState(false);
 
   let { org } = useParams();
-
   const fetchData = async () => {
-    await getDocs(collection(db, "cities")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setData(newData);
-      console.log(data, newData);
+    fetchAllUsersData(org).then((response) => {
+      setData(response);
+      console.log(data, response);
     });
+    // await getDocs(collection(db, org)).then((querySnapshot) => {
+    //   const newData = querySnapshot.docs.map((doc) => ({
+    //     ...doc.data(),
+    //     id: doc.id,
+    //   }));
+    //   setData(newData);
+    //   console.log(data, newData);
+    // });
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [org]);
 
   const handleDelete = async (id) => {
     setDisableForm(true);
-    await deleteDoc(doc(db, "mythri1", id));
+    await deleteDoc(doc(db, org, id));
     fetchData();
     setOpenDialog(false);
     setDisableForm(false);
@@ -60,7 +64,6 @@ export function UserList() {
   };
   const handleOpenFormDialog = (rowData) => {
     setselectedRowData(rowData);
-    console.log(selectedRowData);
     setOpenFormDialog(true);
   };
 
@@ -104,7 +107,12 @@ export function UserList() {
     },
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
-    { field: "address", headerName: "Address", width: 200 },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 200,
+      valueGetter: (params) => params.row.address.addLine1,
+    },
     { field: "dob", headerName: "Date of Birth", width: 200 },
     { field: "aadhar", headerName: "Aadhar", width: 200 },
     { field: "mobile", headerName: "Mobile", width: 200 },
@@ -129,9 +137,9 @@ export function UserList() {
       >
         <DialogContent>
           <FieldWorkerRoot
-            name={selectedRowData.name}
+            org={selectedRowData.org}
             showHeader={false}
-            data={selectedRowData}
+            memberID={selectedRowData.memberID}
           />
         </DialogContent>
       </Dialog>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -18,38 +18,66 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import useInput from "../../hooks/useInput";
+import AddressInput from "../UI/AddressInput";
+import { fetchData, updateData } from "../../firebase/commonUtil";
 
 export default function FieldWorkerFormSnehidi(props) {
-  const data = props.data;
-  const [isMember, setIsMember] = useState(false);
-  const [isAssociatedUser, setIsAssociatedUser] = useState(data?.isAssociatedUser ? true: false);
+  const org = props.org;
+  const [memberData, setMemberData] = useState({});
+  const [docID, setDocID] = useState(null);
+  const [isMember, setIsMember] = useState(!!props?.memberID);
+  const [memberID, setMemberID] = useState(
+    props.memberID || Math.floor(Math.random() * 100000)
+  );
 
-  const handleMemberChange = (event) =>
+  const [isAssociatedUser, setIsAssociatedUser] = useState(false);
+
+  const handleMemberChange = (event) => {
+    handleReset();
+    if (event.target.value === "true") {
+      setMemberID("");
+    } else {
+      setMemberID(Math.floor(Math.random() * 100000));
+    }
     setIsMember(event.target.value === "true");
+  };
+
+  const memberIDChangeHandler = async (event) => {
+    setMemberID(event.target.value);
+  };
   const handleUserAssociatedChange = (event) =>
     setIsAssociatedUser(event.target.value === "true");
 
-  const isNotEmpty = (value) => value.trim() !== "";
-  const isValidZip = (value) =>
-    value.match("[1-9][0-9]{5}") && value.length === 6;
+  const handleReset = () => {
+    setMemberID("");
+    setMemberData({});
+    resetFirstNameInput();
+    resetLastNameInput();
+    resetDobInput();
+    resetInsitutionInput();
+    resetCourseInput();
+    resetBillNoInput();
+    resetRefNoInput();
+    resetStaffNameInput();
+    resetAadharInput();
+    resetRenewalDateInput();
+    formRefs.current.addressInputRef.handleReset();
+    setIsAssociatedUser(false);
+  };
+
+  const isNotEmpty = (value) => value?.trim() !== "";
 
   const formRefs = useRef({
-    aadharInputRef: null,
-    institutionNameInputRef: null,
-    courseNameInputRef: null,
-    billNoInputRef: null,
-    refNoInputRef: null,
-    fieldStaffNameInputRef: null,
+    addressInputRef: null,
   });
-
-  let {
+  const {
     value: firstName,
     isValid: firstNameIsValid,
     hasError: firstNameInputHasError,
     valueChangeHandler: firstNameChangedHandler,
     inputBlurHandler: firstNameBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput(isNotEmpty);
+  } = useInput(isNotEmpty, memberData.firstName);
 
   const {
     value: lastName,
@@ -58,141 +86,117 @@ export default function FieldWorkerFormSnehidi(props) {
     valueChangeHandler: lastNameChangedHandler,
     inputBlurHandler: lastNameBlurHandler,
     reset: resetLastNameInput,
-  } = useInput(isNotEmpty);
+  } = useInput(isNotEmpty, memberData.lastName);
 
   const {
     value: dob,
     hasError: dobInputHasError,
     valueChangeHandler: dobChangedHandler,
-  } = useInput(() => {});
-
-  const {
-    value: addLine1,
-    isValid: addLine1IsValid,
-    hasError: addLine1HasError,
-    valueChangeHandler: addLine1ChangedHandler,
-    inputBlurHandler: addLine1BlurHandler,
-    reset: resetAddLine1Input,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: addLine2,
-    isValid: addLine2IsValid,
-    hasError: addLine2HasError,
-    valueChangeHandler: addLine2ChangedHandler,
-    inputBlurHandler: addLine2BlurHandler,
-    reset: resetAddLine2Input,
-  } = useInput(() => {});
-
-  const {
-    value: city,
-    isValid: cityIsValid,
-    hasError: cityHasError,
-    valueChangeHandler: cityChangedHandler,
-    inputBlurHandler: cityBlurHandler,
-    reset: resetCityInput,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: zip,
-    isValid: zipIsValid,
-    hasError: zipHasError,
-    valueChangeHandler: zipChangedHandler,
-    inputBlurHandler: zipBlurHandler,
-    reset: resetZipInput,
-  } = useInput(isValidZip);
-
-  const {
-    value: country,
-    isValid: countryIsValid,
-    hasError: countryHasError,
-    valueChangeHandler: countryChangedHandler,
-    inputBlurHandler: countryBlurHandler,
-    reset: resetCountryInput,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: state,
-    valueChangeHandler: stateChangedHandler,
-    inputBlurHandler: stateBlurHandler,
-    reset: resetStateInput,
-  } = useInput(() => {});
+    reset: resetDobInput,
+  } = useInput(() => {}, memberData.dob);
 
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
-  } = useInput(() => {});
+    reset: resetRenewalDateInput,
+  } = useInput(() => {}, memberData.renewalDate);
 
   const {
     value: aadhar,
-    hasError: aadharInputHasError,
     valueChangeHandler: aadharChangeHandler,
-    inputBlurHandler: aadharBlurHandler,
-  } = useInput(isNotEmpty);
+    reset: resetAadharInput,
+  } = useInput(() => {}, memberData.aadhar);
+  const {
+    value: institutionName,
+    valueChangeHandler: institutionValueChangeHandler,
+    reset: resetInsitutionInput,
+  } = useInput(() => {}, memberData.institutionName);
+  const {
+    value: courseName,
+    valueChangeHandler: courseChangeHandler,
+    reset: resetCourseInput,
+  } = useInput(() => {}, memberData.courseName);
+  const {
+    value: billNo,
+    valueChangeHandler: billChangeHandler,
+    reset: resetBillNoInput,
+  } = useInput(() => {}, memberData.billNo);
+  const {
+    value: refNo,
+    valueChangeHandler: refChangeHandler,
+    reset: resetRefNoInput,
+  } = useInput(() => {}, memberData.refNo);
+  const {
+    value: fieldStaffName,
+    valueChangeHandler: staffNameChangeHandler,
+    reset: resetStaffNameInput,
+  } = useInput(() => {}, memberData.fieldStaffName);
 
   let formIsValid = false;
 
   if (
     firstNameIsValid &&
     lastNameIsValid &&
-    addLine1IsValid &&
-    addLine2IsValid &&
-    cityIsValid &&
-    zipIsValid &&
-    countryIsValid
+    formRefs.current.addressInputRef.addressIsValid()
   ) {
     formIsValid = true;
   }
-
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
     if (!formIsValid) {
       return;
     }
-    const aadhar = formRefs.current.aadharInputRef?.value || "";
-    const institutionName = formRefs.current.institutionNameInputRef.value;
-    const courseName = formRefs.current.courseNameInputRef.value;
-    const billNumber = formRefs.current.billNoInputRef.value;
-    const referenceNumber = formRefs.current.refNoInputRef.value;
-    const fieldStaffName = formRefs.current.fieldStaffNameInputRef.value;
 
+    const address = formRefs.current.addressInputRef.getAddress();
+    const memberDetails = {
+      memberID: parseInt(memberID),
+      firstName,
+      lastName,
+      dob,
+      address: { ...address },
+      aadhar,
+      institutionName,
+      courseName,
+      billNo,
+      refNo,
+      fieldStaffName,
+      renewalDate,
+      isAssociatedUser,
+    };
     try {
-      await props.saveData(
-        {
-          firstName,
-          lastName,
-          dob,
-          addLine1,
-          addLine2,
-          city,
-          state,
-          zip,
-          country,
-          ...(aadhar && { aadhar }),
-          ...(institutionName && { institutionName }),
-          ...(courseName && { courseName }),
-          ...(billNumber && { billNumber }),
-          ...(referenceNumber && { referenceNumber }),
-          ...(fieldStaffName && { fieldStaffName }),
-          renewalDate,
-          aadhar
-        },
-        "cities"
-      );
+      if (!isMember) {
+        await props.saveData(memberDetails, org);
+      } else {
+        await updateData(docID, memberDetails, org);
+      }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
     event.target.reset();
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetAddLine1Input();
-    resetAddLine2Input();
-    resetCityInput();
-    resetZipInput();
-    resetCountryInput();
-    resetStateInput();
+    handleReset();
   };
+
+  useEffect(() => {
+    let interval;
+    if (memberID && isMember) {
+      interval = setTimeout(async () => {
+        try {
+          console.log("memberrrid", memberID);
+          fetchData(memberID, "snehidi").then((response) => {
+            const responseData = response?.[0];
+            console.log("callubg", responseData, memberID);
+            setDocID(responseData.id);
+            setIsAssociatedUser(responseData.isAssociatedUser)
+            setMemberData(responseData);
+            formRefs.current.addressInputRef.setAddress(responseData?.address);
+          });
+        } catch (error) {}
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, [memberID, isMember]);
+
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
       <Paper
@@ -200,10 +204,63 @@ export default function FieldWorkerFormSnehidi(props) {
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
       >
         <Typography component="h4" variant="h4" align="center">
-          {props.name.toUpperCase()}
+          {props.org.toUpperCase()}
         </Typography>
         <form onSubmit={formSubmissionHandler}>
           <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <FormLabel id="member-radio-group">
+                  Is user already a member?
+                </FormLabel>
+                <RadioGroup
+                  aria-label="member"
+                  value={isMember}
+                  onChange={handleMemberChange}
+                >
+                  <FormControlLabel
+                    value={false}
+                    control={<Radio />}
+                    label="No, not a member"
+                  />
+                  <FormControlLabel
+                    value={true}
+                    control={<Radio />}
+                    label="Yes, already a member"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  id="memberID"
+                  label="Member ID"
+                  fullWidth
+                  disabled={!isMember}
+                  error={!isNotEmpty}
+                  helperText={!isNotEmpty && "This field cannot be empty"}
+                  onChange={memberIDChangeHandler}
+                  value={memberID}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                {isMember && (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Next Date of Renewal"
+                      onChange={renewalDateChangedHandler}
+                      renderInput={(params) => (
+                        <TextField {...params} error={renewalDateHasError} />
+                      )}
+                      value={renewalDate}
+                      minDate={new Date()}
+                    />
+                  </LocalizationProvider>
+                )}
+              </Grid>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
@@ -217,7 +274,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 }
                 onChange={firstNameChangedHandler}
                 onBlur={firstNameBlurHandler}
-                value={data?.firstName}
+                value={firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -233,7 +290,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 }
                 onChange={lastNameChangedHandler}
                 onBlur={lastNameBlurHandler}
-                value={data?.lastName}
+                value={lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -244,101 +301,21 @@ export default function FieldWorkerFormSnehidi(props) {
                   renderInput={(params) => (
                     <TextField {...params} error={dobInputHasError} />
                   )}
-                  value={data?.dob}
+                  value={dob}
                   maxDate={new Date()}
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="address1"
-                label="Address line 1"
-                fullWidth
-                autoComplete="shipping address-line1"
-                error={addLine1HasError}
-                helperText={addLine1HasError && "This field cannot be empty"}
-                onChange={addLine1ChangedHandler}
-                onBlur={addLine1BlurHandler}
-                value={data?.addLine1}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="address2"
-                label="Address line 2"
-                fullWidth
-                autoComplete="shipping address-line2"
-                error={addLine2HasError}
-                helperText={addLine2HasError && "This field cannot be empty"}
-                onChange={addLine2ChangedHandler}
-                onBlur={addLine2BlurHandler}
-                value={data?.addLine2}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="city"
-                label="City"
-                fullWidth
-                autoComplete="shipping address-level2"
-                error={cityHasError}
-                helperText={cityHasError && "This field cannot be empty"}
-                onChange={cityChangedHandler}
-                onBlur={cityBlurHandler}
-                value={data?.city}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="state"
-                label="State/Province/Region"
-                fullWidth
-                onChange={stateChangedHandler}
-                onBlur={stateBlurHandler}
-                value={data?.state}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="zip"
-                label="Zip / Postal code"
-                fullWidth
-                autoComplete="shipping postal-code"
-                error={zipHasError}
-                helperText={zipHasError && "Invalid PIN code"}
-                onChange={zipChangedHandler}
-                onBlur={zipBlurHandler}
-                value={data?.zip}
-                InputProps={{
-                  pattern: "[1-9][0-9]{5}",
-                  required: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="country"
-                label="Country"
-                fullWidth
-                autoComplete="shipping country"
-                error={countryHasError}
-                helperText={countryHasError && "This field cannot be empty"}
-                onChange={countryChangedHandler}
-                onBlur={countryBlurHandler}
-                value={data?.country}
-              />
-            </Grid>
-
+            <AddressInput
+              ref={(ref) => (formRefs.current.addressInputRef = ref)}
+            />
             <Grid item xs={12}>
               <TextField
                 id="institution"
                 label="Institution Name"
-                ref={(ref) => (formRefs.current.institutionNameInputRef = ref)}
+                value={institutionName}
                 fullWidth
-                value={data?.institutionName}
+                onChange={institutionValueChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -346,8 +323,8 @@ export default function FieldWorkerFormSnehidi(props) {
                 id="course"
                 label="Course Name"
                 fullWidth
-                ref={(ref) => (formRefs.current.courseNameInputRef = ref)}
-                value={data?.courseName}
+                value={courseName}
+                onChange={courseChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -355,9 +332,8 @@ export default function FieldWorkerFormSnehidi(props) {
                 id="bill_no"
                 label="Bill Number"
                 fullWidth
-                autoComplete="bill_no"
-                ref={(ref) => (formRefs.current.billNoInputRef = ref)}
-                value={data?.billNumber}
+                value={billNo}
+                onChange={billChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -366,8 +342,8 @@ export default function FieldWorkerFormSnehidi(props) {
                 label="Reference Number"
                 fullWidth
                 autoComplete="ref_no"
-                ref={(ref) => (formRefs.current.refNoInputRef = ref)}
-                value={data?.referenceNumber}
+                value={refNo}
+                onChange={refChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -376,47 +352,9 @@ export default function FieldWorkerFormSnehidi(props) {
                 label="Field Staff Name"
                 fullWidth
                 autoComplete="staff_name"
-                ref={(ref) => (formRefs.current.fieldStaffNameInputRef = ref)}
-                value={data?.fieldStaffName}
+                value={fieldStaffName}
+                onChange={staffNameChangeHandler}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl component="fieldset">
-                <FormLabel id="member-radio-group">
-                  Is user already a member?
-                </FormLabel>
-                <RadioGroup
-                  aria-label="member"
-                  value={data?.isMember}
-                  onChange={handleMemberChange}
-                >
-                  <FormControlLabel
-                    value={false}
-                    control={<Radio />}
-                    label="No, not a member"
-                  />
-                  <FormControlLabel
-                    value={true}
-                    control={<Radio />}
-                    label="Yes, already a member"
-                  />
-                </RadioGroup>
-              </FormControl>
-              {isMember && (
-                <>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Next Date of Renewal"
-                      onChange={renewalDateChangedHandler}
-                      renderInput={(params) => (
-                        <TextField {...params} error={renewalDateHasError} />
-                      )}
-                      value={data?.renewalDate}
-                      minDate={new Date()}
-                    />
-                  </LocalizationProvider>
-                </>
-              )}
             </Grid>
             <Grid item xs={12}>
               <FormControl component="fieldset">
@@ -425,7 +363,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 </FormLabel>
                 <RadioGroup
                   aria-label="employee"
-                  value={isAssociatedUser? true : false}
+                  value={isAssociatedUser ? true : false}
                   onChange={handleUserAssociatedChange}
                 >
                   <FormControlLabel
@@ -446,26 +384,20 @@ export default function FieldWorkerFormSnehidi(props) {
                     <TextField
                       id="aadhar"
                       label="Aadhar Number"
-                      required
-                      ref={(ref) => (formRefs.current.aadharInputRef = ref)}
                       fullWidth
                       autoComplete="aadhar_number"
                       inputProps={{
                         maxLength: 12,
                         placeholder: "XXXX-XXXX-XXXX",
                       }}
-                      value={data?.aadhar}
+                      value={aadhar}
                       onChange={aadharChangeHandler}
-                      onBlur={aadharBlurHandler}
-                      error={aadharInputHasError}
-                      helperText={aadharInputHasError && "This field cannot be empty"}
                     />
                   </Grid>
                 </>
               )}
             </Grid>
           </Grid>
-
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               type="submit"

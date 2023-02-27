@@ -147,7 +147,7 @@ export function SideBar(props) {
             </ListItemButton>
           </Link>
           <Link
-            to="getUserData/snehdi"
+            to="getUserData/snehidi"
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
