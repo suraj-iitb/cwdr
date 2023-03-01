@@ -51,8 +51,8 @@ export const AuthProvider = ({ children }) => {
       async (userAuth) => {
         await setSessionStorageForUser(userAuth.user, setCurrentUser);
         const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
-        if(currentUser?.roles?.includes(ROLES.ADMIN)) {
-          navigate("/admin");
+        if(user?.roles?.includes(ROLES.ADMIN)) {
+          navigate("/admin/addFieldWorker");
         } else {
           navigate('/fieldWorkerForm');
         }
