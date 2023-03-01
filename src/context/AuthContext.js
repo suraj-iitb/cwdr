@@ -3,7 +3,9 @@ import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-import { auth, createUserProfileDocument } from "../firebase";
+import { auth, createUserProfileDocument, retrieveDoc } from "../firebase";
+
+import { COLLECTIONS, ROLES } from '../constants/constants'
 
 export const AuthContext = createContext();
 
@@ -48,7 +50,12 @@ export const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password).then(
       async (userAuth) => {
         await setSessionStorageForUser(userAuth.user, setCurrentUser);
-        navigate("/admin");
+        const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
+        if(currentUser?.roles?.includes(ROLES.ADMIN)) {
+          navigate("/admin");
+        } else {
+          navigate('/fieldWorkerForm');
+        }
       }
     );
   };
