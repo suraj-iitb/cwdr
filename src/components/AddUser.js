@@ -7,28 +7,53 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 import useInput from "../hooks/useInput";
+import { Snackbar, Alert } from "@mui/material";
 
 import { db, addUser, deleteUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
   const [memberData, setMemberData] = React.useState({});
+  const [openSnackbar, setOpenSnackbar] = React.useState({
+    open: false,
+    state: "error",
+    message: "Something went wrong",
+  });
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
+  };
 
   const isNotEmpty = (value) => value?.trim() !== "";
 
-  const addUserInDB = (e) => {
+  const addUserInDB = async (e) => {
     e.preventDefault();
 
     if (!formIsValid) {
       return;
     }
-    
-    addUser({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-    })    
+
+    try {
+      await addUser({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      }) ;
+      setOpenSnackbar({
+        open: true,
+        state: "success",
+        message: "Field worker added successfully!",
+      });
+    } catch (error) {
+      setOpenSnackbar({
+        open: true,
+        state: "error",
+        message: "Error while submitted the form.",
+      });
+    }       
    
     resetFirstNameInput();
     resetLastNameInput();
@@ -179,6 +204,17 @@ export function AddUser() {
               Add User
             </Button>
           </Grid>
+
+          <Snackbar
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={openSnackbar.open}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={openSnackbar.state}>
+            {openSnackbar.message}
+          </Alert>
+        </Snackbar>
         </React.Fragment>
       </Paper>
     </Container>
