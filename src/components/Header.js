@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
-
+import { useNavigate } from "react-router-dom";
+import { ROLES } from "../constants/constants";
 import mainLogo from'../images/logo.png';
 
 export function Header(props) {
@@ -21,6 +22,8 @@ export function Header(props) {
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
   const dispatch = useDispatch();
+  
+  const navigate = useNavigate();
 
   const { currentUser, _signOut } = useAuth();
 
@@ -38,6 +41,12 @@ export function Header(props) {
 
   const handleSignOut = () => {
     _signOut();
+    setAnchorEl(null);
+  };
+
+  const handleAdmin = () => {
+    navigate('/admin');
+    setAnchorEl(null);
   };
 
   return (
@@ -93,6 +102,10 @@ export function Header(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                {
+                  currentUser?.roles?.includes(ROLES.ADMIN) &&
+                  <MenuItem onClick={handleAdmin}>Admin</MenuItem>
+                }
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
