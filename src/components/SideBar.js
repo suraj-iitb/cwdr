@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
-import { drawerWidth } from "../constants/constants";
+import { adminDrawerWidth } from "../constants/constants";
 import { useAuth } from '../hooks';
 
 export function SideBar(props) {
@@ -171,19 +171,13 @@ export function SideBar(props) {
           <ListItemText primary="Statistics" />
         </ListItemButton>
       </Link>
-      <ListItemButton onClick={handleSignOut}>
-        <ListItemIcon>
-          <Logout />
-        </ListItemIcon>
-        <ListItemText primary="Sign Out" />
-      </ListItemButton>
     </List>
   );
 
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      sx={{ width: { sm: adminDrawerWidth }, flexShrink: { sm: 0 } }}
       onClick={handleDrawerToggle()}
       onKeyDown={handleDrawerToggle()}
     >
@@ -200,7 +194,7 @@ export function SideBar(props) {
           display: { xs: "block", sm: "none" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            width: drawerWidth,
+            width: adminDrawerWidth,
           },
         }}
       >
@@ -213,7 +207,7 @@ export function SideBar(props) {
           display: { xs: "none", sm: "block" },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
-            width: drawerWidth,
+            width: adminDrawerWidth,
           },
         }}
         open

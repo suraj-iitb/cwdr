@@ -8,10 +8,12 @@ import {
   CssBaseline,
   AppBar,
   Toolbar,
+  Grid,
   ThemeProvider,
   createTheme,
 } from "@mui/material";
 import { FormPageHeader } from "..";
+import { Header } from "..";
 
 const FieldWorkerRoot = (props) => {
   const theme = createTheme();
@@ -62,20 +64,11 @@ const FieldWorkerRoot = (props) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {showHeader && (
-          <AppBar
-            position="absolute"
-            color="default"
-            elevation={0}
-            sx={{
-              position: "relative",
-              borderBottom: (t) => `1px solid ${t.palette.divider}`,
-            }}
-          >
-            <Toolbar>
-              <FormPageHeader />
-            </Toolbar>
-          </AppBar>
+          <Header />
         )}
+
+<Grid container spacing={3} sx={{ marginTop: "3rem" }}>
+
         {(org === "manushi" || org === "mythri") && (
           <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
         )}
@@ -87,6 +80,7 @@ const FieldWorkerRoot = (props) => {
             memberID={props.memberID}
           />
         )}
+        </Grid>
 
         <Snackbar
           autoHideDuration={5000}

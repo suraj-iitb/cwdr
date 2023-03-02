@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./SignIn.scss";
-
 import { useAuth } from "../hooks";
-
+import { useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { currentUser, signInWithEmail } = useAuth();
 
-  const { signInWithEmail } = useAuth();
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    signInWithEmail(email, password);
+    if (!loading) {
+      setLoading(true);
+    }
+
+    await signInWithEmail(email, password);
     setEmail("");
     setPassword("");
+    setLoading(false);
   };
 
-  return (
+  const comp = currentUser ? (
+    navigate("/")
+  ) : (
     <div className="login-page">
       <div className="avatar">
         <img
@@ -47,4 +53,6 @@ export const SignIn = () => {
       </div>
     </div>
   );
+
+  return comp;
 };

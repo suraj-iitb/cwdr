@@ -6,34 +6,112 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
-
-import { db } from "../firebase";
+import useInput from "../hooks/useInput";
+import { Snackbar, Alert } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
+import { db, addUser, deleteUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
-  const [firstName, setFirstName] = React.useState(null);
-  const [lastName, setLastName] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [memberData, setMemberData] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState({
+    open: false,
+    state: "error",
+    message: "Something went wrong",
+  });
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
+  };
+
+  const isNotEmpty = (value) => value?.trim() !== "";
 
   const addUserInDB = async (e) => {
     e.preventDefault();
+
+    if (!formIsValid) {
+      return;
+    }
+    if (!loading) {
+      setLoading(true);
+    }
+
     try {
-      await addDoc(collection(db, "mythri-me"), {
+      await addUser({
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
-        noOfApplicants: 0,
-        status: "active",
+      }) ;
+      setOpenSnackbar({
+        open: true,
+        state: "success",
+        message: "Field worker added successfully!",
       });
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
+    } catch (error) {
+      setOpenSnackbar({
+        open: true,
+        state: "error",
+        message: "Error while submitted the form.",
+      });
+    }       
+   
+    resetFirstNameInput();
+    resetLastNameInput();
+    resetEmailInput();
+    resetPasswordInput();
+    setLoading(false)
   };
+  const {
+    value: firstName,
+    isValid: firstNameIsValid,
+    hasError: firstNameInputHasError,
+    valueChangeHandler: firstNameChangedHandler,
+    inputBlurHandler: firstNameBlurHandler,
+    reset: resetFirstNameInput,
+  } = useInput(isNotEmpty, memberData.firstName);
+
+  const {
+    value: lastName,
+    isValid: lastNameIsValid,
+    hasError: lastNameInputHasError,
+    valueChangeHandler: lastNameChangedHandler,
+    inputBlurHandler: lastNameBlurHandler,
+    reset: resetLastNameInput,
+  } = useInput(isNotEmpty, memberData.lastName);
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangedHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmailInput,
+  } = useInput(isNotEmpty, memberData.email);
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordInputHasError,
+    valueChangeHandler: passwordChangedHandler,
+    inputBlurHandler: passwordBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput(isNotEmpty, memberData.password);
+
+  let formIsValid = false;
+
+  if (
+    firstNameIsValid &&
+    lastNameIsValid &&
+    emailIsValid &&
+    passwordIsValid
+  ) {
+    formIsValid = true;
+  }
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -52,11 +130,16 @@ export function AddUser() {
                 id="firstName"
                 name="firstName"
                 label="First name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
                 fullWidth
                 autoComplete="given-name"
                 variant="standard"
+                error={firstNameInputHasError}
+                helperText={
+                  firstNameInputHasError && "This field cannot be empty"
+                }
+                onChange={firstNameChangedHandler}
+                onBlur={firstNameBlurHandler}
+                value={firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -65,11 +148,16 @@ export function AddUser() {
                 id="lastName"
                 name="lastName"
                 label="Last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
+                error={lastNameInputHasError}
+                helperText={
+                  lastNameInputHasError && "This field cannot be empty"
+                }
+                onChange={lastNameChangedHandler}
+                onBlur={lastNameBlurHandler}
+                value={lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -79,11 +167,16 @@ export function AddUser() {
                 id="email"
                 name="email"
                 label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 fullWidth
                 autoComplete="email"
                 variant="standard"
+                error={emailInputHasError}
+                helperText={
+                  emailInputHasError && "This field cannot be empty"
+                }
+                onChange={emailChangedHandler}
+                onBlur={emailBlurHandler}
+                value={email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -93,11 +186,16 @@ export function AddUser() {
                 id="password"
                 name="password"
                 label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 fullWidth
                 autoComplete="password"
                 variant="standard"
+                error={passwordInputHasError}
+                helperText={
+                  passwordInputHasError && "This field cannot be empty"
+                }
+                onChange={passwordChangedHandler}
+                onBlur={passwordBlurHandler}
+                value={password}
               />
             </Grid>
           </Grid>
@@ -107,10 +205,35 @@ export function AddUser() {
               sx={{ mt: 3, ml: 1 }}
               size="large"
               onClick={addUserInDB}
+              disabled={!formIsValid}
             >
               Add User
             </Button>
+            {loading && (
+              <CircularProgress
+                size={25}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "60%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
           </Grid>
+
+          <Snackbar
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={openSnackbar.open}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={openSnackbar.state}>
+            {openSnackbar.message}
+          </Alert>
+        </Snackbar>
         </React.Fragment>
       </Paper>
     </Container>

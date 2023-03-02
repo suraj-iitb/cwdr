@@ -9,7 +9,7 @@ import {
   Statistics,
 } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
-import { ROLES } from "./config";
+import { ROLES } from "./constants/constants";
 import FieldWorkerRoot from "./components/FieldWorkerForms/FieldWorker.root";
 
 export default function App() {
