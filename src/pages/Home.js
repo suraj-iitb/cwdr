@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import Logout from "@mui/icons-material/Logout";
 import { useAuth } from "../hooks";
 import "./Home.scss";
+import { Header } from "../components";
 
 export const Home = () => {
   const { _signOut } = useAuth();
@@ -87,26 +88,8 @@ export const Home = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        sx={{
-          borderBottom: (t) => `1px solid ${t.palette.divider}`,
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Centre for Women's Development and Research
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={handleSignOut}
-            startIcon={<Logout />}
-          >
-            Sign Out
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
+      <Header />
+      <Grid container spacing={3} sx={{ marginTop: "4rem" }}>
         {renderCards()}
       </Grid>
     </Box>
