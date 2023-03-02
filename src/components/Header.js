@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
 
+import mainLogo from'../images/logo.png';
+
 export function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -57,6 +59,8 @@ export function Header(props) {
           >
             <MenuIcon />
           </IconButton>
+
+          <img  src={mainLogo} width="40" height="40" alt="fireSpot" style={{marginRight: "1rem"}}/>
 
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Centre for Women's Development and Research
