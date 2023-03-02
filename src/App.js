@@ -9,8 +9,8 @@ import {
   Statistics,
 } from "./components";
 import { SignIn, AdminPage, Home } from "./pages";
-import FieldWorkerForm from "./pages/FieldWorkerForm";
 import { ROLES } from "./constants/constants";
+import FieldWorkerRoot from "./components/FieldWorkerForms/FieldWorker.root";
 
 export default function App() {
   return (
@@ -19,7 +19,7 @@ export default function App() {
 
       <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN, ROLES.FIELD]} />}>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/fieldWorkerForm" element={<FieldWorkerForm />} />
+        <Route exact path="/fieldWorkerForm" element={<FieldWorkerRoot />} />
       </Route>
 
       <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN]} />}>

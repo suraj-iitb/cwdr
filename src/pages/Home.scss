@@ -1,0 +1,19 @@
+.root {
+  max-width: 345;
+}
+.media {
+  height: 440;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: 'space-between';
+  height: '100%'
+}
+.cardContent {
+  flex-grow: 1;
+}
+
+.card:hover{
+  box-shadow: -1px 10px 29px 0px rgba(0,0,0,0.8);
+}

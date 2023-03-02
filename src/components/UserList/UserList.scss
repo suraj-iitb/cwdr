@@ -5,13 +5,21 @@
     border: none;
     border-radius: 10px;
     padding: 5px 10px;
-    background-color: #3bb077;
-    color: white;
+    background-color: transparent;
+    color: orange;
     margin-right: 15px;
     cursor: pointer;
-
   }
 
+  .userListDoneButton {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: green;
+    margin-right: 15px;
+    cursor: pointer;
+  }
   .userListDeleteButton {
     cursor: pointer;
     color: rgb(182, 0, 0);
