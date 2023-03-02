@@ -1,16 +1,16 @@
 const COLLECTIONS = {
-    USER: 'user',
-    MAITHRI: 'maithri',
-    MANUSHI: 'manushi',
-    SNEHIDHI: 'snehidhi',
-}
+  USER: "user",
+  MAITHRI: "maithri",
+  MANUSHI: "manushi",
+  SNEHIDHI: "snehidhi",
+};
 
 const ROLES = {
-    ADMIN: "admin",
-    FIELD: "field",
-}
+  ADMIN: "admin",
+  FIELD: "field",
+};
 
 module.exports = {
-    COLLECTIONS,
-    ROLES
-}
+  COLLECTIONS,
+  ROLES,
+};
