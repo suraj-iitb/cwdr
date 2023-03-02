@@ -171,12 +171,6 @@ export function SideBar(props) {
           <ListItemText primary="Statistics" />
         </ListItemButton>
       </Link>
-      <ListItemButton onClick={handleSignOut}>
-        <ListItemIcon>
-          <Logout />
-        </ListItemIcon>
-        <ListItemText primary="Sign Out" />
-      </ListItemButton>
     </List>
   );
 
