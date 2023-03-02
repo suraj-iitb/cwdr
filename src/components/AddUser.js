@@ -6,14 +6,15 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
+import useInput from "../hooks/useInput";
 
 import { db, addUser, deleteUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
-  const [firstName, setFirstName] = React.useState(null);
-  const [lastName, setLastName] = React.useState(null);
-  const [email, setEmail] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [memberData, setMemberData] = React.useState({});
+
+
+  const isNotEmpty = (value) => value?.trim() !== "";
 
   const addUserInDB = (e) => {
     e.preventDefault();
@@ -25,11 +26,46 @@ export function AddUser() {
       password: password,
     })    
    
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
+    resetFirstNameInput();
+    resetLastNameInput();
+    resetEmailInput();
+    resetPasswordInput();
   };
+  const {
+    value: firstName,
+    isValid: firstNameIsValid,
+    hasError: firstNameInputHasError,
+    valueChangeHandler: firstNameChangedHandler,
+    inputBlurHandler: firstNameBlurHandler,
+    reset: resetFirstNameInput,
+  } = useInput(isNotEmpty, memberData.firstName);
+
+  const {
+    value: lastName,
+    isValid: lastNameIsValid,
+    hasError: lastNameInputHasError,
+    valueChangeHandler: lastNameChangedHandler,
+    inputBlurHandler: lastNameBlurHandler,
+    reset: resetLastNameInput,
+  } = useInput(isNotEmpty, memberData.lastName);
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangedHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmailInput,
+  } = useInput(isNotEmpty, memberData.email);
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordInputHasError,
+    valueChangeHandler: passwordChangedHandler,
+    inputBlurHandler: passwordBlurHandler,
+    reset: resetPasswordInput,
+  } = useInput(isNotEmpty, memberData.password);
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -48,11 +84,16 @@ export function AddUser() {
                 id="firstName"
                 name="firstName"
                 label="First name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
                 fullWidth
                 autoComplete="given-name"
                 variant="standard"
+                error={firstNameInputHasError}
+                helperText={
+                  firstNameInputHasError && "This field cannot be empty"
+                }
+                onChange={firstNameChangedHandler}
+                onBlur={firstNameBlurHandler}
+                value={firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -61,11 +102,16 @@ export function AddUser() {
                 id="lastName"
                 name="lastName"
                 label="Last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
+                error={lastNameInputHasError}
+                helperText={
+                  lastNameInputHasError && "This field cannot be empty"
+                }
+                onChange={lastNameChangedHandler}
+                onBlur={lastNameBlurHandler}
+                value={lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -75,11 +121,16 @@ export function AddUser() {
                 id="email"
                 name="email"
                 label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 fullWidth
                 autoComplete="email"
                 variant="standard"
+                error={emailInputHasError}
+                helperText={
+                  emailInputHasError && "This field cannot be empty"
+                }
+                onChange={emailChangedHandler}
+                onBlur={emailBlurHandler}
+                value={email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,11 +140,16 @@ export function AddUser() {
                 id="password"
                 name="password"
                 label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 fullWidth
                 autoComplete="password"
                 variant="standard"
+                error={passwordInputHasError}
+                helperText={
+                  passwordInputHasError && "This field cannot be empty"
+                }
+                onChange={passwordChangedHandler}
+                onBlur={passwordBlurHandler}
+                value={password}
               />
             </Grid>
           </Grid>
