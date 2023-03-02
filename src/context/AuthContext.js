@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { onSnapshot } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { auth, createUserProfileDocument, retrieveDoc } from "../firebase";
 
@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -50,12 +51,8 @@ export const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password).then(
       async (userAuth) => {
         await setSessionStorageForUser(userAuth.user, setCurrentUser);
-        const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
-        if(user?.roles?.includes(ROLES.ADMIN)) {
-          navigate("/admin/addFieldWorker");
-        } else {
-          navigate('/fieldWorkerForm');
-        }
+        const origin = location.state?.from?.pathname + location.state?.from?.search;
+        navigate(origin);
       }
     );
   };
