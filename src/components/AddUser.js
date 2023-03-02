@@ -18,6 +18,10 @@ export function AddUser() {
 
   const addUserInDB = (e) => {
     e.preventDefault();
+
+    if (!formIsValid) {
+      return;
+    }
     
     addUser({
       firstName: firstName,
@@ -66,6 +70,17 @@ export function AddUser() {
     inputBlurHandler: passwordBlurHandler,
     reset: resetPasswordInput,
   } = useInput(isNotEmpty, memberData.password);
+
+  let formIsValid = false;
+
+  if (
+    firstNameIsValid &&
+    lastNameIsValid &&
+    emailIsValid &&
+    passwordIsValid
+  ) {
+    formIsValid = true;
+  }
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
@@ -159,6 +174,7 @@ export function AddUser() {
               sx={{ mt: 3, ml: 1 }}
               size="large"
               onClick={addUserInDB}
+              disabled={!formIsValid}
             >
               Add User
             </Button>
