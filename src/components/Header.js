@@ -14,7 +14,11 @@ import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../constants/constants";
-import mainLogo from'../images/logo.png';
+import mainLogo from "../images/logo.png";
+import { Link } from "react-router-dom";
+
+import { Spa } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 
 export function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,7 +26,7 @@ export function Header(props) {
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
   const dispatch = useDispatch();
-  
+
   const navigate = useNavigate();
 
   const { currentUser, _signOut } = useAuth();
@@ -45,8 +49,12 @@ export function Header(props) {
   };
 
   const handleAdmin = () => {
-    navigate('/admin');
+    navigate("/admin");
     setAnchorEl(null);
+  };
+
+  const handleBrandClick = () => {
+    navigate("/");
   };
 
   return (
@@ -69,11 +77,29 @@ export function Header(props) {
             <MenuIcon />
           </IconButton>
 
-          <img  src={mainLogo} width="40" height="40" alt="fireSpot" style={{marginRight: "1rem"}}/>
+          <img
+            src={mainLogo}
+            width="40"
+            height="40"
+            alt="Logo"
+            style={{ marginRight: "1rem", cursor: "pointer" }}
+            onClick={handleBrandClick}
+            className="efe"
+            title="Navigate to home"
+          />
 
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            title="Navigate to home"
+            style={{ cursor: "pointer" }}
+            onClick={handleBrandClick}
+          >
             Centre for Women's Development and Research
           </Typography>
+
+          <Box sx={{ flexGrow: 1 }} />
 
           {currentUser && (
             <div>
@@ -102,10 +128,9 @@ export function Header(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {
-                  currentUser?.roles?.includes(ROLES.ADMIN) &&
+                {currentUser?.roles?.includes(ROLES.ADMIN) && (
                   <MenuItem onClick={handleAdmin}>Admin</MenuItem>
-                }
+                )}
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
