@@ -8,11 +8,13 @@ import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
 import useInput from "../hooks/useInput";
 import { Snackbar, Alert } from "@mui/material";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 import { db, addUser, deleteUser, encrypt, decrypt } from "../firebase";
 
 export function AddUser() {
   const [memberData, setMemberData] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState({
     open: false,
     state: "error",
@@ -33,6 +35,9 @@ export function AddUser() {
 
     if (!formIsValid) {
       return;
+    }
+    if (!loading) {
+      setLoading(true);
     }
 
     try {
@@ -59,6 +64,7 @@ export function AddUser() {
     resetLastNameInput();
     resetEmailInput();
     resetPasswordInput();
+    setLoading(false)
   };
   const {
     value: firstName,
@@ -203,6 +209,19 @@ export function AddUser() {
             >
               Add User
             </Button>
+            {loading && (
+              <CircularProgress
+                size={25}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "60%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
           </Grid>
 
           <Snackbar
