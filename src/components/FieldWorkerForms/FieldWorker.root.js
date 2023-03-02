@@ -33,7 +33,7 @@ const FieldWorkerRoot = (props) => {
 
   const saveData = async (data, objectName) => {
     try {
-      await storeData({...data, name: org}, objectName);
+      await storeData({ ...data, name: org }, objectName);
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -48,12 +48,17 @@ const FieldWorkerRoot = (props) => {
     }
   };
 
-  const fetchData = async (memberID) =>{
+  const fetchData = async (memberID) => {
     return await fetchData(memberID);
   }
 
   return (
-    <>
+    <div
+      style={{
+        background: `url("../images/background.jpeg") repeat scroll`,
+       height:"100vh"
+      }}
+    >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {showHeader && (
@@ -72,10 +77,15 @@ const FieldWorkerRoot = (props) => {
           </AppBar>
         )}
         {(org === "manushi" || org === "mythri") && (
-          <FieldWorkerForm org={org} saveData={saveData} data={props.data}  />
+          <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
         )}
         {org === "snehidi" && (
-          <FieldWorkerFormSnehidi org={org} saveData={saveData} fetchData={fetchData} memberID={props.memberID} />
+          <FieldWorkerFormSnehidi
+            org={org}
+            saveData={saveData}
+            fetchData={fetchData}
+            memberID={props.memberID}
+          />
         )}
 
         <Snackbar
@@ -89,7 +99,7 @@ const FieldWorkerRoot = (props) => {
           </Alert>
         </Snackbar>
       </ThemeProvider>
-    </>
+    </div>
   );
 };
 export default FieldWorkerRoot;

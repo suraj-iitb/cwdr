@@ -75,7 +75,7 @@ export function UserList() {
     setOpenFormDialog(false);
   };
 
-  const columns = [
+  const manushiColumns = [
     {
       field: "action",
       headerName: "Action",
@@ -127,6 +127,69 @@ export function UserList() {
     { field: "nextRenewalDate", headerName: "Next Renewal Date", width: 200 },
   ];
 
+  const snehidiColumns = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <>
+            <button className="userListDoneButton ">
+              <DoneOutline fontSize="small" />
+            </button>
+            <button
+              className="userListEditButton"
+              onClick={() => handleOpenFormDialog(params.row)}
+            >
+              <EditOutlined fontSize="small" />
+            </button>
+            <DeleteOutline
+              className="userListDeleteButton"
+              onClick={() =>
+                handleOpenDialog(
+                  params.row.id,
+                  params.row.firstName + " " + params.row.lastName
+                )
+              }
+            />
+          </>
+        );
+      },
+    },
+  ];
+  console.log(data)
+  if(data.length > 1){
+  const columns = Object.keys(data?.[0]).map((key) => ({
+    field: key,
+    headerName: key.charAt(0).toUpperCase() + key.slice(1),
+    width: 200,
+  }));
+  
+  snehidiColumns.push(...columns.filter(column => column.field !== 'id'));
+}
+const desiredOrder = [
+  "firstName",
+  "lastName",
+  "renewalDate",
+  "courseName",
+  "address",
+  "fieldStaffName",
+  "aadhar",
+  "dob",
+  "billNo",
+  "memberID",
+  "refNo",
+  "isAssociatedUser",
+  "org",
+  "name",
+  "institutionName",
+  "action",
+];
+
+const sortedColumns = desiredOrder.map((fieldName) => {
+  return snehidiColumns.find((column) => column.field === fieldName);
+}) || [];
   return (
     <div style={{ height: 670, width: "100%" }}>
       <Dialog
@@ -178,7 +241,7 @@ export function UserList() {
       <DataGrid
         className="userListPage"
         rows={data}
-        columns={columns}
+        columns={sortedColumns}
         components={{ Toolbar: GridToolbar }}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

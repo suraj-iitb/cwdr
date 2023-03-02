@@ -4,6 +4,9 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
+
 import {
   ImageListItemBar,
   ImageListItem,
@@ -62,26 +65,16 @@ export const Home = () => {
 
   const renderCards = () => {
     return images.map((image, index) => (
-      <Grid item xs={12} sm={6} md={4} key={index}>
-        <Card className="card ">
-          <CardActionArea href={image.link}>
-            <CardMedia
-              className={media}
-              image={image.src}
-              title={image.title}
-              style={media}
-            />
-
-            <CardContent className="cardContent">
-              {/* <Link to={image.link}>  */}
-              <Typography gutterBottom variant="h5" component="div">
-                {image.title}
-              </Typography>
-              {/* </Link> */}
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
+      <div class="first card">
+        <img class="card-img" src={image.src} alt="" />
+        <div class="card-description-bk"></div>
+        <div class="card-description">
+          <p>{image.title}</p>
+        </div>
+        <div class="card-btn">
+          <a href={image.link}><ArrowForwardIcon fontSize="medium" /></a>
+        </div>
+      </div>
     ));
   };
 
@@ -106,7 +99,7 @@ export const Home = () => {
           </Button>
         </Toolbar>
       </AppBar>
-      <Grid container spacing={3} sx={{ marginTop: "1rem" }}>
+      <Grid className="overallContainer">
         {renderCards()}
       </Grid>
     </Box>

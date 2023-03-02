@@ -237,10 +237,7 @@ export default function FieldWorkerForm(props) {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-      <Paper
-        variant="outlined"
-        sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-      >
+      <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -355,10 +352,7 @@ export default function FieldWorkerForm(props) {
                 autoComplete="ph_num"
                 required
                 error={isNotEmpty && phoneHasError}
-                helperText={
-                  (phoneHasError) &&
-                  "Enter a valid phone number"
-                }
+                helperText={phoneHasError && "Enter a valid phone number"}
                 value={phone}
                 onChange={phoneChangedHandler}
                 onBlur={phoneBlurHandler}
@@ -418,29 +412,31 @@ export default function FieldWorkerForm(props) {
                 onChange={dependantsChangeHandler}
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel id="employee-radio-group">
-                  Associated with Mythri member?
-                </FormLabel>
-                <RadioGroup
-                  aria-label="employee"
-                  value={isAssociatedUser ? true : false}
-                  onChange={handleUserAssociatedChange}
-                >
-                  <FormControlLabel
-                    value={false}
-                    control={<Radio />}
-                    label="No"
-                  />
-                  <FormControlLabel
-                    value={true}
-                    control={<Radio />}
-                    label="Yes"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+            { org=== 'manushi' &&
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel id="employee-radio-group">
+                    Associated with Mythri member?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="employee"
+                    value={isAssociatedUser ? true : false}
+                    onChange={handleUserAssociatedChange}
+                  >
+                    <FormControlLabel
+                      value={false}
+                      control={<Radio />}
+                      label="No"
+                    />
+                    <FormControlLabel
+                      value={true}
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            }
             <Grid item xs={12}>
               <FormControl component="fieldset">
                 <FormLabel id="employee-radio-group">
