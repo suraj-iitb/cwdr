@@ -1,7 +1,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline, EditOutlined, DoneOutline } from "@mui/icons-material";
+import {
+  DeleteOutline,
+  EditOutlined,
+  DoneOutline,
+} from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
 import {
@@ -12,11 +16,11 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-
+import { usersListGridOrder } from "../../constants/constants";
 import { db } from "../../firebase";
 import "./UserList.scss";
 import FieldWorkerRoot from "../FieldWorkerForms/FieldWorker.root";
-import { fetchAllUsersData } from "../../firebase/commonUtil";
+import { fetchAllUsersData, updateData } from "../../firebase/commonUtil";
 
 export function UserList() {
   const [pageSize, setPageSize] = React.useState(10);
@@ -39,7 +43,10 @@ export function UserList() {
       renderCell: (params) => {
         return (
           <>
-            <button className="userListDoneButton ">
+            <button
+              className="userListDoneButton"
+              onClick={() => handleApproval(params.row)}
+            >
               <DoneOutline fontSize="small" />
             </button>
             <button
@@ -65,55 +72,9 @@ export function UserList() {
 
   useEffect(() => {
     fetchAllUsersData(org).then((response) => {
-      const desiredOrder = {
-        snehidi: [
-          { key: "action", headerName: "Action" },
-          { key: "memberID", headerName: "Member ID" },
-          { key: "firstName", headerName: "First Name" },
-          { key: "lastName", headerName: "Last Name" },
-          { key: "dob", headerName: "Date Of Birth" },
-          { key: "renewalDate", headerName: "Renewal Date" },
-          { key: "address", headerName: "Address" },
-          { key: "institutionName", headerName: "Institution Name" },
-          { key: "courseName", headerName: "Course Name" },
-          { key: "billNo", headerName: "Bill Number" },
-          { key: "refNo", headerName: "Reference Number" },
-          { key: "fieldStaffName", headerName: "Field Staff Name" },
-        ],
-        manushi: [
-          { key: "action", headerName: "Action" },
-          { key: "memberID", headerName: "Member ID" },
-          { key: "firstName", headerName: "First Name" },
-          { key: "lastName", headerName: "Last Name" },
-          { key: "dob", headerName: "Date Of Birth" },
-          { key: "renewalDate", headerName: "Renewal Date" },
-          { key: "address", headerName: "Address" },
-          { key: "phone", headerName: "Phone Number" },
-          { key: "aadhar", headerName: "Aadhar Number" },
-          { key: "billNo", headerName: "Bill Number" },
-          { key: "refNo", headerName: "Reference Number" },
-          { key: "fieldStaffName", headerName: "Field Staff Name" },
-          { key: "dependants", headerName: "Dependants" },
-        ],
-        mythri: [
-          { key: "action", headerName: "Action" },
-          { key: "memberID", headerName: "Member ID" },
-          { key: "firstName", headerName: "First Name" },
-          { key: "lastName", headerName: "Last Name" },
-          { key: "dob", headerName: "Date Of Birth" },
-          { key: "renewalDate", headerName: "Renewal Date" },
-          { key: "address", headerName: "Address" },
-          { key: "phone", headerName: "Phone Number" },
-          { key: "aadhar", headerName: "Aadhar Number" },
-          { key: "billNo", headerName: "Bill Number" },
-          { key: "refNo", headerName: "Reference Number" },
-          { key: "fieldStaffName", headerName: "Field Staff Name" },
-          { key: "dependants", headerName: "Dependants" },
-        ],
-      };
       if (response.length > 0) {
         const columns = Object.keys(response?.[0]).map((key) => {
-          const desiredColumn = desiredOrder[org].find(
+          const desiredColumn = usersListGridOrder[org].find(
             (column) => column.key === key
           );
           return {
@@ -124,14 +85,14 @@ export function UserList() {
             ...(key === "address" && {
               valueGetter: (params) => params.row.address.addLine1,
             }),
+            cellClassName: (params) =>
+            params.row.approved ? 'approved-row' : '',
             width: 200,
           };
         });
-
         dataGridCols.push(...columns.filter((column) => column.field !== "id"));
-        console.log("snehidiColumns", columns);
         const sortedColumns =
-          desiredOrder[org].map((fieldName) => {
+          usersListGridOrder[org].map((fieldName) => {
             return dataGridCols.find((column) => {
               return column.field === fieldName.key;
             });
@@ -142,6 +103,29 @@ export function UserList() {
       }
     });
   }, [org]);
+
+  const handleApproval = (rowData) => {
+    rowData = { ...rowData, approved: true };
+    updateData(rowData.id, rowData, org)
+      .then(() => {
+        setGridInfo((prevState) => ({
+          ...prevState,
+          data: prevState.data.map((row) => {
+            if (row.id === rowData.id) {
+              console.log('here')
+              return {
+                ...row,
+                approved: true,
+              };
+            }
+            return row;
+          }),
+        }));
+      })
+      .catch((err) => {
+        console.log("Could not update approval status!", err);
+      });
+  };
 
   const handleDelete = async (id) => {
     setDisableForm(true);
