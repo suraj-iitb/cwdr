@@ -63,6 +63,9 @@ export default function FieldWorkerFormSnehidi(props) {
     resetRenewalDateInput();
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
+    if(!isMember){
+      setMemberID(Math.floor(Math.random() * 100000));
+    }
   };
 
   const isNotEmpty = (value) => value?.trim() !== "";

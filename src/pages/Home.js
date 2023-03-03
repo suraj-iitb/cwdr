@@ -1,33 +1,16 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import {
-  ImageListItemBar,
-  ImageListItem,
   Box,
-  Button,
-  AppBar,
-  Toolbar,
-  CardActionArea,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import Logout from "@mui/icons-material/Logout";
-import { useAuth } from "../hooks";
 import "./Home.scss";
 import { Header } from "../components";
 
 export const Home = () => {
-  const { _signOut } = useAuth();
 
-  const handleSignOut = (event) => {
-    event.preventDefault();
-    _signOut();
-  };
 
   const images = [
     {
@@ -50,11 +33,6 @@ export const Home = () => {
     },
   ];
 
-  const cardContent = {
-    flexGrow: 1,
-  };
-  
-  const media = { height: 440 };
 
   const renderCards = () => {
     return images.map((image, index) => (
