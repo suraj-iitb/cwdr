@@ -20,7 +20,8 @@ import { fetchAllUsersData } from "../../firebase/commonUtil";
 
 export function UserList() {
   const [pageSize, setPageSize] = React.useState(10);
-  const [data, setData] = useState([]);
+  const [gridInfo, setGridInfo] = useState({ data: [], columns: [] });
+
   const [disableForm, setDisableForm] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(0);
@@ -30,52 +31,7 @@ export function UserList() {
   const [openFormDialog, setOpenFormDialog] = React.useState(false);
 
   let { org } = useParams();
-  const fetchData = async () => {
-    fetchAllUsersData(org).then((response) => {
-      setData(response);
-      console.log(data, response);
-    });
-    // await getDocs(collection(db, org)).then((querySnapshot) => {
-    //   const newData = querySnapshot.docs.map((doc) => ({
-    //     ...doc.data(),
-    //     id: doc.id,
-    //   }));
-    //   setData(newData);
-    //   console.log(data, newData);
-    // });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [org]);
-
-  const handleDelete = async (id) => {
-    setDisableForm(true);
-    await deleteDoc(doc(db, org, id));
-    fetchData();
-    setOpenDialog(false);
-    setDisableForm(false);
-  };
-
-  const handleOpenDialog = (id, fullName) => {
-    setSelectedUserId(id);
-    setSelectedUserName(fullName);
-    setOpenDialog(true);
-  };
-  const handleOpenFormDialog = (rowData) => {
-    setselectedRowData(rowData);
-    setOpenFormDialog(true);
-  };
-
-  const handleCancelDelete = () => {
-    setOpenDialog(false);
-  };
-
-  const handleFormClose = () => {
-    setOpenFormDialog(false);
-  };
-
-  const columns = [
+  const dataGridCols = [
     {
       field: "action",
       headerName: "Action",
@@ -105,27 +61,113 @@ export function UserList() {
         );
       },
     },
-    { field: "firstName", headerName: "First Name", width: 200 },
-    { field: "lastName", headerName: "Last Name", width: 200 },
-    {
-      field: "address",
-      headerName: "Address",
-      width: 200,
-      valueGetter: (params) => params.row.address.addLine1,
-    },
-    { field: "dob", headerName: "Date of Birth", width: 200 },
-    { field: "aadhar", headerName: "Aadhar", width: 200 },
-    { field: "mobile", headerName: "Mobile", width: 200 },
-    { field: "billNo", headerName: "Bill No", width: 200 },
-    { field: "referenceNo", headerName: "Reference No", width: 200 },
-    { field: "dependents", headerName: "Dependents", width: 200 },
-    { field: "employed", headerName: "Employed", width: 200 },
-    { field: "company", headerName: "Company", width: 200 },
-    { field: "occupation", headerName: "Occupation", width: 200 },
-    { field: "experiecne", headerName: "Experiecne", width: 200 },
-    { field: "fieldWorkerEmail", headerName: "Field Worker Email", width: 200 },
-    { field: "nextRenewalDate", headerName: "Next Renewal Date", width: 200 },
   ];
+
+  useEffect(() => {
+    fetchAllUsersData(org).then((response) => {
+      const desiredOrder = {
+        snehidi: [
+          { key: "action", headerName: "Action" },
+          { key: "memberID", headerName: "Member ID" },
+          { key: "firstName", headerName: "First Name" },
+          { key: "lastName", headerName: "Last Name" },
+          { key: "dob", headerName: "Date Of Birth" },
+          { key: "renewalDate", headerName: "Renewal Date" },
+          { key: "address", headerName: "Address" },
+          { key: "institutionName", headerName: "Institution Name" },
+          { key: "courseName", headerName: "Course Name" },
+          { key: "billNo", headerName: "Bill Number" },
+          { key: "refNo", headerName: "Reference Number" },
+          { key: "fieldStaffName", headerName: "Field Staff Name" },
+        ],
+        manushi: [
+          { key: "action", headerName: "Action" },
+          { key: "memberID", headerName: "Member ID" },
+          { key: "firstName", headerName: "First Name" },
+          { key: "lastName", headerName: "Last Name" },
+          { key: "dob", headerName: "Date Of Birth" },
+          { key: "renewalDate", headerName: "Renewal Date" },
+          { key: "address", headerName: "Address" },
+          { key: "phone", headerName: "Phone Number" },
+          { key: "aadhar", headerName: "Aadhar Number" },
+          { key: "billNo", headerName: "Bill Number" },
+          { key: "refNo", headerName: "Reference Number" },
+          { key: "fieldStaffName", headerName: "Field Staff Name" },
+          { key: "dependants", headerName: "Dependants" },
+        ],
+        mythri: [
+          { key: "action", headerName: "Action" },
+          { key: "memberID", headerName: "Member ID" },
+          { key: "firstName", headerName: "First Name" },
+          { key: "lastName", headerName: "Last Name" },
+          { key: "dob", headerName: "Date Of Birth" },
+          { key: "renewalDate", headerName: "Renewal Date" },
+          { key: "address", headerName: "Address" },
+          { key: "phone", headerName: "Phone Number" },
+          { key: "aadhar", headerName: "Aadhar Number" },
+          { key: "billNo", headerName: "Bill Number" },
+          { key: "refNo", headerName: "Reference Number" },
+          { key: "fieldStaffName", headerName: "Field Staff Name" },
+          { key: "dependants", headerName: "Dependants" },
+        ],
+      };
+      if (response.length > 0) {
+        const columns = Object.keys(response?.[0]).map((key) => {
+          const desiredColumn = desiredOrder[org].find(
+            (column) => column.key === key
+          );
+          return {
+            field: key,
+            headerName: desiredColumn
+              ? desiredColumn.headerName
+              : key.charAt(0).toUpperCase() + key.slice(1),
+            ...(key === "address" && {
+              valueGetter: (params) => params.row.address.addLine1,
+            }),
+            width: 200,
+          };
+        });
+
+        dataGridCols.push(...columns.filter((column) => column.field !== "id"));
+        console.log("snehidiColumns", columns);
+        const sortedColumns =
+          desiredOrder[org].map((fieldName) => {
+            return dataGridCols.find((column) => {
+              return column.field === fieldName.key;
+            });
+          }) || [];
+        setGridInfo({ data: response, columns: sortedColumns });
+      } else {
+        setGridInfo({ data: [], columns: [] });
+      }
+    });
+  }, [org]);
+
+  const handleDelete = async (id) => {
+    setDisableForm(true);
+    await deleteDoc(doc(db, org, id));
+    // fetchData();
+    setOpenDialog(false);
+    setDisableForm(false);
+  };
+
+  const handleOpenDialog = (id, fullName) => {
+    setSelectedUserId(id);
+    setSelectedUserName(fullName);
+    setOpenDialog(true);
+  };
+  const handleOpenFormDialog = (rowData) => {
+    setselectedRowData(rowData);
+    setOpenFormDialog(true);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDialog(false);
+  };
+
+  const handleFormClose = () => {
+    setOpenFormDialog(false);
+  };
 
   return (
     <div style={{ height: 670, width: "100%" }}>
@@ -177,8 +219,8 @@ export function UserList() {
       </Dialog>
       <DataGrid
         className="userListPage"
-        rows={data}
-        columns={columns}
+        rows={gridInfo.data}
+        columns={gridInfo.columns}
         components={{ Toolbar: GridToolbar }}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

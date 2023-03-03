@@ -1,19 +1,112 @@
 .root {
   max-width: 345;
 }
+.overallContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  // align-items: center;
+}
 .media {
   height: 440;
 }
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: 'space-between';
-  height: '100%'
+  justify-content: "space-between";
+  height: "100%";
 }
 .cardContent {
   flex-grow: 1;
 }
 
-.card:hover{
-  box-shadow: -1px 10px 29px 0px rgba(0,0,0,0.8);
+.card:hover {
+  box-shadow: -1px 10px 29px 0px rgba(0, 0, 0, 0.8);
 }
+
+/* BEGIN CARD DESIGN */
+.card {
+  display: inline-block;
+  position: relative;
+  width: 400px;
+  min-width: 400px;
+  height: 400px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+  margin: 30px;
+}
+
+.card-img {
+  height: 70%;
+  width: 100%;
+}
+
+.card-description-bk {
+  background: linear-gradient(
+    115.7deg,
+    rgb(3, 79, 135) 6.2%,
+    rgb(0, 184, 214) 112.9%
+  );
+  border-radius: 30px;
+  position: absolute;
+  top: 55%;
+  left: -5px;
+  height: 65%;
+  width: 108%;
+  transform: skew(19deg, -9deg);
+}
+
+.second .card-description-bk {
+  background-image: linear-gradient(-20deg, #bb7413, #e7d25c);
+}
+
+.card-logo {
+  height: 80px;
+  width: 80px;
+  border-radius: 20px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 30%;
+  left: 30px;
+  overflow: hidden;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.7);
+}
+
+.card-logo img {
+  height: 100%;
+}
+
+.card-description {
+  position: absolute;
+  color: #fff;
+  font-weight: 900;
+  left: 150px;
+  bottom: 26%;
+  top: 70%;
+}
+
+.card-description p {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 30px;
+}
+
+.card-btn {
+  position: absolute;
+  color: #000;
+  right: 10px;
+  bottom: 5%;
+  padding: 15px 18px;
+  border: 1px solid #fff;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.card-btn a {
+  color: #000;
+}
+
+/* END CARD DESIGN */

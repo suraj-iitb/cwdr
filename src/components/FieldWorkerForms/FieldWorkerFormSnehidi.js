@@ -100,7 +100,7 @@ export default function FieldWorkerFormSnehidi(props) {
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
-  } = useInput(() => {}, memberData.renewalDate);
+  } = useInput(() => {}, (memberData.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
 
   const {
     value: aadhar,
@@ -187,7 +187,7 @@ export default function FieldWorkerFormSnehidi(props) {
             const responseData = response?.[0];
             console.log("callubg", responseData, memberID);
             setDocID(responseData.id);
-            setIsAssociatedUser(responseData.isAssociatedUser)
+            setIsAssociatedUser(responseData.isAssociatedUser);
             setMemberData(responseData);
             formRefs.current.addressInputRef.setAddress(responseData?.address);
           });
@@ -199,10 +199,7 @@ export default function FieldWorkerFormSnehidi(props) {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-      <Paper
-        variant="outlined"
-        sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-      >
+      <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -246,19 +243,17 @@ export default function FieldWorkerFormSnehidi(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                {isMember && (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Next Date of Renewal"
-                      onChange={renewalDateChangedHandler}
-                      renderInput={(params) => (
-                        <TextField {...params} error={renewalDateHasError} />
-                      )}
-                      value={renewalDate}
-                      minDate={new Date()}
-                    />
-                  </LocalizationProvider>
-                )}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Next Date of Renewal"
+                    onChange={renewalDateChangedHandler}
+                    renderInput={(params) => (
+                      <TextField {...params} error={renewalDateHasError} />
+                    )}
+                    value={renewalDate}
+                    minDate={new Date()}
+                  />
+                </LocalizationProvider>
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
