@@ -42,7 +42,7 @@ export const SignIn = () => {
       </div>
       <div className="form">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <input
             type="text"
             onChange={(e) => setEmail(e.target.value)}
@@ -53,7 +53,7 @@ export const SignIn = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
-          <button>Log in</button>
+          <button  onClick={handleSubmit}>Log in</button>
         </form>
         <p className="message">
           Forgot your password? <a href="#">Click here to reset it</a>
