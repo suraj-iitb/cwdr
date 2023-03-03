@@ -145,10 +145,14 @@ export function UserList() {
 
   const handleDelete = async (id) => {
     setDisableForm(true);
-    await deleteDoc(doc(db, org, id));
-    // fetchData();
-    setOpenDialog(false);
-    setDisableForm(false);
+    deleteDoc(doc(db, org, id)).then(() => {
+      setGridInfo((prevState) => ({
+        ...prevState,
+        data: prevState.data.filter((row) => row.id !== id),
+      }));
+      setOpenDialog(false);
+      setDisableForm(false);
+    });
   };
 
   const handleOpenDialog = (id, fullName) => {
