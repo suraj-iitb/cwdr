@@ -58,7 +58,7 @@ export function Header(props) {
   };
 
   return (
-    <Box sx={{ height: "8vh"}}>
+    <Box sx={{ height: props.drawerWidth ? '100vh' : '8vh' }}>
       <AppBar
         position="fixed"
         sx={{
