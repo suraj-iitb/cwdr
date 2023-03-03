@@ -4,8 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import {
   ImageListItemBar,
@@ -52,16 +51,9 @@ export const Home = () => {
   ];
 
   const cardContent = {
-    "flexGrow": 1,
+    flexGrow: 1,
   };
-
-  // const card = {
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   justifyContent: "space-between",
-  //   height: "100%",
-  // };
-
+  
   const media = { height: 440 };
 
   const renderCards = () => {
@@ -73,18 +65,30 @@ export const Home = () => {
           <p>{image.title}</p>
         </div>
         <div class="card-btn">
-          <a href={image.link}><ArrowForwardIcon fontSize="medium" /></a>
+          <a href={image.link}>
+            <ArrowForwardIcon fontSize="medium" />
+          </a>
         </div>
       </div>
     ));
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       <Header />
-      <Grid container spacing={3} sx={{ marginTop: "4rem" }}>
-        {renderCards()}
-      </Grid>
-    </Box>
+      <Box sx={{padding: "1rem"}}>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          title="Navigate to home"
+          style={{ color: "black" }}
+        >
+          Click on a category tile below that matches the member's profile to
+          start the enrollment process.
+        </Typography>
+      </Box>
+      <Grid className="overallContainer">{renderCards()}</Grid>
+    </>
   );
 };

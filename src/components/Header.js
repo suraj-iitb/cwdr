@@ -58,7 +58,7 @@ export function Header(props) {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ height: "8vh"}}>
       <AppBar
         position="fixed"
         sx={{
@@ -66,7 +66,7 @@ export function Header(props) {
           ml: { sm: `${props.drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar style={{backgroundColor: "#9131b9"}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
