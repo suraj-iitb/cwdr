@@ -52,19 +52,6 @@ export const Home = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <React.Fragment>
-      <Header />
-      <Toolbar />
-      
-        {renderCards()}
-      
-      
-      
-    // {/* </Box> */}
-    </React.Fragment>
-    
-=======
     <>
       <Header />
       <Box sx={{padding: "1rem"}}>
@@ -81,6 +68,5 @@ export const Home = () => {
       </Box>
       <Grid className="overallContainer">{renderCards()}</Grid>
     </>
->>>>>>> dv/form_wip
   );
 };
