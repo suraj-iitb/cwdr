@@ -29,10 +29,7 @@ export const fetchData = async (id, objectName) => {
 };
 
 export const updateData = async (docID, data, objectName) => {
-  console.log("DocIDsdf", docID);
-
   const docRef = doc(db, objectName, docID);
-  console.log("DocID", docID);
   // Update the document
   try {
     await updateDoc(docRef, { ...data });
@@ -48,6 +45,5 @@ export const fetchAllUsersData = async (objectName) => {
     id: doc.id,
     ...doc.data(),
   }));
-  console.log(newData);
   return newData;
 };

@@ -71,7 +71,7 @@ export default function FieldWorkerForm(props) {
     }
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
-    if(!isMember){
+    if (!isMember) {
       setMemberID(Math.floor(Math.random() * 100000));
     }
   };
@@ -210,7 +210,7 @@ export default function FieldWorkerForm(props) {
       if (!isMember) {
         await props.saveData(memberDetails, org);
       } else {
-        await updateData(docID, memberDetails, org);
+        await updateData(docID, { ...memberDetails, approved: false }, org);
       }
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -239,7 +239,7 @@ export default function FieldWorkerForm(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md"  sx={{width: "100%"}} >
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
       <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
@@ -415,7 +415,7 @@ export default function FieldWorkerForm(props) {
                 onChange={dependantsChangeHandler}
               />
             </Grid>
-            { org=== 'manushi' &&
+            {org === "manushi" && (
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel id="employee-radio-group">
@@ -439,7 +439,7 @@ export default function FieldWorkerForm(props) {
                   </RadioGroup>
                 </FormControl>
               </Grid>
-            }
+            )}
             <Grid item xs={12}>
               <FormControl component="fieldset">
                 <FormLabel id="employee-radio-group">

@@ -171,7 +171,7 @@ export default function FieldWorkerFormSnehidi(props) {
       if (!isMember) {
         await props.saveData(memberDetails, org);
       } else {
-        await updateData(docID, memberDetails, org);
+        await updateData(docID, { ...memberDetails, approved: false }, org);
       }
     } catch (e) {
       console.error("Error adding document: ", e);
