@@ -9,6 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
+import Divider from "@mui/material/Divider";
+import Button from '@mui/material/Button';
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
@@ -58,7 +60,7 @@ export function Header(props) {
   };
 
   return (
-    <Box sx={{ height: props.drawerWidth ? '100vh' : '8vh' }}>
+    <Box sx={{ height: props.drawerWidth ? "100vh" : "8vh" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -66,7 +68,7 @@ export function Header(props) {
           ml: { sm: `${props.drawerWidth}px` },
         }}
       >
-        <Toolbar style={{backgroundColor: "#9131b9"}}>
+        <Toolbar style={{ backgroundColor: "#9131b9" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -101,7 +103,7 @@ export function Header(props) {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {currentUser && (
+          {currentUser ? (
             <div>
               <IconButton
                 size="large"
@@ -114,6 +116,7 @@ export function Header(props) {
                 <AccountCircle />
               </IconButton>
               <Menu
+                sx={{ mt: "30px" }}
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
@@ -128,12 +131,23 @@ export function Header(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem>
+                  <Typography>
+                    Signed in as{" "}
+                    <strong>
+                      {currentUser.firstName} {currentUser.lastName}
+                    </strong>
+                  </Typography>
+                </MenuItem>
+                <Divider />
                 {currentUser?.roles?.includes(ROLES.ADMIN) && (
                   <MenuItem onClick={handleAdmin}>Admin</MenuItem>
                 )}
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
+          ) : (
+            <Button color="inherit">Login</Button>
           )}
         </Toolbar>
       </AppBar>

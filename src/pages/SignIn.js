@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import "./SignIn.scss";
 import { useAuth } from "../hooks";
 import { useNavigate } from "react-router-dom";
+import { Header } from "../components";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import Box from "@mui/material/Box";
 
 export const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -22,9 +26,13 @@ export const SignIn = () => {
     setLoading(false);
   };
 
-  const comp = currentUser ? (
+  const comp  = currentUser ? (
     navigate("/")
   ) : (
+    <>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+    <Header />
     <div className="login-page">
       <div className="avatar">
         <img
@@ -52,6 +60,9 @@ export const SignIn = () => {
         </p>
       </div>
     </div>
+    </Box>
+    </>
+
   );
 
   return comp;
