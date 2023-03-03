@@ -80,11 +80,16 @@ export const Home = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <React.Fragment>
       <Header />
-      <Grid container spacing={3} sx={{ marginTop: "4rem" }}>
+      <Toolbar />
+      
         {renderCards()}
-      </Grid>
-    </Box>
+      
+      
+      
+    // {/* </Box> */}
+    </React.Fragment>
+    
   );
 };
