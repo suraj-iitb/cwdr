@@ -35,7 +35,7 @@ const FieldWorkerRoot = (props) => {
 
   const saveData = async (data, objectName) => {
     try {
-      await storeData({ ...data, name: org }, objectName);
+      await storeData({ ...data, org: org }, objectName);
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -58,7 +58,6 @@ const FieldWorkerRoot = (props) => {
     <div
       style={{
         background: `url("../images/background.jpeg") repeat scroll`,
-       height:"100vh"
       }}
     >
       <ThemeProvider theme={theme}>
