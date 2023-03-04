@@ -65,7 +65,7 @@ const FieldWorkerRoot = (props) => {
         {showHeader && (
           <Header />
         )}
-<Grid container spacing={3}>
+<Grid container spacing={3} sx={{mt: "10px"}}>
 
         {(org === "manushi" || org === "mythri") && (
           <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
