@@ -21,7 +21,8 @@ import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
-import { getNextMemberId, encrypt, decrypt } from "../../firebase";
+import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
+import { useAuth } from "../../hooks";
 
 export default function FieldWorkerForm(props) {
   const org = props.org;
@@ -34,6 +35,8 @@ export default function FieldWorkerForm(props) {
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
   const [isUserEmployed, setIsUserEmployed] = useState(false);
+
+  const { currentUser } = useAuth();
 
   const handleMemberChange = (event) => {
     handleReset();
@@ -224,6 +227,7 @@ export default function FieldWorkerForm(props) {
     }
     event.target.reset();
     handleReset();
+    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
   };
   useEffect(() => {
     const fun = async () => {

@@ -23,6 +23,7 @@ import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
 
+import { useAuth } from "../../hooks";
 
 export default function FieldWorkerFormSnehidi(props) {
   const org = props.org;
@@ -32,6 +33,9 @@ export default function FieldWorkerFormSnehidi(props) {
   const [memberID, setMemberID] = useState(
     props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
   );
+
+  const { currentUser } = useAuth();
+
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
 
@@ -184,6 +188,8 @@ export default function FieldWorkerFormSnehidi(props) {
     }
     event.target.reset();
     handleReset();
+    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
+
   };
 
   useEffect(() => {
