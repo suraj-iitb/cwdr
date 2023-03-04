@@ -14,9 +14,9 @@ export function Statistics() {
     const cnt = async () => {
       console.log("in count");
 
-      const maithriCount = await retrieveDocsCount("mythri");
-      const manushiCount = await retrieveDocsCount("manushi");
-      const snehidhiCount = await retrieveDocsCount("snehidi");
+      const maithriCount = await retrieveDocsCount(COLLECTIONS.MAITHRI);
+      const manushiCount = await retrieveDocsCount(COLLECTIONS.MANUSHI);
+      const snehidhiCount = await retrieveDocsCount(COLLECTIONS.SNEHIDHI);
 
       setData01([
         { name: "Manushi", value: manushiCount },
