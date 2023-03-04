@@ -76,8 +76,9 @@ export function Header(props) {
           width: { sm: `calc(100% - ${props.drawerWidth}px)` },
           ml: { sm: `${props.drawerWidth}px` },
         }}
+        style={{ backgroundColor: "#9131b9" }}
       >
-        <Toolbar style={{ backgroundColor: "#9131b9" }}>
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"

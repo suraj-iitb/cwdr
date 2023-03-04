@@ -60,14 +60,14 @@ export const Home = () => {
       <Header />
       <Box sx={{padding: "1rem"}}>
         <Typography
-          variant="h6"
+          variant="h5"
           noWrap
-          component="div"
           title="Navigate to home"
-          style={{ color: "black" }}
+          style={{ color: "black",           justifyContent:"center",     display:"flex", color: "#9131b9"
+
+        }}
         >
-          Click on a category tile below that matches the member's profile to
-          start the enrollment process.
+          SELECT A PROGRAM TO ENROLL USERS
         </Typography>
       </Box>
       <Grid className="overallContainer">{renderCards()}</Grid>
