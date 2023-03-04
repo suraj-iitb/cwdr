@@ -24,6 +24,8 @@ import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
 
 import { useAuth } from "../../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 
 export default function FieldWorkerFormSnehidi(props) {
   const org = props.org;
@@ -35,6 +37,9 @@ export default function FieldWorkerFormSnehidi(props) {
   );
 
   const { currentUser } = useAuth();
+
+  const dispatch = useDispatch();
+
 
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
@@ -188,6 +193,7 @@ export default function FieldWorkerFormSnehidi(props) {
     }
     event.target.reset();
     handleReset();
+    dispatch(setOpenEditDialog(false));
     updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
 
   };

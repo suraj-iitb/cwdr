@@ -14,6 +14,7 @@ import {
   Container,
   Paper,
 } from "@mui/material";
+
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -23,6 +24,8 @@ import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
 import { useAuth } from "../../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 
 export default function FieldWorkerForm(props) {
   const org = props.org;
@@ -36,6 +39,9 @@ export default function FieldWorkerForm(props) {
   const [isUserEmployed, setIsUserEmployed] = useState(false);
 
   const { currentUser } = useAuth();
+
+  const dispatch = useDispatch();
+
 
   const handleMemberChange = (event) => {
     handleReset();
@@ -226,6 +232,7 @@ export default function FieldWorkerForm(props) {
     }
     event.target.reset();
     handleReset();
+    dispatch(setOpenEditDialog(false));
     updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
   };
   useEffect(() => {
