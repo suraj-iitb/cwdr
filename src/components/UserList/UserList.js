@@ -158,7 +158,7 @@ export function UserList() {
   };
 
   return (
-    <div style={{ height: 670, width: "100%" }}>
+    <div style={{ height: 580, width: "100%" }}>
       <Dialog
         open={openFormDialog}
         onClose={handleFormClose}

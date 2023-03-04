@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Container } from '@mui/material';
 
 import { db } from "../../firebase";
 import { COLLECTIONS } from '../../constants/constants';
@@ -83,7 +83,8 @@ export function FieldWorkerList() {
   ];
 
   return (
-    <div style={{ height: 670, width: "100%" }}>
+<div style={{ height: 580, width: "100%" }}>
+
       <Dialog
         open={openDialog}
         onClose={handleCancelDelete}
@@ -118,6 +119,6 @@ export function FieldWorkerList() {
         pagination
         disableSelectionOnClick
       />
-    </div>
+      </div>
   );
 }
