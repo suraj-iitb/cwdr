@@ -103,7 +103,7 @@ export function Header(props) {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {currentUser ? (
+          {currentUser && (
             <div>
               <IconButton
                 size="large"
@@ -146,8 +146,6 @@ export function Header(props) {
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
-          ) : (
-            <Button color="inherit">Login</Button>
           )}
         </Toolbar>
       </AppBar>
