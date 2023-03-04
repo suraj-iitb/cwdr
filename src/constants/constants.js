@@ -14,7 +14,7 @@ export const ROLES = {
 
 
 export const usersListGridOrder =  {
-    snehidi: [
+    snehidhi: [
       { key: "action", headerName: "Action" },
       { key: "memberID", headerName: "Member ID" },
       { key: "firstName", headerName: "First Name" },
@@ -43,7 +43,7 @@ export const usersListGridOrder =  {
       { key: "fieldStaffName", headerName: "Field Staff Name" },
       { key: "dependants", headerName: "Dependants" },
     ],
-    mythri: [
+    maithri: [
       { key: "action", headerName: "Action" },
       { key: "memberID", headerName: "Member ID" },
       { key: "firstName", headerName: "First Name" },

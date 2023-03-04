@@ -19,9 +19,9 @@ export function Statistics() {
       const snehidhiCount = await retrieveDocsCount(COLLECTIONS.SNEHIDHI);
 
       setData01([
-        { name: "Manushi", value: manushiCount },
-        { name: "Mythri", value: maithriCount },
-        { name: "Snehdi", value: snehidhiCount },
+        { name: COLLECTIONS.MANUSHI, value: manushiCount },
+        { name: COLLECTIONS.MAITHRI, value: maithriCount },
+        { name: COLLECTIONS.SNEHIDHI, value: snehidhiCount },
       ]);
       console.log(data01);
       console.log("out count");

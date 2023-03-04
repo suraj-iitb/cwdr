@@ -26,7 +26,9 @@ import { Link } from "react-router-dom";
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { adminDrawerWidth } from "../constants/constants";
 import { useAuth } from '../hooks';
+import { COLLECTIONS } from "../constants/constants";
 
+import { capitalize } from "../utils";
 export function SideBar(props) {
   const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(true);
   const [openUserData, setOpenUserData] = React.useState(true);
@@ -125,36 +127,36 @@ export function SideBar(props) {
       <Collapse in={openUserData} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <Link
-            to="getUserData/manushi"
+            to={`getUserData/${COLLECTIONS.MANUSHI}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <WomanIcon />
               </ListItemIcon>
-              <ListItemText primary="For Manushi" />
+              <ListItemText primary={`For ${capitalize(COLLECTIONS.MANUSHI)}`} />
             </ListItemButton>
           </Link>
           <Link
-            to="getUserData/mythri"
+            to={`getUserData/${COLLECTIONS.MAITHRI}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <WomanIcon />
               </ListItemIcon>
-              <ListItemText primary="For Mythri" />
+              <ListItemText primary={`For ${capitalize(COLLECTIONS.MAITHRI)}`} />
             </ListItemButton>
           </Link>
           <Link
-            to="getUserData/snehidi"
+            to={`getUserData/${COLLECTIONS.SNEHIDHI}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <GirlIcon />
               </ListItemIcon>
-              <ListItemText primary="For Snehdi" />
+              <ListItemText primary={`For ${capitalize(COLLECTIONS.SNEHIDHI)}`} />
             </ListItemButton>
           </Link>
         </List>

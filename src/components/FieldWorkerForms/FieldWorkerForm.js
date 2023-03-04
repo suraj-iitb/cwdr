@@ -20,6 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
+import { COLLECTIONS } from "../../constants/constants";
 
 export default function FieldWorkerForm(props) {
   const org = props.org;
@@ -225,7 +226,7 @@ export default function FieldWorkerForm(props) {
       interval = setTimeout(async () => {
         try {
           console.log("memberrrid", memberID);
-          fetchData(memberID, "manushi").then((response) => {
+          fetchData(memberID, COLLECTIONS.MANUSHI).then((response) => {
             const responseData = response?.[0];
             setDocID(responseData.id);
             setIsAssociatedUser(responseData.isAssociatedUser);
@@ -415,11 +416,11 @@ export default function FieldWorkerForm(props) {
                 onChange={dependantsChangeHandler}
               />
             </Grid>
-            {org === "manushi" && (
+            {org === COLLECTIONS.MANUSHI && (
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel id="employee-radio-group">
-                    Associated with Mythri member?
+                    Associated with {COLLECTIONS.MAITHRI} member?
                   </FormLabel>
                   <RadioGroup
                     aria-label="employee"
