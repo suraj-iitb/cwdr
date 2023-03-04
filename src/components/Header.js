@@ -45,13 +45,22 @@ export function Header(props) {
     setAnchorEl(null);
   };
 
+  const handleName = () => {
+    setAnchorEl(null);
+  };
+  
   const handleSignOut = () => {
     _signOut();
     setAnchorEl(null);
   };
 
   const handleAdmin = () => {
-    navigate("/admin");
+    navigate("/admin/addFieldWorker");
+    setAnchorEl(null);
+  };
+
+  const handleHome = () => {
+    navigate("/");
     setAnchorEl(null);
   };
 
@@ -131,7 +140,7 @@ export function Header(props) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem>
+                <MenuItem onClick={handleName}>
                   <Typography>
                     Signed in as{" "}
                     <strong>
@@ -140,6 +149,7 @@ export function Header(props) {
                   </Typography>
                 </MenuItem>
                 <Divider />
+                <MenuItem onClick={handleHome}>Home</MenuItem>
                 {currentUser?.roles?.includes(ROLES.ADMIN) && (
                   <MenuItem onClick={handleAdmin}>Admin</MenuItem>
                 )}
