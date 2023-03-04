@@ -5,6 +5,7 @@ export const COLLECTIONS = {
     MAITHRI: 'maithri',
     MANUSHI: 'manushi',
     SNEHIDHI: 'snehidhi',
+    MEMBER_SEQ: 'memberseq' 
 }
 
 export const ROLES = {
