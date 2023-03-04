@@ -8,6 +8,8 @@ import {
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
+import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
+
 import {
   Button,
   Dialog,
@@ -71,7 +73,7 @@ export function UserList() {
   ];
 
   useEffect(() => {
-    fetchAllUsersData(org).then((response) => {
+    fetchAllUsersData(org).then(async (response) => {
       if (response.length > 0) {
         const columns = Object.keys(response?.[0]).map((key) => {
           const desiredColumn = usersListGridOrder[org].find(
@@ -97,6 +99,10 @@ export function UserList() {
               return column.field === fieldName.key;
             });
           }) || [];
+          for (let i = 0; i < response.length; i++) {
+            const decryptedAadhar =  await decrypt({cipherText: response[i].aadhar});
+            response[i].aadhar = decryptedAadhar.data.originalText;
+          }
         setGridInfo({ data: response, columns: sortedColumns });
       } else {
         setGridInfo({ data: [], columns: [] });
