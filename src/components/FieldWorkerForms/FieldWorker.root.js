@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { FormPageHeader } from "..";
 import { Header } from "..";
-
+import { COLLECTIONS } from "../../constants/constants";
 const FieldWorkerRoot = (props) => {
   const theme = createTheme();
   const showHeader = props.showHeader ?? true;
@@ -67,10 +67,10 @@ const FieldWorkerRoot = (props) => {
         )}
 <Grid container spacing={3} sx={{mt: "10px"}}>
 
-        {(org === "manushi" || org === "mythri") && (
+        {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
           <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
         )}
-        {org === "snehidi" && (
+        {org === COLLECTIONS.SNEHIDHI && (
           <FieldWorkerFormSnehidi
             org={org}
             saveData={saveData}

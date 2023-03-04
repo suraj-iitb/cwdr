@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import "./Home.scss";
 import { Header } from "../components";
+import { COLLECTIONS } from "../constants/constants";
 
 export const Home = () => {
 
@@ -16,21 +17,21 @@ export const Home = () => {
   const images = [
     {
       src: require("../images/maithri.jpeg"),
-      alt: "Mythri",
-      title: "Mythri",
-      link: "/fieldworkerform?org=mythri",
+      alt: COLLECTIONS.MAITHRI,
+      title: COLLECTIONS.MAITHRI,
+      link: `/fieldworkerform?org=${COLLECTIONS.MAITHRI}`,
     },
     {
       src: require("../images/manushi.jpeg"),
-      alt: "Manushi",
-      title: "Manushi",
-      link: "/fieldworkerform?org=manushi",
+      alt: COLLECTIONS.MANUSHI,
+      title: COLLECTIONS.MANUSHI,
+      link: `/fieldworkerform?org=${COLLECTIONS.MANUSHI}`,
     },
     {
       src: require("../images/snehidhi.jpeg"),
-      alt: "Snehidhi",
-      title: "Snehidhi",
-      link: "/fieldworkerform?org=snehidi",
+      alt: COLLECTIONS.SNEHIDHI,
+      title: COLLECTIONS.SNEHIDHI,
+      link: `/fieldworkerform?org=${COLLECTIONS.SNEHIDHI}`,
     },
   ];
 
@@ -41,7 +42,7 @@ export const Home = () => {
         <img class="card-img" src={image.src} alt="" />
         <div class="card-description-bk"></div>
         <div class="card-description">
-          <p>{image.title}</p>
+          <p>{image.title.toUpperCase()}</p>
         </div>
         <div class="card-btn">
           <a href={image.link}>
