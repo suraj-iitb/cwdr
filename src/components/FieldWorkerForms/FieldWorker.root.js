@@ -68,7 +68,8 @@ const FieldWorkerRoot = (props) => {
 <Grid container spacing={3} sx={{mt: "10px"}}>
 
         {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-          <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
+          <FieldWorkerForm org={org} saveData={saveData} data={props.data}             memberID={props.memberID}
+          />
         )}
         {org === COLLECTIONS.SNEHIDHI && (
           <FieldWorkerFormSnehidi

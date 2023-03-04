@@ -30,8 +30,7 @@ export default function FieldWorkerForm(props) {
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
   const [memberID, setMemberID] = useState(
-    props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
-  );
+    props.memberID);
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
   const [isUserEmployed, setIsUserEmployed] = useState(false);
@@ -235,7 +234,8 @@ export default function FieldWorkerForm(props) {
       sessionStorage.setItem("memberId", JSON.stringify(mem));
       setMemberID(   mem         );
     }
-    fun();
+    if(!memberID)
+      fun();
   }, [])
 
   useEffect(() => {
