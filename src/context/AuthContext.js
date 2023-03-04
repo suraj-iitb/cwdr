@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         } else {
           const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
           if(user?.roles?.includes(ROLES.ADMIN))
-            navigate('/admin');
+            navigate('/admin/addFieldWorker');
           else
             navigate('/');
         }
