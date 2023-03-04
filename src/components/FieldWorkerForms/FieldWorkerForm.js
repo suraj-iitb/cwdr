@@ -21,7 +21,7 @@ import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
-import { getNextMemberId } from "../../firebase";
+import { getNextMemberId, encrypt, decrypt } from "../../firebase";
 
 export default function FieldWorkerForm(props) {
   const org = props.org;
@@ -191,6 +191,9 @@ export default function FieldWorkerForm(props) {
     sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
+    const encryptedAadhar = await encrypt({
+      originalText: aadhar
+    });
     const memberDetails = {
       memberID: memberID,
       firstName,
@@ -198,7 +201,7 @@ export default function FieldWorkerForm(props) {
       dob,
       phone,
       address: { ...address },
-      aadhar,
+      aadhar: encryptedAadhar.data.cipherText,
       billNo,
       refNo,
       fieldStaffName,
@@ -237,8 +240,10 @@ export default function FieldWorkerForm(props) {
       interval = setTimeout(async () => {
         try {
           console.log("memberrrid", memberID);
-          fetchData(memberID, COLLECTIONS.MANUSHI).then((response) => {
+          fetchData(memberID, COLLECTIONS.MANUSHI).then(async (response) => {
             const responseData = response?.[0];
+            const decryptedAadhar =  await decrypt({cipherText: responseData.aadhar});
+            responseData.aadhar = decryptedAadhar.data.originalText;
             setDocID(responseData.id);
             setIsAssociatedUser(responseData.isAssociatedUser);
             setMemberData(responseData);
