@@ -54,6 +54,12 @@ export const AuthProvider = ({ children }) => {
         const origin = location.state?.from?.pathname + location.state?.from?.search;
         if(location.state != null) {
           navigate(origin);
+        } else {
+          const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
+          if(user?.roles?.includes(ROLES.ADMIN))
+            navigate('/admin');
+          else
+            navigate('/');
         }
       }
     );
