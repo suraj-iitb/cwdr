@@ -36,17 +36,17 @@ export const getNextMemberId = async (org) => {
       const docSnap = await transaction.get(docRef);
       if (docSnap.exists()) {
         if(org === COLLECTIONS.MAITHRI) {
-          count = docSnap.data().maithri + 1;
+          count = docSnap.data().maithri;
           memberId = COLLECTIONS.MAITHRI + "-" + count;
-          transaction.update(docRef, { maithri: count });
+          transaction.update(docRef, { maithri: count+1 });
         } else if(org === COLLECTIONS.MANUSHI) {
-          count = docSnap.data().manushi + 1;
+          count = docSnap.data().manushi;
           memberId = COLLECTIONS.MANUSHI + "-" + count;
-          transaction.update(docRef, { manushi: count });
+          transaction.update(docRef, { manushi: count+1 });
         } else if(org === COLLECTIONS.SNEHIDHI) {
-          count = docSnap.data().snehidhi + 1;
+          count = docSnap.data().snehidhi;
           memberId = COLLECTIONS.SNEHIDHI + "-" + count;
-          transaction.update(docRef, { snehidhi: count });
+          transaction.update(docRef, { snehidhi: count+1 });
         } 
       }
     });

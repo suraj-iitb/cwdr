@@ -21,6 +21,8 @@ import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
+import { getNextMemberId } from "../../firebase";
+
 
 export default function FieldWorkerFormSnehidi(props) {
   const org = props.org;
@@ -28,7 +30,7 @@ export default function FieldWorkerFormSnehidi(props) {
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
   const [memberID, setMemberID] = useState(
-    props.memberID || Math.floor(Math.random() * 100000)
+    props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
   );
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
@@ -38,7 +40,7 @@ export default function FieldWorkerFormSnehidi(props) {
     if (event.target.value === "true") {
       setMemberID("");
     } else {
-      setMemberID(Math.floor(Math.random() * 100000));
+      setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
     setIsMember(event.target.value === "true");
   };
@@ -65,7 +67,7 @@ export default function FieldWorkerFormSnehidi(props) {
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
     if(!isMember){
-      setMemberID(Math.floor(Math.random() * 100000));
+      setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
   };
 
@@ -152,9 +154,12 @@ export default function FieldWorkerFormSnehidi(props) {
       return;
     }
 
+    const m1 = await getNextMemberId(org)
+    sessionStorage.setItem("memberId", JSON.stringify(m1));
+
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
-      memberID: parseInt(memberID),
+      memberID: memberID,
       firstName,
       lastName,
       dob,
@@ -180,6 +185,15 @@ export default function FieldWorkerFormSnehidi(props) {
     event.target.reset();
     handleReset();
   };
+
+  useEffect(() => {
+    const fun = async () => {
+      const mem = await getNextMemberId(org);
+      sessionStorage.setItem("memberId", JSON.stringify(mem));
+      setMemberID(   mem         );
+    }
+    fun();
+  }, [])
 
   useEffect(() => {
     let interval;
@@ -237,7 +251,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 <TextField
                   required
                   id="memberID"
-                  label="Member ID"
+                  label=""
                   fullWidth
                   disabled={!isMember}
                   error={!isNotEmpty}
