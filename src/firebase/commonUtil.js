@@ -19,7 +19,7 @@ export const storeData = async (data, objectName) => {
 
 export const fetchData = async (id, objectName) => {
   const querySnapshot = await getDocs(
-    query(collection(db, objectName), where("memberID", "==", +id))
+    query(collection(db, objectName), where("memberID", "==", id))
   );
   const newData = querySnapshot.docs.map((doc) => ({
     id: doc.id,

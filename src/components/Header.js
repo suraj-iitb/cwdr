@@ -10,6 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
+import Divider from "@mui/material/Divider";
+import Button from '@mui/material/Button';
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
@@ -48,18 +50,23 @@ export function Header(props) {
     setAnchorEl(null);
   };
 
+  const handleName = () => {
+    setAnchorEl(null);
+  };
+  
   const handleSignOut = () => {
     _signOut();
     setAnchorEl(null);
   };
 
   const handleAdmin = () => {
-    navigate("/admin");
+    navigate("/admin/addFieldWorker");
     setAnchorEl(null);
   };
 
   const handleHome = () => {
     navigate("/");
+    // setAnchorEl(null);
   };
 
   const handleBrandClick = () => {

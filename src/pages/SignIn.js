@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import "./SignIn.scss";
 import { useAuth } from "../hooks";
 import { useNavigate } from "react-router-dom";
+import { Header } from "../components";
+import CssBaseline from "@mui/material/CssBaseline";
+
+import Box from "@mui/material/Box";
 
 export const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -22,9 +26,13 @@ export const SignIn = () => {
     setLoading(false);
   };
 
-  const comp = currentUser ? (
+  const comp  = currentUser ? (
     navigate("/")
   ) : (
+    <>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+    <Header />
     <div className="login-page">
       <div className="avatar">
         <img
@@ -34,7 +42,7 @@ export const SignIn = () => {
       </div>
       <div className="form">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <input
             type="text"
             onChange={(e) => setEmail(e.target.value)}
@@ -45,13 +53,16 @@ export const SignIn = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
-          <button>Log in</button>
+          <button  onClick={handleSubmit}>Log in</button>
         </form>
         <p className="message">
           Forgot your password? <a href="#">Click here to reset it</a>
         </p>
       </div>
     </div>
+    </Box>
+    </>
+
   );
 
   return comp;

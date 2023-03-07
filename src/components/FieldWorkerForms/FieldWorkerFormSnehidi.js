@@ -20,6 +20,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
+import { COLLECTIONS } from "../../constants/constants";
+import { getNextMemberId } from "../../firebase";
+
+import { useAuth } from "../../hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 
 export default function FieldWorkerFormSnehidi(props) {
   const org = props.org;
@@ -27,8 +33,14 @@ export default function FieldWorkerFormSnehidi(props) {
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
   const [memberID, setMemberID] = useState(
-    props.memberID || Math.floor(Math.random() * 100000)
+    props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
   );
+
+  const { currentUser } = useAuth();
+
+  const dispatch = useDispatch();
+
+
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
 
@@ -37,7 +49,7 @@ export default function FieldWorkerFormSnehidi(props) {
     if (event.target.value === "true") {
       setMemberID("");
     } else {
-      setMemberID(Math.floor(Math.random() * 100000));
+      setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
     setIsMember(event.target.value === "true");
   };
@@ -64,7 +76,7 @@ export default function FieldWorkerFormSnehidi(props) {
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
     if(!isMember){
-      setMemberID(Math.floor(Math.random() * 100000));
+      setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
   };
 
@@ -151,9 +163,12 @@ export default function FieldWorkerFormSnehidi(props) {
       return;
     }
 
+    const m1 = await getNextMemberId(org)
+    sessionStorage.setItem("memberId", JSON.stringify(m1));
+
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
-      memberID: parseInt(memberID),
+      memberID: memberID,
       firstName,
       lastName,
       dob,
@@ -178,7 +193,19 @@ export default function FieldWorkerFormSnehidi(props) {
     }
     event.target.reset();
     handleReset();
+    dispatch(setOpenEditDialog(false));
+    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
+
   };
+
+  useEffect(() => {
+    const fun = async () => {
+      const mem = await getNextMemberId(org);
+      sessionStorage.setItem("memberId", JSON.stringify(mem));
+      setMemberID(   mem         );
+    }
+    fun();
+  }, [])
 
   useEffect(() => {
     let interval;
@@ -186,7 +213,7 @@ export default function FieldWorkerFormSnehidi(props) {
       interval = setTimeout(async () => {
         try {
           console.log("memberrrid", memberID);
-          fetchData(memberID, "snehidi").then((response) => {
+          fetchData(memberID, COLLECTIONS.SNEHIDHI).then((response) => {
             const responseData = response?.[0];
             console.log("callubg", responseData, memberID);
             setDocID(responseData.id);
@@ -236,7 +263,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 <TextField
                   required
                   id="memberID"
-                  label="Member ID"
+                  label=""
                   fullWidth
                   disabled={!isMember}
                   error={!isNotEmpty}
@@ -357,7 +384,7 @@ export default function FieldWorkerFormSnehidi(props) {
             <Grid item xs={12}>
               <FormControl component="fieldset">
                 <FormLabel id="employee-radio-group">
-                  Associated with Mythri member?
+                  Associated with {COLLECTIONS.MAITHRI} member?
                 </FormLabel>
                 <RadioGroup
                   aria-label="employee"

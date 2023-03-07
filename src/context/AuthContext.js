@@ -52,7 +52,15 @@ export const AuthProvider = ({ children }) => {
       async (userAuth) => {
         await setSessionStorageForUser(userAuth.user, setCurrentUser);
         const origin = location.state?.from?.pathname + location.state?.from?.search;
-        navigate(origin);
+        if(location.state != null) {
+          navigate(origin);
+        } else {
+          const user = await retrieveDoc(COLLECTIONS.USER, userAuth.user.uid);
+          if(user?.roles?.includes(ROLES.ADMIN))
+            navigate('/admin/addFieldWorker');
+          else
+            navigate('/');
+        }
       }
     );
   };

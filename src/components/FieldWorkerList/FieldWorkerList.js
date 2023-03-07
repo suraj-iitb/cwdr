@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline, EditOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Container } from '@mui/material';
 
 import { db } from "../../firebase";
 import { COLLECTIONS } from '../../constants/constants';
@@ -53,6 +53,27 @@ export function FieldWorkerList() {
   };
 
   const columns = [
+    {
+      field: "action",
+      headerName: "Action",
+      width: 120,
+      renderCell: (params) => {
+        return (
+          <>
+            <button
+              className="fieldWorkerEditButton"
+              // onClick={() => handleOpenFormDialog(params.row)}
+            >
+              <EditOutlined fontSize="small" />
+            </button>
+            <DeleteOutline
+              className="fieldWorkerDeleteButton"
+              onClick={() => handleOpenDialog(params.row.id, params.row.firstName + " " + params.row.lastName)}
+            />
+          </>
+        );
+      },
+    },
     { field: "firstName", headerName: "First Name", width: 200 },
     { field: "lastName", headerName: "Last Name", width: 200 },
     { field: "email", headerName: "Email", width: 300 },
@@ -62,28 +83,11 @@ export function FieldWorkerList() {
       headerName: "Status",
       width: 100,
     },
-    {
-      field: "action",
-      headerName: "Action",
-      width: 100,
-      renderCell: (params) => {
-        return (
-          <>
-            <Link to={`/user/${params.row.id}`}>
-              <button className="fieldWorkerEditButton ">Edit</button>
-            </Link>
-            <DeleteOutline
-              className="fieldWorkerDeleteButton"
-              onClick={() => handleOpenDialog(params.row.id, params.row.firstName + " " + params.row.lastName)}
-            />
-          </>
-        );
-      },
-    },
   ];
 
   return (
-    <div style={{ height: 670, width: "100%" }}>
+<div style={{ height: 580, width: "100%" }}>
+
       <Dialog
         open={openDialog}
         onClose={handleCancelDelete}
@@ -118,6 +122,6 @@ export function FieldWorkerList() {
         pagination
         disableSelectionOnClick
       />
-    </div>
+      </div>
   );
 }

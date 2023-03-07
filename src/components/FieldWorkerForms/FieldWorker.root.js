@@ -4,14 +4,9 @@ import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
 import { storeData } from "../../firebase/commonUtil";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
-import {
-  CssBaseline,
-  Grid,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { CssBaseline, Grid, ThemeProvider, createTheme } from "@mui/material";
 import { Header } from "..";
-
+import { COLLECTIONS } from "../../constants/constants";
 const FieldWorkerRoot = (props) => {
   const theme = createTheme();
   const showHeader = props.showHeader ?? true;
@@ -63,14 +58,14 @@ const FieldWorkerRoot = (props) => {
         {showHeader && <Header />}
         <div class="contentBody">
           <Grid container spacing={3}>
-            {(org === "manushi" || org === "mythri") && (
+            {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
               <FieldWorkerForm
                 org={org}
                 saveData={saveData}
                 data={props.data}
               />
             )}
-            {org === "snehidi" && (
+            {org === COLLECTIONS.SNEHIDHI && (
               <FieldWorkerFormSnehidi
                 org={org}
                 saveData={saveData}
@@ -80,7 +75,6 @@ const FieldWorkerRoot = (props) => {
             )}
           </Grid>
         </div>
-
         <Snackbar
           autoHideDuration={5000}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
