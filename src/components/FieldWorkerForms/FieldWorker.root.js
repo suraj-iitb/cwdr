@@ -1,18 +1,15 @@
 import { useLocation } from "react-router-dom";
 import FieldWorkerForm from "./FieldWorkerForm";
 import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
-import { storeData, fetchData } from "../../firebase/commonUtil";
+import { storeData } from "../../firebase/commonUtil";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 import {
   CssBaseline,
-  AppBar,
-  Toolbar,
   Grid,
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { FormPageHeader } from "..";
 import { Header } from "..";
 
 const FieldWorkerRoot = (props) => {
@@ -52,33 +49,37 @@ const FieldWorkerRoot = (props) => {
 
   const fetchData = async (memberID) => {
     return await fetchData(memberID);
-  }
+  };
 
   return (
     <div
+      class="container"
       style={{
-        background: `url("../images/background.jpeg") repeat scroll`,
+        background: `url("../images/background.jpeg") repeat`,
       }}
     >
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {showHeader && (
-          <Header />
-        )}
-<Grid container spacing={3}>
-
-        {(org === "manushi" || org === "mythri") && (
-          <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
-        )}
-        {org === "snehidi" && (
-          <FieldWorkerFormSnehidi
-            org={org}
-            saveData={saveData}
-            fetchData={fetchData}
-            memberID={props.memberID}
-          />
-        )}
-        </Grid>
+        {showHeader && <Header />}
+        <div class="contentBody">
+          <Grid container spacing={3}>
+            {(org === "manushi" || org === "mythri") && (
+              <FieldWorkerForm
+                org={org}
+                saveData={saveData}
+                data={props.data}
+              />
+            )}
+            {org === "snehidi" && (
+              <FieldWorkerFormSnehidi
+                org={org}
+                saveData={saveData}
+                fetchData={fetchData}
+                memberID={props.memberID}
+              />
+            )}
+          </Grid>
+        </div>
 
         <Snackbar
           autoHideDuration={5000}

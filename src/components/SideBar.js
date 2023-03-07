@@ -12,31 +12,41 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
-import WomanIcon from '@mui/icons-material/Woman';
-import GirlIcon from '@mui/icons-material/Girl';
+import WomanIcon from "@mui/icons-material/Woman";
+import GirlIcon from "@mui/icons-material/Girl";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import Logout from "@mui/icons-material/Logout"
+import Logout from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { adminDrawerWidth } from "../constants/constants";
-import { useAuth } from '../hooks';
+import { useAuth } from "../hooks";
+import { styled, useTheme } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Toolbar from "@mui/material/Toolbar";
+import { Outlet } from "react-router-dom";
 
-export function SideBar(props) {
-  const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(true);
+export function SideBar({ open, handleDrawerClose }) {
+
+  const [openManageFieldWorker, setOpenManageFieldWorker] =
+    React.useState(true);
   const [openUserData, setOpenUserData] = React.useState(true);
-
 
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
   const dispatch = useDispatch();
 
   const { _signOut } = useAuth();
+
+ 
 
   const handleManageFieldWorker = () => {
     setOpenManageFieldWorker(!openManageFieldWorker);
@@ -62,116 +72,121 @@ export function SideBar(props) {
     dispatch(setMobileOpen(!mobileOpen));
   };
 
+
   const drawer = (
-    <List
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader" insert={true}>
-          <Box sx={{ fontSize: 24, m: 1 }}>
-            <AdminPanelSettingsOutlinedIcon fontSize="medium" />
-            <Box component="span" sx={{ ml: 1 }}>
-              Admin Actions
+      <List
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader
+            component="div"
+            id="nested-list-subheader"
+            insert={true}
+          >
+            <Box sx={{ fontSize: 24, m: 1 }}>
+              <AdminPanelSettingsOutlinedIcon fontSize="medium" />
+              <Box component="span" sx={{ ml: 1 }}>
+                Admin Actions
+              </Box>
+              <Divider light={true} />
             </Box>
-            <Divider light={true} />
-          </Box>
-        </ListSubheader>
-      }
-    >
-      <ListItemButton onClick={handleManageFieldWorker}>
-        <ListItemIcon>
-          <ManageAccountsOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Manage Field Worker" />
-        {openManageFieldWorker ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-
-      <Collapse in={openManageFieldWorker} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <Link
-            to="addFieldWorker"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <PersonAddAltOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Add Field Worker" />
-            </ListItemButton>
-          </Link>
-          <Link
-            to="getFieldWorker"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <PeopleAltOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Get Field Worker" />
-            </ListItemButton>
-          </Link>
-        </List>
-      </Collapse>
-
-      <ListItemButton onClick={handleUserData}>
-        <ListItemIcon>
-          <FileDownloadOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Manage User Data" />
-        {openUserData ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-
-      <Collapse in={openUserData} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <Link
-            to="getUserData/manushi"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <WomanIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Manushi" />
-            </ListItemButton>
-          </Link>
-          <Link
-            to="getUserData/mythri"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <WomanIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Mythri" />
-            </ListItemButton>
-          </Link>
-          <Link
-            to="getUserData/snehidi"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <GirlIcon />
-              </ListItemIcon>
-              <ListItemText primary="For Snehdi" />
-            </ListItemButton>
-          </Link>
-        </List>
-      </Collapse>
-
-      <Link
-        to="statistics"
-        style={{ textDecoration: "none", color: "inherit" }}
+          </ListSubheader>
+        }
       >
-        <ListItemButton>
+        <ListItemButton onClick={handleManageFieldWorker}>
           <ListItemIcon>
-            <InsertChartOutlinedIcon />
+            <ManageAccountsOutlinedIcon />
           </ListItemIcon>
-          <ListItemText primary="Statistics" />
+          <ListItemText primary="Manage Field Worker" />
+          {openManageFieldWorker ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-      </Link>
-    </List>
+
+        <Collapse in={openManageFieldWorker} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link
+              to="addFieldWorker"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <PersonAddAltOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Field Worker" />
+              </ListItemButton>
+            </Link>
+            <Link
+              to="getFieldWorker"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <PeopleAltOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary="Get Field Worker" />
+              </ListItemButton>
+            </Link>
+          </List>
+        </Collapse>
+
+        <ListItemButton onClick={handleUserData}>
+          <ListItemIcon>
+            <FileDownloadOutlinedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Manage User Data" />
+          {openUserData ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openUserData} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link
+              to="getUserData/manushi"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <WomanIcon />
+                </ListItemIcon>
+                <ListItemText primary="For Manushi" />
+              </ListItemButton>
+            </Link>
+            <Link
+              to="getUserData/mythri"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <WomanIcon />
+                </ListItemIcon>
+                <ListItemText primary="For Mythri" />
+              </ListItemButton>
+            </Link>
+            <Link
+              to="getUserData/snehidi"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <GirlIcon />
+                </ListItemIcon>
+                <ListItemText primary="For Snehdi" />
+              </ListItemButton>
+            </Link>
+          </List>
+        </Collapse>
+
+        <Link
+          to="statistics"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <ListItemButton>
+            <ListItemIcon>
+              <InsertChartOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Statistics" />
+          </ListItemButton>
+        </Link>
+      </List>
   );
 
   return (
@@ -180,9 +195,10 @@ export function SideBar(props) {
       sx={{ width: { sm: adminDrawerWidth }, flexShrink: { sm: 0 } }}
       onClick={handleDrawerToggle()}
       onKeyDown={handleDrawerToggle()}
+     
     >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-      <Drawer
+      {/* <Drawer
         container={window.document.body}
         variant="temporary"
         open={mobileOpen}
@@ -199,10 +215,10 @@ export function SideBar(props) {
         }}
       >
         {drawer}
-      </Drawer>
+      </Drawer> */}
 
-      <Drawer
-        variant="permanent"
+      {/* <Drawer
+        variant="persistent"
         sx={{
           display: { xs: "none", sm: "block" },
           "& .MuiDrawer-paper": {
@@ -210,10 +226,13 @@ export function SideBar(props) {
             width: adminDrawerWidth,
           },
         }}
-        open
+        open={open}
       >
         {drawer}
-      </Drawer>
+      </Drawer> */}
+      {drawer}
+
+    
     </Box>
   );
 }

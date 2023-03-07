@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CssBaseline from "@mui/material/CssBaseline";
 
 import {
   Box,
@@ -52,8 +53,11 @@ export const Home = () => {
   };
 
   return (
-    <>
-      <Header />
+    <div className="container">
+      <CssBaseline />
+
+     <Header />
+     <div className="contentBody">
       <Box sx={{padding: "1rem"}}>
         <Typography
           variant="h6"
@@ -67,6 +71,8 @@ export const Home = () => {
         </Typography>
       </Box>
       <Grid className="overallContainer">{renderCards()}</Grid>
-    </>
+      </div>
+
+    </div>
   );
 };

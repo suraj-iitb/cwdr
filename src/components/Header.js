@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home"
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
@@ -19,8 +20,12 @@ import { Link } from "react-router-dom";
 
 import { Spa } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
-
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import { styled, useTheme } from "@mui/material/styles";
+import { useMatch } from "react-router-dom";
 export function Header(props) {
+  const { open, handleDrawerOpen, drawerWidth } = props;
+  const adminMatch = useMatch("/admin");
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
@@ -53,90 +58,128 @@ export function Header(props) {
     setAnchorEl(null);
   };
 
-  const handleBrandClick = () => {
+  const handleHome = () => {
     navigate("/");
   };
 
+  const handleBrandClick = () => {
+    navigate("/");
+  };
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== "open",
+  })(({ theme, open }) => ({
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  }));
   return (
-    <Box sx={{ height: props.drawerWidth ? '100vh' : '8vh' }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${props.drawerWidth}px)` },
-          ml: { sm: `${props.drawerWidth}px` },
-        }}
-      >
-        <Toolbar style={{backgroundColor: "#9131b9"}}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
+    <div class="contentHeader">
+      {/* <Box sx={{ height: props.drawerWidth ? "100vh" : "8vh" }}> */}
+        <AppBar position="fixed" open={open}>
+          <Toolbar style={{ backgroundColor: "#9131b9" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerOpen}
+              sx={{ mr: 2, ...((!adminMatch || open) && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <img
-            src={mainLogo}
-            width="40"
-            height="40"
-            alt="Logo"
-            style={{ marginRight: "1rem", cursor: "pointer" }}
-            onClick={handleBrandClick}
-            className="efe"
-            title="Navigate to home"
-          />
+            <img
+              src={mainLogo}
+              width="40"
+              height="40"
+              alt="Logo"
+              style={{ marginRight: "1rem", cursor: "pointer" }}
+              onClick={handleBrandClick}
+              className="efe"
+              title="Navigate to home"
+            />
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            title="Navigate to home"
-            style={{ cursor: "pointer" }}
-            onClick={handleBrandClick}
-          >
-            Centre for Women's Development and Research
-          </Typography>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              title="Navigate to home"
+              style={{ cursor: "pointer" }}
+              onClick={handleBrandClick}
+            >
+              Centre for Women's Development and Research
+            </Typography>
 
-          <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} />
 
-          {currentUser && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                {currentUser?.roles?.includes(ROLES.ADMIN) && (
-                  <MenuItem onClick={handleAdmin}>Admin</MenuItem>
-                )}
-                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+            {currentUser && (
+              <div>
+                
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleHome}
+                  color="inherit"
+                >
+                  <HomeIcon />
+                </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  getContentAnchorEl={null}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  PaperProps={{
+                    style: {
+                      left: '10%',
+                      transform: 'translateX(90vw) translateY(36%)',
+                    }
+                  }}
+                  MenuListProps={{
+                    style: {
+                      padding: 0,
+                    },
+                  }}
+                >
+                  {currentUser?.roles?.includes(ROLES.ADMIN) && (
+                    <MenuItem onClick={handleAdmin}>Admin</MenuItem>
+                  )}
+                  <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+      {/* </Box> */}
+    </div>
   );
 }
