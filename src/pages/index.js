@@ -1,3 +1,3 @@
-export { SignIn } from './SignIn';
-export { AdminPage } from './AdminPage';
-export { Home } from './Home';
+export { Admin } from './Admin/Admin';
+export { Home } from './Home/Home';
+export { SignIn } from './SignIn/SignIn';

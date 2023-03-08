@@ -21,8 +21,8 @@ import {
 } from "@mui/material";
 import { usersListGridOrder } from "../../constants/constants";
 import { db } from "../../firebase";
-import "./UserList.scss";
-import FieldWorkerRoot from "../FieldWorkerForms/FieldWorkerRoot";
+import "./ListOrg.scss";
+import { FieldWorkerForm } from "..";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
@@ -63,7 +63,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 
-export function UserList() {
+export function ListOrg() {
   const openEditDialog = useSelector((state) => state.openEditDialogReducer.value);
 
   const dispatch = useDispatch();
@@ -219,7 +219,7 @@ export function UserList() {
           Edit User
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <FieldWorkerRoot
+          <FieldWorkerForm
             org={org}
             showHeader={false}
             memberID={selectedRowData.memberID}

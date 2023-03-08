@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Snackbar, Alert, Grid, CssBaseline } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
-import FieldWorkerForm from "./FieldWorkerForm";
-import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
+import { FieldWorkerFormManushiMaithri, FieldWorkerFormSnehidi } from "..";
 import { addDocument } from "../../firebase";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
 
-export const FieldWorkerRoot = (props) => {
+export const FieldWorkerForm = (props) => {
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     state: "error",
@@ -55,7 +54,7 @@ export const FieldWorkerRoot = (props) => {
       {showHeader && <Header />}
       <Grid container spacing={3} sx={{ mt: "10px" }}>
         {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-          <FieldWorkerForm
+          <FieldWorkerFormManushiMaithri
             org={org}
             memberID={props.memberID}
             saveData={saveData}
@@ -83,4 +82,3 @@ export const FieldWorkerRoot = (props) => {
     </div>
   );
 };
-export default FieldWorkerRoot;

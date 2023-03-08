@@ -2,7 +2,7 @@ import { Grid, TextField } from "@mui/material";
 import useInput from "../../hooks/useInput";
 import { forwardRef, useImperativeHandle, useState } from "react";
 
-const AddressInput = forwardRef((props, ref) => {
+export const AddressInput = forwardRef((props, ref) => {
   const [addressDetails, setAddressDetails] = useState({});
   const isNotEmpty = (value) => {
     return value.trim() !== ""

@@ -4,10 +4,10 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import { Outlet } from "react-router-dom";
 
-import { SideBar, Header } from "../components";
-import { adminDrawerWidth } from "../constants/constants";
+import { SideBar, Header } from "../../components";
+import { adminDrawerWidth } from "../../constants/constants";
 
-export const AdminPage = () => {
+export const Admin = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

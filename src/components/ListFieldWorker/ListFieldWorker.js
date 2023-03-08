@@ -13,8 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
 
 
-import "./FieldWorkerList.scss";
-import { AddUser } from "../AddUser";
+import "./ListFieldWorker.scss";
+import { AddFieldWorker } from "..";
 import { useDispatch, useSelector } from "react-redux";
 
 function BootstrapDialogTitle(props) {
@@ -41,7 +41,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export function FieldWorkerList() {
+export function ListFieldWorker() {
   const openEditFieldWorkerDialog = useSelector((state) => state.openEditFieldWorkerDialogReducer.value);
 
   const dispatch = useDispatch();
@@ -147,7 +147,7 @@ export function FieldWorkerList() {
           Edit Field Worker
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <AddUser
+          <AddFieldWorker
             action="edit" 
             uid={selectedWorkerId}
             row={selectedRow}

@@ -19,7 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useDispatch } from "react-redux";
 
 import useInput from "../../hooks/useInput";
-import AddressInput from "../UI/AddressInput";
+import {AddressInput} from "..";
 import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
@@ -27,7 +27,7 @@ import { useAuth } from "../../hooks";
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 import { isNotEmpty } from "../../utils";
 
-export default function FieldWorkerFormSnehidi(props) {
+export function FieldWorkerFormSnehidi(props) {
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);

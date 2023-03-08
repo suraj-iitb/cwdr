@@ -6,17 +6,17 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import { collection, addDoc } from "firebase/firestore";
-import useInput from "../hooks/useInput";
+import useInput from "../../hooks/useInput";
 import { Snackbar, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import { db, addUser, deleteUser, encrypt, decrypt, updateUser, updateDocument } from "../firebase";
-import { COLLECTIONS } from "../constants/constants";
+import { db, addUser, deleteUser, encrypt, decrypt, updateUser, updateDocument } from "../../firebase";
+import { COLLECTIONS } from "../../constants/constants";
 import { useDispatch } from "react-redux";
-import { setOpenEditFieldWorkerDialog } from "../redux/slices/openEditFieldWorkerDialogSlice";
+import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
 
 
-export function AddUser(props) {
+export function AddFieldWorker(props) {
   const dispatch = useDispatch();
 
   const [memberData, setMemberData] = React.useState({});
