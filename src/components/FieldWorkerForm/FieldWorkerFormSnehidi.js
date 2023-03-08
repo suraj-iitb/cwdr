@@ -24,7 +24,7 @@ import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
 import { useAuth } from "../../hooks";
-import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
 import { isNotEmpty } from "../../utils";
 
 export function FieldWorkerFormSnehidi(props) {
@@ -204,7 +204,7 @@ export function FieldWorkerFormSnehidi(props) {
       noOfApplicants: currentUser.noOfApplicants + 1,
     });
 
-    dispatch(setOpenEditDialog(false));
+    dispatch(setOpenEditUserDialog(false));
 
   };
 

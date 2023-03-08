@@ -1,17 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const openEditFieldWorkerDialogSlice = createSlice({
-  name: 'openEditFieldWorkerDialog',
+  name: "openEditFieldWorkerDialog",
   initialState: {
     value: false,
   },
   reducers: {
     setOpenEditFieldWorkerDialog: (state, action) => {
-      state.value = action.payload
+      state.value = action.payload;
     },
   },
-})
+});
 
-export const { setOpenEditFieldWorkerDialog } = openEditFieldWorkerDialogSlice.actions
+export const { setOpenEditFieldWorkerDialog } =
+  openEditFieldWorkerDialogSlice.actions;
 
-export default openEditFieldWorkerDialogSlice.reducer
+export default openEditFieldWorkerDialogSlice.reducer;

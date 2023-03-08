@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import mobileOpenReducer from './slices/mobileOpenSlice';
-import openEditDialogReducer from './slices/openEditDialogSlice';
+import openEditUsertDialogReducer from './slices/openEditUserDialogSlice';
 import openEditFieldWorkerDialogReducer from './slices/openEditFieldWorkerDialogSlice';
 
 export const store = configureStore({
   reducer: {
     mobileOpenReducer: mobileOpenReducer,
-    openEditDialogReducer: openEditDialogReducer,
+    openEditUsertDialogReducer: openEditUsertDialogReducer,
     openEditFieldWorkerDialogReducer: openEditFieldWorkerDialogReducer,
   },
 });

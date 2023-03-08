@@ -24,7 +24,7 @@ import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt } from "../../firebase";
 import { useAuth } from "../../hooks";
-import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
 import { isNotEmpty, isValidPhone } from "../../utils";
 
 export function FieldWorkerFormManushiMaithri(props) {
@@ -241,7 +241,7 @@ export function FieldWorkerFormManushiMaithri(props) {
       noOfApplicants: currentUser.noOfApplicants + 1,
     });
 
-    dispatch(setOpenEditDialog(false));
+    dispatch(setOpenEditUserDialog(false));
   };
 
   useEffect(() => {

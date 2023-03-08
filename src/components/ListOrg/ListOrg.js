@@ -25,7 +25,7 @@ import "./ListOrg.scss";
 import { FieldWorkerForm } from "..";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
 
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -64,7 +64,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 
 export function ListOrg() {
-  const openEditDialog = useSelector((state) => state.openEditDialogReducer.value);
+  const openEditUserDialog = useSelector((state) => state.openEditUsertDialogReducer.value);
 
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = React.useState(10);
@@ -196,7 +196,7 @@ export function ListOrg() {
   };
   const handleOpenFormDialog = (rowData) => {
     setselectedRowData(rowData);
-    dispatch(setOpenEditDialog(true));
+    dispatch(setOpenEditUserDialog(true));
   };
 
   const handleCancelDelete = () => {
@@ -204,13 +204,13 @@ export function ListOrg() {
   };
 
   const handleFormClose = () => {
-    dispatch(setOpenEditDialog(false));
+    dispatch(setOpenEditUserDialog(false));
   };
 
   return (
     <div style={{ height: 580, width: "100%" }}>
       <Dialog
-        open={openEditDialog}
+        open={openEditUserDialog}
         onClose={handleFormClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
