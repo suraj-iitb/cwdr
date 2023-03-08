@@ -22,7 +22,7 @@ import {
 import { usersListGridOrder } from "../../constants/constants";
 import { db } from "../../firebase";
 import "./UserList.scss";
-import FieldWorkerRoot from "../FieldWorkerForms/FieldWorker.root";
+import FieldWorkerRoot from "../FieldWorkerForms/FieldWorkerRoot";
 import { fetchAllUsersData, updateData } from "../../firebase/commonUtil";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
