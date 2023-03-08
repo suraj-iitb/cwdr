@@ -1,29 +1,26 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  MenuItem,
+  Menu,
+  Box,
+  Divider,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
-import Divider from "@mui/material/Divider";
-import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 
 import { setMobileOpen } from "../../redux/slices/mobileOpenSlice";
 import { useAuth } from "../../hooks";
-import { useNavigate } from "react-router-dom";
 import { ROLES } from "../../constants/constants";
 import mainLogo from "../../images/logo.png";
-import { Link } from "react-router-dom";
-
-import { Spa } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
 
 export function Header(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
@@ -48,7 +45,7 @@ export function Header(props) {
   const handleName = () => {
     setAnchorEl(null);
   };
-  
+
   const handleSignOut = () => {
     _signOut();
     setAnchorEl(null);
