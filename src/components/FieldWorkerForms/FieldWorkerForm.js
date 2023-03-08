@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
   Grid,
@@ -14,17 +13,17 @@ import {
   Container,
   Paper,
 } from "@mui/material";
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useDispatch, useSelector } from "react-redux";
+
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
 import { useAuth } from "../../hooks";
-import { useDispatch, useSelector } from "react-redux";
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 
 export default function FieldWorkerForm(props) {
@@ -32,8 +31,7 @@ export default function FieldWorkerForm(props) {
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
-  const [memberID, setMemberID] = useState(
-    props.memberID);
+  const [memberID, setMemberID] = useState(props.memberID);
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
   const [isUserEmployed, setIsUserEmployed] = useState(false);
@@ -42,14 +40,13 @@ export default function FieldWorkerForm(props) {
 
   const dispatch = useDispatch();
 
-
   const handleMemberChange = (event) => {
     handleReset();
     if (event.target.value === "true") {
       setMemberID("");
     } else {
       setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
-        }
+    }
     setIsMember(event.target.value === "true");
   };
 
@@ -195,12 +192,12 @@ export default function FieldWorkerForm(props) {
     if (!formIsValid) {
       return;
     }
-    const m1 = await getNextMemberId(org)
+    const m1 = await getNextMemberId(org);
     sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
     const encryptedAadhar = await encrypt({
-      originalText: aadhar
+      originalText: aadhar,
     });
     const memberDetails = {
       memberID: memberID,
@@ -233,17 +230,20 @@ export default function FieldWorkerForm(props) {
     event.target.reset();
     handleReset();
     dispatch(setOpenEditDialog(false));
-    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
+    updateData(
+      currentUser.id,
+      { noOfApplicants: currentUser.noOfApplicants + 1 },
+      COLLECTIONS.USER
+    );
   };
   useEffect(() => {
     const fun = async () => {
       const mem = await getNextMemberId(org);
       sessionStorage.setItem("memberId", JSON.stringify(mem));
-      setMemberID(   mem         );
-    }
-    if(!memberID)
-      fun();
-  }, [])
+      setMemberID(mem);
+    };
+    if (!memberID) fun();
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -253,7 +253,9 @@ export default function FieldWorkerForm(props) {
           console.log("memberrrid", memberID);
           fetchData(memberID, COLLECTIONS.MANUSHI).then(async (response) => {
             const responseData = response?.[0];
-            const decryptedAadhar =  await decrypt({cipherText: responseData.aadhar});
+            const decryptedAadhar = await decrypt({
+              cipherText: responseData.aadhar,
+            });
             responseData.aadhar = decryptedAadhar.data.originalText;
             setDocID(responseData.id);
             setIsAssociatedUser(responseData.isAssociatedUser);

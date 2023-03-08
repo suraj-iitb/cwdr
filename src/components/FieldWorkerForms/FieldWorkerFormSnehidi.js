@@ -33,14 +33,14 @@ export default function FieldWorkerFormSnehidi(props) {
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
   const [memberID, setMemberID] = useState(
-    props.memberID || sessionStorage.getItem("memberId") && JSON.parse(sessionStorage.getItem("memberId"))
+    props.memberID ||
+      (sessionStorage.getItem("memberId") &&
+        JSON.parse(sessionStorage.getItem("memberId")))
   );
 
   const { currentUser } = useAuth();
 
   const dispatch = useDispatch();
-
-
 
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
 
@@ -75,7 +75,7 @@ export default function FieldWorkerFormSnehidi(props) {
     resetRenewalDateInput();
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
-    if(!isMember){
+    if (!isMember) {
       setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
   };
@@ -115,7 +115,8 @@ export default function FieldWorkerFormSnehidi(props) {
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
-  } = useInput(() => {}, (memberData.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
+  } = useInput(() => {},
+  memberData.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
 
   const {
     value: aadhar,
@@ -163,7 +164,7 @@ export default function FieldWorkerFormSnehidi(props) {
       return;
     }
 
-    const m1 = await getNextMemberId(org)
+    const m1 = await getNextMemberId(org);
     sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
@@ -194,18 +195,21 @@ export default function FieldWorkerFormSnehidi(props) {
     event.target.reset();
     handleReset();
     dispatch(setOpenEditDialog(false));
-    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
-
+    updateData(
+      currentUser.id,
+      { noOfApplicants: currentUser.noOfApplicants + 1 },
+      COLLECTIONS.USER
+    );
   };
 
   useEffect(() => {
     const fun = async () => {
       const mem = await getNextMemberId(org);
       sessionStorage.setItem("memberId", JSON.stringify(mem));
-      setMemberID(   mem         );
-    }
+      setMemberID(mem);
+    };
     fun();
-  }, [])
+  }, []);
 
   useEffect(() => {
     let interval;
@@ -228,7 +232,7 @@ export default function FieldWorkerFormSnehidi(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{width: "100%"}}>
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
       <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}

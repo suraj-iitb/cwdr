@@ -1,17 +1,13 @@
+import { useState } from "react";
+import { Snackbar, Alert, CssBaseline, Grid, ThemeProvider, createTheme } from "@mui/material";
 import { useLocation } from "react-router-dom";
+
 import FieldWorkerForm from "./FieldWorkerForm";
 import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
-import { storeData, fetchData } from "../../firebase/commonUtil";
-import { useState } from "react";
-import { Snackbar, Alert } from "@mui/material";
-import {
-  CssBaseline,
-  Grid,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { storeData } from "../../firebase/commonUtil";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
+
 const FieldWorkerRoot = (props) => {
   const theme = createTheme();
   const showHeader = props.showHeader ?? true;
@@ -49,7 +45,7 @@ const FieldWorkerRoot = (props) => {
 
   const fetchData = async (memberID) => {
     return await fetchData(memberID);
-  }
+  };
 
   return (
     <div
@@ -59,23 +55,24 @@ const FieldWorkerRoot = (props) => {
     >
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {showHeader && (
-          <Header />
-        )}
-<Grid container spacing={3} sx={{mt: "10px"}}>
-
-        {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-          <FieldWorkerForm org={org} saveData={saveData} data={props.data}             memberID={props.memberID}
-          />
-        )}
-        {org === COLLECTIONS.SNEHIDHI && (
-          <FieldWorkerFormSnehidi
-            org={org}
-            saveData={saveData}
-            fetchData={fetchData}
-            memberID={props.memberID}
-          />
-        )}
+        {showHeader && <Header />}
+        <Grid container spacing={3} sx={{ mt: "10px" }}>
+          {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
+            <FieldWorkerForm
+              org={org}
+              saveData={saveData}
+              data={props.data}
+              memberID={props.memberID}
+            />
+          )}
+          {org === COLLECTIONS.SNEHIDHI && (
+            <FieldWorkerFormSnehidi
+              org={org}
+              saveData={saveData}
+              fetchData={fetchData}
+              memberID={props.memberID}
+            />
+          )}
         </Grid>
 
         <Snackbar
