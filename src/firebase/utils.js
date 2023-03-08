@@ -3,7 +3,8 @@ import {
   getDoc,
   collection,
   getCountFromServer,
-  runTransaction
+  runTransaction,
+  updateDoc
 } from "firebase/firestore";
 import { COLLECTIONS } from "../constants/constants";
 
@@ -21,6 +22,13 @@ export const retrieveDoc = async (collectionName, id) => {
   }
 };
 
+export const updateDocument = async (collectionName, id, data) => {
+  const docRef = doc(db, collectionName, id);
+  console.log(collectionName, id, data)
+  await updateDoc(docRef, {
+    ...data
+  });
+};
 export const retrieveDocsCount = async (collectionName) => {
   const collectionRef = collection(db, collectionName);
   const snapshot = await getCountFromServer(collectionRef);

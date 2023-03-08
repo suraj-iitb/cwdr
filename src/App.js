@@ -24,7 +24,7 @@ export default function App() {
 
       <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN]} />}>
         <Route exact path="/admin" element={<AdminPage />}>
-          <Route exact path="addFieldWorker" element={<AddUser />} />
+          <Route exact path="addFieldWorker" element={<AddUser action="add" />} />
           <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
           <Route exact path="getUserData/:org" element={<UserList />} />
           <Route exact path="statistics" element={<Statistics />} />

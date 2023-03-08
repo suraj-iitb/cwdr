@@ -177,6 +177,7 @@ export function UserList() {
   };
 
   const handleDelete = async (id) => {
+    console.log(id)
     setDisableForm(true);
     deleteDoc(doc(db, org, id)).then(() => {
       setGridInfo((prevState) => ({
@@ -189,6 +190,7 @@ export function UserList() {
   };
 
   const handleOpenDialog = (id, fullName) => {
+    console.log(id)
     setSelectedUserId(id);
     setSelectedUserName(fullName);
     setOpenDialog(true);

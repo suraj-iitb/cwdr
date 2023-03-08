@@ -5,18 +5,54 @@ import { DeleteOutline, EditOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Container } from '@mui/material';
-
-import { db } from "../../firebase";
+import { db, addUser, deleteUser, encrypt, decrypt } from "../../firebase";
 import { COLLECTIONS } from '../../constants/constants';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
+import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
+
 
 import "./FieldWorkerList.scss";
+import { AddUser } from "../AddUser";
+import { useDispatch, useSelector } from "react-redux";
+
+function BootstrapDialogTitle(props) {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+}
 
 export function FieldWorkerList() {
+  const openEditFieldWorkerDialog = useSelector((state) => state.openEditFieldWorkerDialogReducer.value);
+
+  const dispatch = useDispatch();
   const [pageSize, setPageSize] = React.useState(10);
   const [data, setData] = useState([]);
   const [disableForm, setDisableForm] = React.useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [selectedWorkerId, setSelectedWorkerId] = React.useState(0);
+  const [selectedRow, setSelectedRow] = React.useState(0);
+
+  
   const [selectedWorkerName, setSelectedWorkerName] = React.useState();
 
   const fetchData = async () => {
@@ -30,13 +66,19 @@ export function FieldWorkerList() {
     });
   };
 
+  const handleFormClose = () => {
+    dispatch(setOpenEditFieldWorkerDialog(false));
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleDelete = async (id) => {
     setDisableForm(true);
-    await deleteDoc(doc(db, COLLECTIONS.USER, id));
+    await deleteUser({
+      uid: id
+    });
     fetchData();
     setOpenDialog(false);
     setDisableForm(false);
@@ -52,6 +94,13 @@ export function FieldWorkerList() {
     setOpenDialog(false);
   };
 
+  const handleOpenFormDialog = (id, rowData) => {
+    console.log(rowData);
+    setSelectedWorkerId(id);
+    setSelectedRow(rowData)
+    dispatch(setOpenEditFieldWorkerDialog(true));
+  };
+
   const columns = [
     {
       field: "action",
@@ -62,7 +111,7 @@ export function FieldWorkerList() {
           <>
             <button
               className="fieldWorkerEditButton"
-              // onClick={() => handleOpenFormDialog(params.row)}
+              onClick={() => handleOpenFormDialog(params.row.id, params.row)}
             >
               <EditOutlined fontSize="small" />
             </button>
@@ -87,6 +136,24 @@ export function FieldWorkerList() {
 
   return (
 <div style={{ height: 580, width: "100%" }}>
+
+    <Dialog
+        open={openEditFieldWorkerDialog}
+        onClose={handleFormClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleFormClose}>
+          Edit Field Worker
+        </BootstrapDialogTitle>
+        <DialogContent dividers>
+          <AddUser
+            action="edit" 
+            uid={selectedWorkerId}
+            row={selectedRow}
+          />
+        </DialogContent>
+      </Dialog>
 
       <Dialog
         open={openDialog}

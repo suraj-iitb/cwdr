@@ -26,6 +26,7 @@ const functions = getFunctions(app);
 // connectFunctionsEmulator(functions, "localhost", "5001");
 
 export const addUser = httpsCallable(functions, 'addUser');
+export const updateUser = httpsCallable(functions, 'updateUser');
 export const deleteUser = httpsCallable(functions, 'deleteUser');
 export const encrypt = httpsCallable(functions, 'encrypt');
 export const decrypt = httpsCallable(functions, 'decrypt');
