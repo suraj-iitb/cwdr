@@ -2,7 +2,7 @@ export { UnauthenticatedRoutes } from "./UnauthenticatedRoutes";
 export { AuthenticatedRoutes } from "./AuthenticatedRoutes";
 export { AuthRoute } from "./AuthRoute";
 export { SideBar } from "./SideBar";
-export { Header } from "./Header";
+export { Header } from "./header/Header";
 export { AddUser } from "./AddUser";
 export { EnhancedTable } from "./EnhancedTable";
 export { DownloadData } from "./DownloadData";

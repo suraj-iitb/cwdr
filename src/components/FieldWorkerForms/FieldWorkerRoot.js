@@ -6,8 +6,6 @@ import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 import {
   CssBaseline,
-  AppBar,
-  Toolbar,
   Grid,
   ThemeProvider,
   createTheme,

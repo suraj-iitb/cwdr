@@ -12,11 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Divider from "@mui/material/Divider";
 import Button from '@mui/material/Button';
 
-import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
-import { useAuth } from "../hooks";
+import { setMobileOpen } from "../../redux/slices/mobileOpenSlice";
+import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { ROLES } from "../constants/constants";
-import mainLogo from "../images/logo.png";
+import { ROLES } from "../../constants/constants";
+import mainLogo from "../../images/logo.png";
 import { Link } from "react-router-dom";
 
 import { Spa } from "@mui/icons-material";
