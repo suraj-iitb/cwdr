@@ -12,7 +12,6 @@ import {
   ThemeProvider,
   createTheme,
 } from "@mui/material";
-import { FormPageHeader } from "..";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
 const FieldWorkerRoot = (props) => {
