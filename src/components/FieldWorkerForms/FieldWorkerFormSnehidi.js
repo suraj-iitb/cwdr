@@ -19,7 +19,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
-import { fetchData, updateData } from "../../firebase/commonUtil";
+import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
+
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
 
@@ -185,9 +186,9 @@ export default function FieldWorkerFormSnehidi(props) {
     };
     try {
       if (!isMember) {
-        await props.saveData(memberDetails, org);
+        await props.saveData(org, memberDetails);
       } else {
-        await updateData(docID, { ...memberDetails, approved: false }, org);
+        await updateDocument(org, docID, { ...memberDetails, approved: false });
       }
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -195,10 +196,10 @@ export default function FieldWorkerFormSnehidi(props) {
     event.target.reset();
     handleReset();
     dispatch(setOpenEditDialog(false));
-    updateData(
+    updateDocument(
+      COLLECTIONS.USER,
       currentUser.id,
       { noOfApplicants: currentUser.noOfApplicants + 1 },
-      COLLECTIONS.USER
     );
   };
 
@@ -208,7 +209,8 @@ export default function FieldWorkerFormSnehidi(props) {
       sessionStorage.setItem("memberId", JSON.stringify(mem));
       setMemberID(mem);
     };
-    fun();
+    if(!memberID)
+      fun();
   }, []);
 
   useEffect(() => {
@@ -217,8 +219,9 @@ export default function FieldWorkerFormSnehidi(props) {
       interval = setTimeout(async () => {
         try {
           console.log("memberrrid", memberID);
-          fetchData(memberID, COLLECTIONS.SNEHIDHI).then((response) => {
-            const responseData = response?.[0];
+          retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then((response) => {
+            console.log(response)
+            const responseData = response;
             console.log("callubg", responseData, memberID);
             setDocID(responseData.id);
             setIsAssociatedUser(responseData.isAssociatedUser);

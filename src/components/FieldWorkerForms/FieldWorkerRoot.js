@@ -4,11 +4,12 @@ import { useLocation } from "react-router-dom";
 
 import FieldWorkerForm from "./FieldWorkerForm";
 import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
-import { storeData } from "../../firebase/commonUtil";
+import { addDocument } from "../../firebase";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
 
 const FieldWorkerRoot = (props) => {
+  console.log(props)
   const theme = createTheme();
   const showHeader = props.showHeader ?? true;
   const location = useLocation();
@@ -26,9 +27,9 @@ const FieldWorkerRoot = (props) => {
     setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
   };
 
-  const saveData = async (data, objectName) => {
+  const saveData = async (collectionName, data) => {
     try {
-      await storeData({ ...data, org: org }, objectName);
+      await addDocument(collectionName, data);
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -41,10 +42,6 @@ const FieldWorkerRoot = (props) => {
         message: "Error while submitted the form.",
       });
     }
-  };
-
-  const fetchData = async (memberID) => {
-    return await fetchData(memberID);
   };
 
   return (
@@ -69,7 +66,6 @@ const FieldWorkerRoot = (props) => {
             <FieldWorkerFormSnehidi
               org={org}
               saveData={saveData}
-              fetchData={fetchData}
               memberID={props.memberID}
             />
           )}

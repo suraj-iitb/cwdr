@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
-import { fetchData, updateData } from "../../firebase/commonUtil";
+import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
 import { useAuth } from "../../hooks";
@@ -220,9 +220,9 @@ export default function FieldWorkerForm(props) {
     };
     try {
       if (!isMember) {
-        await props.saveData(memberDetails, org);
+        await props.saveData(org, memberDetails);
       } else {
-        await updateData(docID, { ...memberDetails, approved: false }, org);
+        await updateDocument(org, docID, { ...memberDetails, approved: false });
       }
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -230,10 +230,10 @@ export default function FieldWorkerForm(props) {
     event.target.reset();
     handleReset();
     dispatch(setOpenEditDialog(false));
-    updateData(
+    updateDocument(
+      COLLECTIONS.USER,
       currentUser.id,
       { noOfApplicants: currentUser.noOfApplicants + 1 },
-      COLLECTIONS.USER
     );
   };
   useEffect(() => {
@@ -251,8 +251,10 @@ export default function FieldWorkerForm(props) {
       interval = setTimeout(async () => {
         try {
           console.log("memberrrid", memberID);
-          fetchData(memberID, COLLECTIONS.MANUSHI).then(async (response) => {
-            const responseData = response?.[0];
+          retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
+            console.log(response)
+
+            const responseData = response;
             const decryptedAadhar = await decrypt({
               cipherText: responseData.aadhar,
             });

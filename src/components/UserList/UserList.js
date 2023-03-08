@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
-import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
+import { getNextMemberId, encrypt, decrypt, retrieveDoc, updateDocument, retrieveAllDocs } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -23,7 +23,6 @@ import { usersListGridOrder } from "../../constants/constants";
 import { db } from "../../firebase";
 import "./UserList.scss";
 import FieldWorkerRoot from "../FieldWorkerForms/FieldWorkerRoot";
-import { fetchAllUsersData, updateData } from "../../firebase/commonUtil";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
@@ -116,7 +115,7 @@ export function UserList() {
   ];
 
   useEffect(() => {
-    fetchAllUsersData(org).then(async (response) => {
+    retrieveAllDocs(org).then(async (response) => {
       if (response.length > 0) {
         const columns = Object.keys(response?.[0]).map((key) => {
           const desiredColumn = usersListGridOrder[org].find(
@@ -155,7 +154,7 @@ export function UserList() {
 
   const handleApproval = (rowData) => {
     rowData = { ...rowData, approved: true };
-    updateData(rowData.id, rowData, org)
+    updateDocument(org, rowData.id, rowData)
       .then(() => {
         setGridInfo((prevState) => ({
           ...prevState,
@@ -196,7 +195,6 @@ export function UserList() {
     setOpenDialog(true);
   };
   const handleOpenFormDialog = (rowData) => {
-    console.log(rowData, openEditDialog)
     setselectedRowData(rowData);
     dispatch(setOpenEditDialog(true));
   };
@@ -222,7 +220,7 @@ export function UserList() {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <FieldWorkerRoot
-            org={selectedRowData.org}
+            org={org}
             showHeader={false}
             memberID={selectedRowData.memberID}
           />
