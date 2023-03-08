@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
   Grid,
@@ -17,33 +16,33 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useDispatch } from "react-redux";
+
 import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
-
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
-
 import { useAuth } from "../../hooks";
-import { useDispatch, useSelector } from "react-redux";
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { isNotEmpty } from "../../utils";
 
 export default function FieldWorkerFormSnehidi(props) {
-  const org = props.org;
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
-  const [memberID, setMemberID] = useState(
-    props.memberID ||
-      (sessionStorage.getItem("memberId") &&
-        JSON.parse(sessionStorage.getItem("memberId")))
-  );
+  const [memberID, setMemberID] = useState(props.memberID);
+  const [isAssociatedUser, setIsAssociatedUser] = useState(false);
 
   const { currentUser } = useAuth();
 
   const dispatch = useDispatch();
 
-  const [isAssociatedUser, setIsAssociatedUser] = useState(false);
+  const formRefs = useRef({
+    addressInputRef: null,
+  });
+
+  const org = props.org;
 
   const handleMemberChange = (event) => {
     handleReset();
@@ -64,16 +63,16 @@ export default function FieldWorkerFormSnehidi(props) {
   const handleReset = () => {
     setMemberID("");
     setMemberData({});
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetDobInput();
-    resetInsitutionInput();
-    resetCourseInput();
-    resetBillNoInput();
-    resetRefNoInput();
-    resetStaffNameInput();
-    resetAadharInput();
-    resetRenewalDateInput();
+    resetFirstNameInput("");
+    resetLastNameInput("");
+    resetDobInput(null);
+    resetInsitutionInput("");
+    resetCourseInput("");
+    resetBillNoInput("");
+    resetRefNoInput("");
+    resetStaffNameInput("");
+    resetAadharInput("");
+    resetRenewalDateInput(null);
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
     if (!isMember) {
@@ -81,11 +80,6 @@ export default function FieldWorkerFormSnehidi(props) {
     }
   };
 
-  const isNotEmpty = (value) => value?.trim() !== "";
-
-  const formRefs = useRef({
-    addressInputRef: null,
-  });
   const {
     value: firstName,
     isValid: firstNameIsValid,
@@ -112,43 +106,49 @@ export default function FieldWorkerFormSnehidi(props) {
   } = useInput(() => {}, memberData.dob);
 
   const {
-    value: renewalDate,
-    hasError: renewalDateHasError,
-    valueChangeHandler: renewalDateChangedHandler,
-    reset: resetRenewalDateInput,
-  } = useInput(() => {},
-  memberData.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
+    value: institutionName,
+    valueChangeHandler: institutionValueChangeHandler,
+    reset: resetInsitutionInput,
+  } = useInput(() => {}, memberData.institutionName);
+
+  const {
+    value: courseName,
+    valueChangeHandler: courseChangeHandler,
+    reset: resetCourseInput,
+  } = useInput(() => {}, memberData.courseName);
+
+  const {
+    value: billNo,
+    valueChangeHandler: billChangeHandler,
+    reset: resetBillNoInput,
+  } = useInput(() => {}, memberData.billNo);
+
+  const {
+    value: refNo,
+    valueChangeHandler: refChangeHandler,
+    reset: resetRefNoInput,
+  } = useInput(() => {}, memberData.refNo);
+
 
   const {
     value: aadhar,
     valueChangeHandler: aadharChangeHandler,
     reset: resetAadharInput,
   } = useInput(() => {}, memberData.aadhar);
-  const {
-    value: institutionName,
-    valueChangeHandler: institutionValueChangeHandler,
-    reset: resetInsitutionInput,
-  } = useInput(() => {}, memberData.institutionName);
-  const {
-    value: courseName,
-    valueChangeHandler: courseChangeHandler,
-    reset: resetCourseInput,
-  } = useInput(() => {}, memberData.courseName);
-  const {
-    value: billNo,
-    valueChangeHandler: billChangeHandler,
-    reset: resetBillNoInput,
-  } = useInput(() => {}, memberData.billNo);
-  const {
-    value: refNo,
-    valueChangeHandler: refChangeHandler,
-    reset: resetRefNoInput,
-  } = useInput(() => {}, memberData.refNo);
+
   const {
     value: fieldStaffName,
     valueChangeHandler: staffNameChangeHandler,
     reset: resetStaffNameInput,
   } = useInput(() => {}, memberData.fieldStaffName);
+
+  const {
+    value: renewalDate,
+    hasError: renewalDateHasError,
+    valueChangeHandler: renewalDateChangedHandler,
+    reset: resetRenewalDateInput,
+  } = useInput(() => {},
+  memberData.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
 
   let formIsValid = false;
 
@@ -159,14 +159,13 @@ export default function FieldWorkerFormSnehidi(props) {
   ) {
     formIsValid = true;
   }
+
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
+
     if (!formIsValid) {
       return;
     }
-
-    const m1 = await getNextMemberId(org);
-    sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
@@ -175,42 +174,49 @@ export default function FieldWorkerFormSnehidi(props) {
       lastName,
       dob,
       address: { ...address },
-      aadhar,
       institutionName,
       courseName,
       billNo,
       refNo,
       fieldStaffName,
-      renewalDate,
       isAssociatedUser,
+      aadhar,
+      renewalDate,
+      approved: false,
     };
     try {
       if (!isMember) {
         await props.saveData(org, memberDetails);
       } else {
-        await updateDocument(org, docID, { ...memberDetails, approved: false });
+        await updateDocument(org, docID, memberDetails);
       }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+
+    const memberId = await getNextMemberId(org);
+    sessionStorage.setItem("memberId", JSON.stringify(memberId));
+
     event.target.reset();
     handleReset();
+
+    updateDocument(COLLECTIONS.USER, currentUser.id, {
+      noOfApplicants: currentUser.noOfApplicants + 1,
+    });
+
     dispatch(setOpenEditDialog(false));
-    updateDocument(
-      COLLECTIONS.USER,
-      currentUser.id,
-      { noOfApplicants: currentUser.noOfApplicants + 1 },
-    );
+
   };
 
   useEffect(() => {
-    const fun = async () => {
-      const mem = await getNextMemberId(org);
-      sessionStorage.setItem("memberId", JSON.stringify(mem));
-      setMemberID(mem);
+    const getNextMemberIdFunction = async () => {
+      const memberId = await getNextMemberId(org);
+      sessionStorage.setItem("memberId", JSON.stringify(memberId));
+      setMemberID(memberId);
     };
-    if(!memberID)
-      fun();
+    if (!memberID) {
+      getNextMemberIdFunction();
+    }
   }, []);
 
   useEffect(() => {
@@ -218,16 +224,14 @@ export default function FieldWorkerFormSnehidi(props) {
     if (memberID && isMember) {
       interval = setTimeout(async () => {
         try {
-          console.log("memberrrid", memberID);
-          retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then((response) => {
-            console.log(response)
-            const responseData = response;
-            console.log("callubg", responseData, memberID);
-            setDocID(responseData.id);
-            setIsAssociatedUser(responseData.isAssociatedUser);
-            setMemberData(responseData);
-            formRefs.current.addressInputRef.setAddress(responseData?.address);
-          });
+          retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then(
+            (response) => {
+              formRefs.current.addressInputRef.setAddress(response?.address);
+              setDocID(response.id);
+              setIsAssociatedUser(response.isAssociatedUser);
+              setMemberData(response);
+            }
+          );
         } catch (error) {}
       }, 2000);
     }
@@ -280,7 +284,7 @@ export default function FieldWorkerFormSnehidi(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                { (<LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Next Date of Renewal"
                     onChange={renewalDateChangedHandler}
@@ -291,6 +295,7 @@ export default function FieldWorkerFormSnehidi(props) {
                     minDate={new Date()}
                   />
                 </LocalizationProvider>
+                )}
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>

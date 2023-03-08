@@ -66,12 +66,12 @@ const AddressInput = forwardRef((props, ref) => {
       return { addLine1, addLine2, city, state, zip, country };
     },
     handleReset() {
-      resetAddLine1Input();
-      resetAddLine2Input();
-      resetCityInput();
-      resetCountryInput();
-      resetStateInput();
-      resetZipInput();
+      resetAddLine1Input("");
+      resetAddLine2Input("");
+      resetCityInput("");
+      resetCountryInput("");
+      resetStateInput("");
+      resetZipInput("");
       setAddressDetails({})
     },
     setAddress(addressData) {
