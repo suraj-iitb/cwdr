@@ -2,9 +2,8 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline, EditOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Container } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 import { db } from "../../firebase";
 import { COLLECTIONS } from '../../constants/constants';

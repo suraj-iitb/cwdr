@@ -4,11 +4,10 @@ import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
 import { storeData } from "../../firebase/commonUtil";
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
-import { CssBaseline, Grid, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline, Grid } from "@mui/material";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
 const FieldWorkerRoot = (props) => {
-  const theme = createTheme();
   const showHeader = props.showHeader ?? true;
   const location = useLocation();
   const query = new URLSearchParams(location.search);
@@ -53,39 +52,33 @@ const FieldWorkerRoot = (props) => {
         background: `url("../images/background.jpeg") repeat`,
       }}
     >
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {showHeader && <Header />}
-        <div class="contentBody">
-          <Grid container spacing={3}>
-            {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-              <FieldWorkerForm
-                org={org}
-                saveData={saveData}
-                data={props.data}
-              />
-            )}
-            {org === COLLECTIONS.SNEHIDHI && (
-              <FieldWorkerFormSnehidi
-                org={org}
-                saveData={saveData}
-                fetchData={fetchData}
-                memberID={props.memberID}
-              />
-            )}
-          </Grid>
-        </div>
-        <Snackbar
-          autoHideDuration={5000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          open={openSnackbar.open}
-          onClose={handleClose}
-        >
-          <Alert onClose={handleClose} severity={openSnackbar.state}>
-            {openSnackbar.message}
-          </Alert>
-        </Snackbar>
-      </ThemeProvider>
+      <CssBaseline />
+      {showHeader && <Header />}
+      <div class="contentBody">
+        <Grid container spacing={3} sx={{ mt: 0 }}>
+          {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
+            <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
+          )}
+          {org === COLLECTIONS.SNEHIDHI && (
+            <FieldWorkerFormSnehidi
+              org={org}
+              saveData={saveData}
+              fetchData={fetchData}
+              memberID={props.memberID}
+            />
+          )}
+        </Grid>
+      </div>
+      <Snackbar
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openSnackbar.open}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={openSnackbar.state}>
+          {openSnackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -9,38 +8,33 @@ import HomeIcon from "@mui/icons-material/Home"
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
-import { useDispatch, useSelector } from "react-redux";
-import Divider from "@mui/material/Divider";
-import Button from '@mui/material/Button';
+// import { useDispatch, useSelector } from "react-redux";
 
-import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
+// import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { useAuth } from "../hooks";
 import { useNavigate } from "react-router-dom";
 import { ROLES } from "../constants/constants";
 import mainLogo from "../images/logo.png";
-import { Link } from "react-router-dom";
 
-import { Spa } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { styled, useTheme } from "@mui/material/styles";
+import MuiAppBar from "@mui/material/AppBar";
+import { styled } from "@mui/material/styles";
 import { useMatch } from "react-router-dom";
 export function Header(props) {
   const { open, handleDrawerOpen, drawerWidth } = props;
-  const adminMatch = useMatch("/admin");
+  const adminMatch = useMatch("/admin*");
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
+  // const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   const { currentUser, _signOut } = useAuth();
 
-  const handleDrawerToggle = () => {
-    dispatch(setMobileOpen(!mobileOpen));
-  };
+  // const handleDrawerToggle = () => {
+  //   dispatch(setMobileOpen(!mobileOpen));
+  // };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,9 +44,9 @@ export function Header(props) {
     setAnchorEl(null);
   };
 
-  const handleName = () => {
-    setAnchorEl(null);
-  };
+  // const handleName = () => {
+  //   setAnchorEl(null);
+  // };
   
   const handleSignOut = () => {
     _signOut();
@@ -92,7 +86,7 @@ export function Header(props) {
     <div class="contentHeader">
       {/* <Box sx={{ height: props.drawerWidth ? "100vh" : "8vh" }}> */}
         <AppBar position="fixed" open={open}>
-          <Toolbar style={{ backgroundColor: "#9131b9" }}>
+          <Toolbar style={{ backgroundColor: "#EAEAEE" , color: 'black'}}>
             <IconButton
               color="inherit"
               aria-label="open drawer"

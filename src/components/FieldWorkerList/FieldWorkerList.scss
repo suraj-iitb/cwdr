@@ -1,6 +1,12 @@
 .fieldWorkerListPage {
   flex: 4;
-
+  background:rgba(234, 234, 238, 1);
+  padding: 2.5rem 0.625rem;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(50px);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  
   .fieldWorkerEditButton {
     border: none;
     border-radius: 10px;

@@ -40,7 +40,7 @@
 }
 
 .card-description-bk {
-  background: linear-gradient(230deg, rgba(255,255,255,1) 18%, rgba(145,49,185,1) 56%);
+  background: linear-gradient(81deg, rgba(23,0,57,0.9794511554621849) 0%, rgba(234,234,238,1) 96%);
   border-radius: 30px;
   position: absolute;
   top: 55%;
@@ -91,14 +91,14 @@
   right: 10px;
   bottom: 5%;
   padding: 15px 18px;
-  border: 1px solid #fff;
-  background: #fff;
+  
+  background: #261C36;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .card-btn a {
-  color: #000;
+  color: white;
 }
 
 /* END CARD DESIGN */

@@ -1,7 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -15,24 +14,14 @@ import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import WomanIcon from "@mui/icons-material/Woman";
 import GirlIcon from "@mui/icons-material/Girl";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import ThumbUpOffAltOutlinedIcon from "@mui/icons-material/ThumbUpOffAltOutlined";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import Logout from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
 import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
 import { adminDrawerWidth } from "../constants/constants";
-import { useAuth } from "../hooks";
-import { styled, useTheme } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import Toolbar from "@mui/material/Toolbar";
-import { Outlet } from "react-router-dom";
+// import { useAuth } from "../hooks";
 import { COLLECTIONS } from "../constants/constants";
 
 import { capitalize } from "../utils";
@@ -46,7 +35,7 @@ export function SideBar({ open, handleDrawerClose }) {
 
   const dispatch = useDispatch();
 
-  const { _signOut } = useAuth();
+  // const { _signOut } = useAuth();
 
  
 
@@ -54,10 +43,10 @@ export function SideBar({ open, handleDrawerClose }) {
     setOpenManageFieldWorker(!openManageFieldWorker);
   };
 
-  const handleSignOut = (event) => {
-    event.preventDefault();
-    _signOut();
-  };
+  // const handleSignOut = (event) => {
+  //   event.preventDefault();
+  //   _signOut();
+  // };
 
   const handleUserData = () => {
     setOpenUserData(!openUserData);

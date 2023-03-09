@@ -12,7 +12,6 @@ import {
   TextField,
   FormControlLabel,
   Container,
-  Paper,
 } from "@mui/material";
 
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -22,9 +21,9 @@ import useInput from "../../hooks/useInput";
 import AddressInput from "../UI/AddressInput";
 import { fetchData, updateData } from "../../firebase/commonUtil";
 import { COLLECTIONS } from "../../constants/constants";
-import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
+import { getNextMemberId, encrypt, decrypt } from "../../firebase";
 import { useAuth } from "../../hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
 
 export default function FieldWorkerForm(props) {
@@ -267,8 +266,7 @@ export default function FieldWorkerForm(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
-      <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }} className="formContainer">
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -535,7 +533,6 @@ export default function FieldWorkerForm(props) {
             </Button>
           </Box>
         </form>
-      </Paper>
     </Container>
   );
 }

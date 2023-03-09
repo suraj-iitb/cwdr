@@ -11,7 +11,6 @@ import {
 import { SignIn, AdminPage, Home } from "./pages";
 import { ROLES } from "./constants/constants";
 import FieldWorkerRoot from "./components/FieldWorkerForms/FieldWorker.root";
-import { Header } from "./components";
 import "./App.scss"
 export default function App() {
   return (
