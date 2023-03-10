@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
   Grid,
@@ -12,28 +11,27 @@ import {
   TextField,
   FormControlLabel,
   Container,
+  Paper,
 } from "@mui/material";
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useDispatch } from "react-redux";
+
 import useInput from "../../hooks/useInput";
-import AddressInput from "../UI/AddressInput";
-import { fetchData, updateData } from "../../firebase/commonUtil";
+import {AddressInput} from "..";
+import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt } from "../../firebase";
 import { useAuth } from "../../hooks";
-import { useDispatch } from "react-redux";
-import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
+import { isNotEmpty, isValidPhone } from "../../utils";
 
-export default function FieldWorkerForm(props) {
-  const org = props.org;
+export function FieldWorkerFormManushiMaithri(props) {
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
-  const [memberID, setMemberID] = useState(
-    props.memberID);
-
+  const [memberID, setMemberID] = useState(props.memberID);
   const [isAssociatedUser, setIsAssociatedUser] = useState(false);
   const [isUserEmployed, setIsUserEmployed] = useState(false);
 
@@ -41,6 +39,11 @@ export default function FieldWorkerForm(props) {
 
   const dispatch = useDispatch();
 
+  const formRefs = useRef({
+    addressInputRef: null,
+  });
+
+  const org = props.org;
 
   const handleMemberChange = (event) => {
     handleReset();
@@ -48,35 +51,38 @@ export default function FieldWorkerForm(props) {
       setMemberID("");
     } else {
       setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
-        }
+    }
     setIsMember(event.target.value === "true");
   };
 
-  const memberIDChangeHandler = async (event) => {
+  const memberIDChangeHandler = (event) => {
     setMemberID(event.target.value);
   };
-  const handleUserAssociatedChange = (event) =>
+  const handleUserAssociatedChange = (event) => {
     setIsAssociatedUser(event.target.value === "true");
+  };
 
-  const handleEmployeeChange = (event) =>
+  const handleEmployeeChange = (event) => {
     setIsUserEmployed(event.target.value === "true");
+  };
+
   const handleReset = () => {
     setMemberID("");
     setMemberData({});
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetDobInput();
-    resetPhoneInput();
-    resetdependantsInput();
-    resetBillNoInput();
-    resetRefNoInput();
-    resetStaffNameInput();
-    resetAadharInput();
-    resetRenewalDateInput();
+    firstNameReset("");
+    lastNameReset("");
+    dobReset(null);
+    resetPhoneInput("");
+    dependantsReset("");
+    billNoInputReset("");
+    refNoReset("");
+    staffNameReset("");
+    aadharReset("");
+    renewalDateReset(null);
     if (isUserEmployed) {
-      resetCompanyNameInput();
-      resetOccupationInput();
-      resetyoeInput();
+      companyNameReset("");
+      occupationReset("");
+      yearsOfExpReset("");
     }
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
@@ -85,102 +91,96 @@ export default function FieldWorkerForm(props) {
     }
   };
 
-  const isNotEmpty = (value) => value?.trim() !== "";
-  const isValidPhone = (value) =>
-    /^(\+91[-\s]?)?[0]?(91)?[6789]\d{9}$/.test(value);
-
-  const formRefs = useRef({
-    addressInputRef: null,
-  });
   const {
     value: firstName,
     isValid: firstNameIsValid,
-    hasError: firstNameInputHasError,
-    valueChangeHandler: firstNameChangedHandler,
-    inputBlurHandler: firstNameBlurHandler,
-    reset: resetFirstNameInput,
+    hasError: firstNameHasError,
+    valueChangeHandler: firstNameValueChangeHandler,
+    inputBlurHandler: firstNameInputBlurHandler,
+    reset: firstNameReset,
   } = useInput(isNotEmpty, memberData.firstName);
 
   const {
     value: lastName,
     isValid: lastNameIsValid,
-    hasError: lastNameInputHasError,
-    valueChangeHandler: lastNameChangedHandler,
-    inputBlurHandler: lastNameBlurHandler,
-    reset: resetLastNameInput,
+    hasError: lastNameHasError,
+    valueChangeHandler: lastNameValueChangeHandler,
+    inputBlurHandler: lastNameInputBlurHandler,
+    reset: lastNameReset,
   } = useInput(isNotEmpty, memberData.lastName);
 
   const {
     value: dob,
-    hasError: dobInputHasError,
-    valueChangeHandler: dobChangedHandler,
-    reset: resetDobInput,
+    hasError: dobHasError,
+    valueChangeHandler: dobValueChangeHandler,
+    reset: dobReset,
   } = useInput(() => {}, memberData.dob);
 
   const {
-    value: renewalDate,
-    hasError: renewalDateHasError,
-    valueChangeHandler: renewalDateChangedHandler,
-    reset: resetRenewalDateInput,
-  } = useInput(() => {}, memberData.renewalDate);
-
-  const {
     value: aadhar,
-    valueChangeHandler: aadharChangeHandler,
-    reset: resetAadharInput,
+    valueChangeHandler: aadharValueChangeHandler,
+    reset: aadharReset,
   } = useInput(() => {}, memberData.aadhar);
 
   const {
     value: phone,
     isValid: phoneIsValid,
     hasError: phoneHasError,
-    valueChangeHandler: phoneChangedHandler,
-    inputBlurHandler: phoneBlurHandler,
+    valueChangeHandler: phoneValueChangeHandler,
+    inputBlurHandler: phoneInputBlurHandler,
     reset: resetPhoneInput,
   } = useInput(isValidPhone, memberData.phone);
 
   const {
     value: billNo,
-    valueChangeHandler: billChangeHandler,
-    reset: resetBillNoInput,
+    valueChangeHandler: billValueChangeHandler,
+    reset: billNoInputReset,
   } = useInput(() => {}, memberData.billNo);
+
   const {
     value: refNo,
-    valueChangeHandler: refChangeHandler,
-    reset: resetRefNoInput,
+    valueChangeHandler: refValueChangeHandler,
+    reset: refNoReset,
   } = useInput(() => {}, memberData.refNo);
-  const {
-    value: fieldStaffName,
-    valueChangeHandler: staffNameChangeHandler,
-    reset: resetStaffNameInput,
-  } = useInput(() => {}, memberData.fieldStaffName);
 
   const {
     value: dependants,
-    valueChangeHandler: dependantsChangeHandler,
-    reset: resetdependantsInput,
+    valueChangeHandler: dependantsValueChangeHandler,
+    reset: dependantsReset,
   } = useInput(() => {}, memberData.dependants);
 
   const {
     value: companyName,
-    valueChangeHandler: companyNameChangeHandler,
-    reset: resetCompanyNameInput,
+    valueChangeHandler: companyNameValueChangeHandler,
+    reset: companyNameReset,
   } = useInput(() => {}, memberData.companyName);
 
   const {
     value: occupation,
-    valueChangeHandler: occupationhangeHandler,
-    reset: resetOccupationInput,
+    valueChangeHandler: occupationValueChangeHandler,
+    reset: occupationReset,
   } = useInput(() => {}, memberData.occupation);
 
   const {
     value: yearsOfExp,
-    valueChangeHandler: yoeChangeHandler,
-    reset: resetyoeInput,
+    valueChangeHandler: yearsOfExpValueChangeHandler,
+    reset: yearsOfExpReset,
   } = useInput(() => {}, memberData.yearsOfExp);
 
-  let formIsValid = false;
+  const {
+    value: fieldStaffName,
+    valueChangeHandler: staffNameValueChangeHandler,
+    reset: staffNameReset,
+  } = useInput(() => {}, memberData.fieldStaffName);
 
+  const {
+    value: renewalDate,
+    hasError: renewalDateHasError,
+    valueChangeHandler: renewalDateValueChangeHandler,
+    reset: renewalDateReset,
+  } = useInput(() => {}, memberData.renewalDate);
+
+  let formIsValid = false;
   if (
     firstNameIsValid &&
     lastNameIsValid &&
@@ -189,75 +189,86 @@ export default function FieldWorkerForm(props) {
   ) {
     formIsValid = true;
   }
+
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
+
     if (!formIsValid) {
       return;
     }
-    const m1 = await getNextMemberId(org)
-    sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
-    const encryptedAadhar = await encrypt({
-      originalText: aadhar
-    });
+    const encryptedAadhar = await encrypt({ originalText: aadhar });
+
     const memberDetails = {
       memberID: memberID,
       firstName,
       lastName,
-      dob,
-      phone,
       address: { ...address },
-      aadhar: encryptedAadhar.data.cipherText,
+      dob,
+      aadhar: encryptedAadhar?.data?.cipherText,
+      phone,
       billNo,
       refNo,
-      fieldStaffName,
-      renewalDate,
-      isAssociatedUser,
       dependants,
       isUserEmployed,
-      occupation,
       companyName,
+      occupation,
       yearsOfExp,
+      fieldStaffName,
+      isAssociatedUser,
+      renewalDate,
+      approved: false,
     };
+
     try {
       if (!isMember) {
-        await props.saveData(memberDetails, org);
+        await props.saveData(org, memberDetails);
       } else {
-        await updateData(docID, { ...memberDetails, approved: false }, org);
+        await updateDocument(org, docID, memberDetails);
       }
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error submitting form: ", e);
     }
+
+    const memberId = await getNextMemberId(org);
+    sessionStorage.setItem("memberId", JSON.stringify(memberId));
+
     event.target.reset();
     handleReset();
-    dispatch(setOpenEditDialog(false));
-    updateData(currentUser.id, { noOfApplicants: currentUser.noOfApplicants + 1  }, COLLECTIONS.USER);
+
+    updateDocument(COLLECTIONS.USER, currentUser.id, {
+      noOfApplicants: currentUser.noOfApplicants + 1,
+    });
+
+    dispatch(setOpenEditUserDialog(false));
   };
+
   useEffect(() => {
-    const fun = async () => {
-      const mem = await getNextMemberId(org);
-      sessionStorage.setItem("memberId", JSON.stringify(mem));
-      setMemberID(   mem         );
+    const getNextMemberIdFunction = async () => {
+      const memberId = await getNextMemberId(org);
+      sessionStorage.setItem("memberId", JSON.stringify(memberId));
+      setMemberID(memberId);
+    };
+    if (!memberID) {
+      getNextMemberIdFunction();
     }
-    if(!memberID)
-      fun();
-  }, [])
+  }, []);
 
   useEffect(() => {
     let interval;
     if (memberID && isMember) {
       interval = setTimeout(async () => {
         try {
-          console.log("memberrrid", memberID);
-          fetchData(memberID, COLLECTIONS.MANUSHI).then(async (response) => {
-            const responseData = response?.[0];
-            const decryptedAadhar =  await decrypt({cipherText: responseData.aadhar});
-            responseData.aadhar = decryptedAadhar.data.originalText;
-            setDocID(responseData.id);
-            setIsAssociatedUser(responseData.isAssociatedUser);
-            setMemberData(responseData);
-            formRefs.current.addressInputRef.setAddress(responseData?.address);
+          retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
+            const decryptedAadhar = await decrypt({
+              cipherText: response?.aadhar,
+            });
+            response.aadhar = decryptedAadhar?.data?.originalText;
+            formRefs.current.addressInputRef.setAddress(response?.address);
+            setDocID(response.id);
+            setIsAssociatedUser(response.isAssociatedUser);
+            setMemberData(response);
           });
         } catch (error) {}
       }, 2000);
@@ -266,7 +277,8 @@ export default function FieldWorkerForm(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }} className="formContainer">
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
+      <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -309,11 +321,11 @@ export default function FieldWorkerForm(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                {isMember && (
+                { (
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       label="Next Date of Renewal"
-                      onChange={renewalDateChangedHandler}
+                      onChange={renewalDateValueChangeHandler}
                       renderInput={(params) => (
                         <TextField {...params} error={renewalDateHasError} />
                       )}
@@ -331,12 +343,10 @@ export default function FieldWorkerForm(props) {
                 label="First name"
                 fullWidth
                 autoComplete="given-name"
-                error={firstNameInputHasError}
-                helperText={
-                  firstNameInputHasError && "This field cannot be empty"
-                }
-                onChange={firstNameChangedHandler}
-                onBlur={firstNameBlurHandler}
+                error={firstNameHasError}
+                helperText={firstNameHasError && "This field cannot be empty"}
+                onChange={firstNameValueChangeHandler}
+                onBlur={firstNameInputBlurHandler}
                 value={firstName}
               />
             </Grid>
@@ -347,44 +357,40 @@ export default function FieldWorkerForm(props) {
                 label="Last name"
                 fullWidth
                 autoComplete="family-name"
-                error={lastNameInputHasError}
-                helperText={
-                  lastNameInputHasError && "This field cannot be empty"
-                }
-                onChange={lastNameChangedHandler}
-                onBlur={lastNameBlurHandler}
+                error={lastNameHasError}
+                helperText={lastNameHasError && "This field cannot be empty"}
+                onChange={lastNameValueChangeHandler}
+                onBlur={lastNameInputBlurHandler}
                 value={lastName}
               />
             </Grid>
-            <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Date Of Birth"
-                  onChange={dobChangedHandler}
-                  renderInput={(params) => (
-                    <TextField {...params} error={dobInputHasError} />
-                  )}
-                  value={dob}
-                  maxDate={new Date()}
+            <Grid item xs={12} container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  id="ph_num"
+                  label="Phone Number"
+                  fullWidth
+                  autoComplete="ph_num"
+                  required
+                  error={isNotEmpty && phoneHasError}
+                  helperText={phoneHasError && "Enter a valid phone number"}
+                  value={phone}
+                  onChange={phoneValueChangeHandler}
+                  onBlur={phoneInputBlurHandler}
                 />
-              </LocalizationProvider>
-            </Grid>
-            <AddressInput
-              ref={(ref) => (formRefs.current.addressInputRef = ref)}
-            />
-            <Grid item xs={12}>
-              <TextField
-                id="ph_num"
-                label="Phone Number"
-                fullWidth
-                autoComplete="ph_num"
-                required
-                error={isNotEmpty && phoneHasError}
-                helperText={phoneHasError && "Enter a valid phone number"}
-                value={phone}
-                onChange={phoneChangedHandler}
-                onBlur={phoneBlurHandler}
-              />
+              </Grid>
+              <Grid item xs={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Date Of Birth"
+                    onChange={dobValueChangeHandler}
+                    renderInput={(params) => (
+                      <TextField {...params} error={dobHasError} />
+                    )}
+                    value={dob}
+                  />
+                </LocalizationProvider>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -397,16 +403,19 @@ export default function FieldWorkerForm(props) {
                   placeholder: "XXXX-XXXX-XXXX",
                 }}
                 value={aadhar}
-                onChange={aadharChangeHandler}
+                onChange={aadharValueChangeHandler}
               />
             </Grid>
+            <AddressInput
+              ref={(ref) => (formRefs.current.addressInputRef = ref)}
+            />
             <Grid item xs={12}>
               <TextField
                 id="bill_no"
                 label="Bill Number"
                 fullWidth
                 value={billNo}
-                onChange={billChangeHandler}
+                onChange={billValueChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -416,7 +425,7 @@ export default function FieldWorkerForm(props) {
                 fullWidth
                 autoComplete="ref_no"
                 value={refNo}
-                onChange={refChangeHandler}
+                onChange={refValueChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -426,7 +435,7 @@ export default function FieldWorkerForm(props) {
                 fullWidth
                 autoComplete="staff_name"
                 value={fieldStaffName}
-                onChange={staffNameChangeHandler}
+                onChange={staffNameValueChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -437,7 +446,7 @@ export default function FieldWorkerForm(props) {
                 multiline
                 rows={4}
                 value={dependants}
-                onChange={dependantsChangeHandler}
+                onChange={dependantsValueChangeHandler}
               />
             </Grid>
             {org === COLLECTIONS.MANUSHI && (
@@ -496,7 +505,7 @@ export default function FieldWorkerForm(props) {
                         label="Company Name"
                         value={companyName}
                         fullWidth
-                        onChange={companyNameChangeHandler}
+                        onChange={companyNameValueChangeHandler}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -505,7 +514,7 @@ export default function FieldWorkerForm(props) {
                         label="Occupation"
                         value={occupation}
                         fullWidth
-                        onChange={occupationhangeHandler}
+                        onChange={occupationValueChangeHandler}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -514,7 +523,7 @@ export default function FieldWorkerForm(props) {
                         label="Years of Experience"
                         value={yearsOfExp}
                         fullWidth
-                        onChange={yoeChangeHandler}
+                        onChange={yearsOfExpValueChangeHandler}
                       />
                     </Grid>
                   </Grid>
@@ -533,6 +542,7 @@ export default function FieldWorkerForm(props) {
             </Button>
           </Box>
         </form>
+      </Paper>
     </Container>
   );
 }

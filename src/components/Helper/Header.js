@@ -1,20 +1,24 @@
-import * as React from "react";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
+import { useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import HomeIcon from "@mui/icons-material/Home"
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import Box from "@mui/material/Box";
-// import { useDispatch, useSelector } from "react-redux";
-
-// import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
-import { useAuth } from "../hooks";
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  MenuItem,
+  Menu,
+  Box,
+  Divider,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ROLES } from "../constants/constants";
-import mainLogo from "../images/logo.png";
+
+import { setMobileOpen } from "../../redux/slices/mobileOpenSlice";
+import { useAuth } from "../../hooks";
+import { ROLES } from "../../constants/constants";
+import mainLogo from "../../images/logo.png";
 
 import MuiAppBar from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
@@ -22,7 +26,7 @@ import { useMatch } from "react-router-dom";
 export function Header(props) {
   const { open, handleDrawerOpen, drawerWidth } = props;
   const adminMatch = useMatch("/admin*");
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);
 
@@ -44,10 +48,10 @@ export function Header(props) {
     setAnchorEl(null);
   };
 
-  // const handleName = () => {
-  //   setAnchorEl(null);
-  // };
-  
+  const handleName = () => {
+    setAnchorEl(null);
+  };
+
   const handleSignOut = () => {
     _signOut();
     setAnchorEl(null);

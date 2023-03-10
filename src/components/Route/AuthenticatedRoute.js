@@ -1,8 +1,8 @@
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 
-import { useAuth } from "../hooks";
+import { useAuth } from "../../hooks";
 
-export const AuthRoute = ({ allowedRoles }) => {
+export const AuthenticatedRoute = ({ allowedRoles }) => {
   const { currentUser } = useAuth();
   const location = useLocation();
 

@@ -6,25 +6,25 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import { Box } from "@mui/material";
 import "./Home.scss";
-import { Header } from "../components";
-import { COLLECTIONS } from "../constants/constants";
+import { Header } from "../../components";
+import { COLLECTIONS } from "../../constants/constants";
 
 export const Home = () => {
   const images = [
     {
-      src: require("../images/maithri.jpeg"),
+      src: require("../../images/maithri.jpeg"),
       alt: COLLECTIONS.MAITHRI,
       title: COLLECTIONS.MAITHRI,
       link: `/fieldworkerform?org=${COLLECTIONS.MAITHRI}`,
     },
     {
-      src: require("../images/manushi.jpeg"),
+      src: require("../../images/manushi.jpeg"),
       alt: COLLECTIONS.MANUSHI,
       title: COLLECTIONS.MANUSHI,
       link: `/fieldworkerform?org=${COLLECTIONS.MANUSHI}`,
     },
     {
-      src: require("../images/snehidhi.jpeg"),
+      src: require("../../images/snehidhi.jpeg"),
       alt: COLLECTIONS.SNEHIDHI,
       title: COLLECTIONS.SNEHIDHI,
       link: `/fieldworkerform?org=${COLLECTIONS.SNEHIDHI}`,

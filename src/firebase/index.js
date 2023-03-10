@@ -1,5 +1,19 @@
-export { auth } from "./firebase";
-export { db } from "./firebase";
-export { createUserProfileDocument } from './firebase';
-export { deleteUser, addUser, encrypt, decrypt } from './firebase';
-export { retrieveDoc, retrieveDocsCount, getNextMemberId } from './utils';
+export {
+  db,
+  auth,
+  addUser,
+  updateUser,
+  deleteUser,
+  encrypt,
+  decrypt,
+  createUserProfileDocument,
+} from "./firebase";
+export {
+  retrieveDocsCount,
+  retrieveAllDocs,
+  retrieveDoc,
+  addDocument,
+  updateDocument,
+  retrieveOrgDataUsingMemberId,
+  getNextMemberId,
+} from "./utils";

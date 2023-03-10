@@ -54,6 +54,22 @@ exports.addUser = functions.https.onCall((data) => {
     });
 });
 
+exports.updateUser = functions.https.onCall((data) => {
+  admin
+    .auth()
+    .updateUser(data.uid, {
+      email: data.email,
+      password: data.password,
+      displayName: data.firstName + " " + data.lastName,
+    })
+    .then(() => {
+      console.log(`User with ID: ${data.uid} updated.`);
+    })
+    .catch((error) => {
+      console.log("Error updating user:", error);
+    });
+});
+
 exports.deleteUserTrigger = functions.auth.user().onDelete((user) => {
   admin
     .firestore()

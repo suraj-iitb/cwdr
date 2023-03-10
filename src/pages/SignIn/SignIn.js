@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./SignIn.scss";
-import { useAuth } from "../hooks";
+import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../components";
+import { Header } from "../../components";
 import CssBaseline from "@mui/material/CssBaseline";
 import { TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";

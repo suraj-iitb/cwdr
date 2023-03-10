@@ -19,16 +19,14 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setMobileOpen } from "../redux/slices/mobileOpenSlice";
-import { adminDrawerWidth } from "../constants/constants";
-// import { useAuth } from "../hooks";
-import { COLLECTIONS } from "../constants/constants";
+import { setMobileOpen } from "../../redux/slices/mobileOpenSlice";
+import { adminDrawerWidth } from "../../constants/constants";
+import { useAuth } from '../../hooks';
+import { COLLECTIONS } from "../../constants/constants";
 
-import { capitalize } from "../utils";
-export function SideBar({ open, handleDrawerClose }) {
-
-  const [openManageFieldWorker, setOpenManageFieldWorker] =
-    React.useState(true);
+import { capitalize } from "../../utils";
+export function SideBar(props) {
+  const [openManageFieldWorker, setOpenManageFieldWorker] = React.useState(true);
   const [openUserData, setOpenUserData] = React.useState(true);
 
   const mobileOpen = useSelector((state) => state.mobileOpenReducer.value);

@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { Link, useParams } from "react-router-dom";
 import { deleteDoc, doc } from "firebase/firestore";
-import { getNextMemberId, encrypt, decrypt, retrieveDoc } from "../../firebase";
+import { getNextMemberId, encrypt, decrypt, retrieveDoc, updateDocument, retrieveAllDocs } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -21,12 +21,11 @@ import {
 } from "@mui/material";
 import { usersListGridOrder } from "../../constants/constants";
 import { db } from "../../firebase";
-import "./UserList.scss";
-import FieldWorkerRoot from "../FieldWorkerForms/FieldWorker.root";
-import { fetchAllUsersData, updateData } from "../../firebase/commonUtil";
+import "./ListOrg.scss";
+import { FieldWorkerForm } from "..";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { setOpenEditDialog } from "../../redux/slices/openEditDialogSlice";
+import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
 
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -64,8 +63,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 
-export function UserList() {
-  const openEditDialog = useSelector((state) => state.openEditDialogReducer.value);
+export function ListOrg() {
+  const openEditUserDialog = useSelector((state) => state.openEditUsertDialogReducer.value);
 
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = React.useState(10);
@@ -116,7 +115,7 @@ export function UserList() {
   ];
 
   useEffect(() => {
-    fetchAllUsersData(org).then(async (response) => {
+    retrieveAllDocs(org).then(async (response) => {
       if (response.length > 0) {
         const columns = Object.keys(response?.[0]).map((key) => {
           const desiredColumn = usersListGridOrder[org].find(
@@ -155,7 +154,7 @@ export function UserList() {
 
   const handleApproval = (rowData) => {
     rowData = { ...rowData, approved: true };
-    updateData(rowData.id, rowData, org)
+    updateDocument(org, rowData.id, rowData)
       .then(() => {
         setGridInfo((prevState) => ({
           ...prevState,
@@ -177,6 +176,7 @@ export function UserList() {
   };
 
   const handleDelete = async (id) => {
+    console.log(id)
     setDisableForm(true);
     deleteDoc(doc(db, org, id)).then(() => {
       setGridInfo((prevState) => ({
@@ -189,14 +189,14 @@ export function UserList() {
   };
 
   const handleOpenDialog = (id, fullName) => {
+    console.log(id)
     setSelectedUserId(id);
     setSelectedUserName(fullName);
     setOpenDialog(true);
   };
   const handleOpenFormDialog = (rowData) => {
-    console.log(rowData, openEditDialog)
     setselectedRowData(rowData);
-    dispatch(setOpenEditDialog(true));
+    dispatch(setOpenEditUserDialog(true));
   };
 
   const handleCancelDelete = () => {
@@ -204,13 +204,13 @@ export function UserList() {
   };
 
   const handleFormClose = () => {
-    dispatch(setOpenEditDialog(false));
+    dispatch(setOpenEditUserDialog(false));
   };
 
   return (
     <div style={{ height: 580, width: "100%" }}>
       <Dialog
-        open={openEditDialog}
+        open={openEditUserDialog}
         onClose={handleFormClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -219,8 +219,8 @@ export function UserList() {
           Edit User
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <FieldWorkerRoot
-            org={selectedRowData.org}
+          <FieldWorkerForm
+            org={org}
             showHeader={false}
             memberID={selectedRowData.memberID}
           />

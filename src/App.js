@@ -2,16 +2,17 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 import {
-  AuthRoute,
-  AddUser,
-  FieldWorkerList,
-  UserList,
+  AuthenticatedRoute,
+  AddFieldWorker,
+  ListFieldWorker,
+  ListOrg,
   Statistics,
+  FieldWorkerForm,
 } from "./components";
-import { SignIn, AdminPage, Home } from "./pages";
+import { SignIn, Admin, Home } from "./pages";
 import { ROLES } from "./constants/constants";
-import FieldWorkerRoot from "./components/FieldWorkerForms/FieldWorker.root";
 import "./App.scss"
+
 export default function App() {
   return (
   < >
@@ -19,16 +20,16 @@ export default function App() {
     <Routes>
       <Route exact path="/signin" element={<SignIn />} />
 
-      <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN, ROLES.FIELD]} />}>
+      <Route element={<AuthenticatedRoute allowedRoles={[ROLES.ADMIN, ROLES.FIELD]} />}>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/fieldWorkerForm" element={<FieldWorkerRoot />} />
+        <Route exact path="/fieldWorkerForm" element={<FieldWorkerForm />} />
       </Route>
 
-      <Route element={<AuthRoute allowedRoles={[ROLES.ADMIN]} />}>
-        <Route exact path="/admin" element={<AdminPage />}>
-          <Route exact path="addFieldWorker" element={<AddUser />} />
-          <Route exact path="getFieldWorker" element={<FieldWorkerList />} />
-          <Route exact path="getUserData/:org" element={<UserList />} />
+      <Route element={<AuthenticatedRoute allowedRoles={[ROLES.ADMIN]} />}>
+        <Route exact path="/admin" element={<Admin />}>
+          <Route exact path="addFieldWorker" element={<AddFieldWorker action="add" />} />
+          <Route exact path="getFieldWorker" element={<ListFieldWorker />} />
+          <Route exact path="getUserData/:org" element={<ListOrg />} />
           <Route exact path="statistics" element={<Statistics />} />
         </Route>
       </Route>

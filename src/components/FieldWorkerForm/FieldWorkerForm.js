@@ -1,22 +1,25 @@
-import { useLocation } from "react-router-dom";
-import FieldWorkerForm from "./FieldWorkerForm";
-import FieldWorkerFormSnehidi from "./FieldWorkerFormSnehidi";
-import { storeData } from "../../firebase/commonUtil";
 import { useState } from "react";
-import { Snackbar, Alert } from "@mui/material";
-import { CssBaseline, Grid } from "@mui/material";
+import { Snackbar, Alert, Grid, CssBaseline } from "@mui/material";
+import { useLocation } from "react-router-dom";
+
+import { FieldWorkerFormManushiMaithri, FieldWorkerFormSnehidi } from "..";
+import { addDocument } from "../../firebase";
 import { Header } from "..";
 import { COLLECTIONS } from "../../constants/constants";
-const FieldWorkerRoot = (props) => {
-  const showHeader = props.showHeader ?? true;
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const org = query.get("org") || props.org;
+
+export const FieldWorkerForm = (props) => {
   const [openSnackbar, setOpenSnackbar] = useState({
     open: false,
     state: "error",
-    message: "Something went wrong",
+    message: "Something went wrong!",
   });
+
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const org = query.get("org") || props.org;
+
+  const showHeader = props.showHeader ?? true;
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -24,9 +27,9 @@ const FieldWorkerRoot = (props) => {
     setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
   };
 
-  const saveData = async (data, objectName) => {
+  const saveData = async (collectionName, data) => {
     try {
-      await storeData({ ...data, org: org }, objectName);
+      await addDocument(collectionName, { ...data, org });
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -41,13 +44,8 @@ const FieldWorkerRoot = (props) => {
     }
   };
 
-  const fetchData = async (memberID) => {
-    return await fetchData(memberID);
-  };
-
   return (
-    <div
-      class="container"
+    <div class="container"
       style={{
         background: `url("../images/background.jpeg") repeat`,
       }}
@@ -57,18 +55,22 @@ const FieldWorkerRoot = (props) => {
       <div class="contentBody">
         <Grid container spacing={3} sx={{ mt: 0 }}>
           {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-            <FieldWorkerForm org={org} saveData={saveData} data={props.data} />
+            <FieldWorkerFormManushiMaithri
+              org={org}
+              memberID={props.memberID}
+              saveData={saveData}
+            />
           )}
           {org === COLLECTIONS.SNEHIDHI && (
             <FieldWorkerFormSnehidi
               org={org}
-              saveData={saveData}
-              fetchData={fetchData}
               memberID={props.memberID}
+              saveData={saveData}
             />
           )}
         </Grid>
       </div>
+
       <Snackbar
         autoHideDuration={5000}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -82,4 +84,3 @@ const FieldWorkerRoot = (props) => {
     </div>
   );
 };
-export default FieldWorkerRoot;

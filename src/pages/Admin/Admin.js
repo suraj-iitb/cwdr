@@ -1,8 +1,6 @@
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Outlet } from "react-router-dom";
-import { SideBar, Header } from "../components";
-import { adminDrawerWidth } from "../constants/constants";
 import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -10,10 +8,12 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Drawer from "@mui/material/Drawer";
 
-export const AdminPage = () => {
+import { SideBar, Header } from "../../components";
+import { adminDrawerWidth } from "../../constants/constants";
+
+export const Admin = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -47,7 +47,6 @@ export const AdminPage = () => {
       }),
     })
   );
-
 
   return (
     <div className="container">
