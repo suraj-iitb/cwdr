@@ -18,6 +18,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 
 import useInput from "../../hooks/useInput";
 import {AddressInput} from "..";
@@ -30,6 +32,8 @@ import { isNotEmpty } from "../../utils";
 
 export function FieldWorkerFormSnehidi(props) {
   const org = props.org;
+  const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
@@ -166,6 +170,10 @@ export function FieldWorkerFormSnehidi(props) {
       return;
     }
 
+    
+    setIsSubmit(true);
+    setLoading(true)
+
     const m1 = await getNextMemberId(org)
     sessionStorage.setItem("memberId", JSON.stringify(m1));
 
@@ -208,6 +216,8 @@ export function FieldWorkerFormSnehidi(props) {
     });
 
     dispatch(setOpenEditUserDialog(false));
+    setLoading(false);
+    setIsSubmit(false);
 
   };
 
@@ -440,7 +450,7 @@ export function FieldWorkerFormSnehidi(props) {
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               type="submit"
-              disabled={!formIsValid}
+              disabled={!formIsValid || isSubmit}
               variant="contained"
               sx={{ mt: 3, ml: 1 }}
             >
@@ -448,6 +458,19 @@ export function FieldWorkerFormSnehidi(props) {
             </Button>
           </Box>
         </form>
+        { loading &&(
+              <CircularProgress
+                size={100}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "70%",
+                  left: "48%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
     </Container>
   );
 }

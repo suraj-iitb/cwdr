@@ -26,8 +26,13 @@ import { getNextMemberId, encrypt, decrypt } from "../../firebase";
 import { useAuth } from "../../hooks";
 import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
 import { isNotEmpty, isValidPhone } from "../../utils";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 
 export function FieldWorkerFormManushiMaithri(props) {
+  const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
@@ -192,10 +197,12 @@ export function FieldWorkerFormManushiMaithri(props) {
 
   const formSubmissionHandler = async (event) => {
     event.preventDefault();
-
     if (!formIsValid) {
       return;
     }
+
+    setIsSubmit(true);
+    setLoading(true)
 
     const address = formRefs.current.addressInputRef.getAddress();
     const encryptedAadhar = await encrypt({ originalText: aadhar });
@@ -242,6 +249,8 @@ export function FieldWorkerFormManushiMaithri(props) {
     });
 
     dispatch(setOpenEditUserDialog(false));
+    setLoading(false);
+    setIsSubmit(false);
   };
 
   useEffect(() => {
@@ -541,7 +550,7 @@ export function FieldWorkerFormManushiMaithri(props) {
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               type="submit"
-              disabled={!formIsValid}
+              disabled={!formIsValid || isSubmit}
               variant="contained"
               sx={{ mt: 3, ml: 1 }}
             >
@@ -549,6 +558,19 @@ export function FieldWorkerFormManushiMaithri(props) {
             </Button>
           </Box>
         </form>
+        { loading &&(
+              <CircularProgress
+                size={100}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "48%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
       </Paper>
     </Container>
   );
