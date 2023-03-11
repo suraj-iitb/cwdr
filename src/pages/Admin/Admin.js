@@ -13,7 +13,7 @@ import { adminDrawerWidth } from "../../constants/constants";
 
 export const Admin = () => {
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -55,10 +55,8 @@ export const Admin = () => {
       <Drawer
         variant="persistent"
         sx={{
-          width: adminDrawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: adminDrawerWidth,
             boxSizing: 'border-box',
             height:'100vh'
           },

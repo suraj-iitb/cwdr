@@ -52,7 +52,10 @@ export const FieldWorkerForm = (props) => {
     >
       <CssBaseline />
       {showHeader && <Header />}
-      <div class="contentBody">
+      <div class="contentBody"
+      style={{
+        overflow: "scroll"
+      }}>
         <Grid container spacing={3} sx={{ mt: 0 }}>
           {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
             <FieldWorkerFormManushiMaithri

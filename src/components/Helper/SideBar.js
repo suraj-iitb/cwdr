@@ -181,7 +181,7 @@ export function SideBar(props) {
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: adminDrawerWidth }, flexShrink: { sm: 0 } }}
+      sx={{ flexShrink: { sm: 0 }, backgroundColor: "rgb(234, 234, 238)" }}
       onClick={handleDrawerToggle()}
       onKeyDown={handleDrawerToggle()}
      
