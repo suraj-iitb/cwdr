@@ -29,7 +29,7 @@ export const FieldWorkerForm = (props) => {
 
   const saveData = async (collectionName, data) => {
     try {
-      await addDocument(collectionName, data);
+      await addDocument(collectionName, { ...data, org });
       setOpenSnackbar({
         open: true,
         state: "success",
@@ -45,29 +45,31 @@ export const FieldWorkerForm = (props) => {
   };
 
   return (
-    <div
+    <div class="container"
       style={{
-        background: `url("../images/background.jpeg") repeat scroll`,
+        background: `url("../images/background.jpeg") repeat`,
       }}
     >
       <CssBaseline />
       {showHeader && <Header />}
-      <Grid container spacing={3} sx={{ mt: "10px" }}>
-        {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
-          <FieldWorkerFormManushiMaithri
-            org={org}
-            memberID={props.memberID}
-            saveData={saveData}
-          />
-        )}
-        {org === COLLECTIONS.SNEHIDHI && (
-          <FieldWorkerFormSnehidi
-            org={org}
-            memberID={props.memberID}
-            saveData={saveData}
-          />
-        )}
-      </Grid>
+      <div class="contentBody">
+        <Grid container spacing={3} sx={{ mt: 0 }}>
+          {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
+            <FieldWorkerFormManushiMaithri
+              org={org}
+              memberID={props.memberID}
+              saveData={saveData}
+            />
+          )}
+          {org === COLLECTIONS.SNEHIDHI && (
+            <FieldWorkerFormSnehidi
+              org={org}
+              memberID={props.memberID}
+              saveData={saveData}
+            />
+          )}
+        </Grid>
+      </div>
 
       <Snackbar
         autoHideDuration={5000}

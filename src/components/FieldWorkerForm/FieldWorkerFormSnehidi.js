@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useState, useRef, useEffect } from "react";
 import {
   Grid,
@@ -28,21 +29,19 @@ import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlic
 import { isNotEmpty } from "../../utils";
 
 export function FieldWorkerFormSnehidi(props) {
+  const org = props.org;
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
-  const [memberID, setMemberID] = useState(props.memberID);
-  const [isAssociatedUser, setIsAssociatedUser] = useState(false);
+  const [memberID, setMemberID] = useState(
+    props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
+  );
 
   const { currentUser } = useAuth();
 
   const dispatch = useDispatch();
 
-  const formRefs = useRef({
-    addressInputRef: null,
-  });
-
-  const org = props.org;
+  const [isAssociatedUser, setIsAssociatedUser] = useState(false);
 
   const handleMemberChange = (event) => {
     handleReset();
@@ -63,23 +62,26 @@ export function FieldWorkerFormSnehidi(props) {
   const handleReset = () => {
     setMemberID("");
     setMemberData({});
-    resetFirstNameInput("");
-    resetLastNameInput("");
-    resetDobInput(null);
-    resetInsitutionInput("");
-    resetCourseInput("");
-    resetBillNoInput("");
-    resetRefNoInput("");
-    resetStaffNameInput("");
-    resetAadharInput("");
-    resetRenewalDateInput(null);
+    resetFirstNameInput();
+    resetLastNameInput();
+    resetDobInput();
+    resetInsitutionInput();
+    resetCourseInput();
+    resetBillNoInput();
+    resetRefNoInput();
+    resetStaffNameInput();
+    resetAadharInput();
+    resetRenewalDateInput();
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
-    if (!isMember) {
+    if(!isMember){
       setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
   };
 
+  const formRefs = useRef({
+    addressInputRef: null,
+  });
   const {
     value: firstName,
     isValid: firstNameIsValid,
@@ -106,6 +108,19 @@ export function FieldWorkerFormSnehidi(props) {
   } = useInput(() => {}, memberData.dob);
 
   const {
+    value: renewalDate,
+    hasError: renewalDateHasError,
+    valueChangeHandler: renewalDateChangedHandler,
+    reset: resetRenewalDateInput,
+  } = useInput(() => {}, (memberData.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
+
+  const {
+    value: aadhar,
+    valueChangeHandler: aadharChangeHandler,
+    reset: resetAadharInput,
+  } = useInput(() => {}, memberData.aadhar);
+
+  const {
     value: institutionName,
     valueChangeHandler: institutionValueChangeHandler,
     reset: resetInsitutionInput,
@@ -128,27 +143,11 @@ export function FieldWorkerFormSnehidi(props) {
     valueChangeHandler: refChangeHandler,
     reset: resetRefNoInput,
   } = useInput(() => {}, memberData.refNo);
-
-
-  const {
-    value: aadhar,
-    valueChangeHandler: aadharChangeHandler,
-    reset: resetAadharInput,
-  } = useInput(() => {}, memberData.aadhar);
-
   const {
     value: fieldStaffName,
     valueChangeHandler: staffNameChangeHandler,
     reset: resetStaffNameInput,
   } = useInput(() => {}, memberData.fieldStaffName);
-
-  const {
-    value: renewalDate,
-    hasError: renewalDateHasError,
-    valueChangeHandler: renewalDateChangedHandler,
-    reset: resetRenewalDateInput,
-  } = useInput(() => {},
-  memberData.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
 
   let formIsValid = false;
 
@@ -166,6 +165,9 @@ export function FieldWorkerFormSnehidi(props) {
     if (!formIsValid) {
       return;
     }
+
+    const m1 = await getNextMemberId(org)
+    sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
@@ -200,6 +202,7 @@ export function FieldWorkerFormSnehidi(props) {
     event.target.reset();
     handleReset();
 
+
     updateDocument(COLLECTIONS.USER, currentUser.id, {
       noOfApplicants: currentUser.noOfApplicants + 1,
     });
@@ -224,6 +227,7 @@ export function FieldWorkerFormSnehidi(props) {
     if (memberID && isMember) {
       interval = setTimeout(async () => {
         try {
+
           retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then(
             (response) => {
               formRefs.current.addressInputRef.setAddress(response?.address);
@@ -239,8 +243,7 @@ export function FieldWorkerFormSnehidi(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
-      <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }} className="formContainer">
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -284,7 +287,7 @@ export function FieldWorkerFormSnehidi(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                { (<LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Next Date of Renewal"
                     onChange={renewalDateChangedHandler}
@@ -295,7 +298,6 @@ export function FieldWorkerFormSnehidi(props) {
                     minDate={new Date()}
                   />
                 </LocalizationProvider>
-                )}
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -446,7 +448,6 @@ export function FieldWorkerFormSnehidi(props) {
             </Button>
           </Box>
         </form>
-      </Paper>
     </Container>
   );
 }

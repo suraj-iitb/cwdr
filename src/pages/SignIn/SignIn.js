@@ -4,7 +4,9 @@ import { useAuth } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../components";
 import CssBaseline from "@mui/material/CssBaseline";
-
+import { TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { InputAdornment, IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
 
 export const SignIn = () => {
@@ -13,6 +15,7 @@ export const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { currentUser, signInWithEmail } = useAuth();
+  const [isRevealPwd, setIsRevealPwd] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,43 +29,55 @@ export const SignIn = () => {
     setLoading(false);
   };
 
-  const comp  = currentUser ? (
+  const comp = currentUser ? (
     navigate("/")
   ) : (
     <>
-    <Box>
-      <CssBaseline />
-    <Header />
-    <div className="login-page">
-      <div className="avatar">
-        <img
-          src="https://cdn.pixabay.com/photo/2014/04/02/14/10/female-306407_960_720.png"
-          alt="Avatar"
-        />
-      </div>
-      <div className="form">
-        <h2>Login</h2>
-        <form>
-          <input
-            type="text"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Username"
-          />
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <button  onClick={handleSubmit}>Log in</button>
-        </form>
-        <p className="message">
-          Forgot your password? <a href="#">Click here to reset it</a>
-        </p>
-      </div>
-    </div>
-    </Box>
-    </>
+      <div className="container">
+        <CssBaseline />
+        <Header />
+        <div className="login-page contentBody">
+          <div className="form">
+            <h2>Login</h2>
+            <form>
+            <Box mb={2}>
+              <TextField
+                label="Username"
+                variant="outlined" 
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{width: '100%'}}
+              />
+           </Box>
+           <Box mb={2}>
+              <TextField
+                label="Password"
+                variant="outlined" 
+                type={isRevealPwd ? "text" : "password"}
+                name="pass"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setIsRevealPwd(!isRevealPwd)}>
+                        {isRevealPwd ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{width: '100%'}}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              </Box>
 
+              <button className="loginButton" onClick={handleSubmit}>Log in</button>
+            </form>
+            <p className="message">
+              Forgot your password? <a href="#">Click here to reset it</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 
   return comp;

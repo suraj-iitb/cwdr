@@ -11,9 +11,12 @@ import {
 } from "./components";
 import { SignIn, Admin, Home } from "./pages";
 import { ROLES } from "./constants/constants";
+import "./App.scss"
 
 export default function App() {
   return (
+  < >
+  {/* <Header/> */}
     <Routes>
       <Route exact path="/signin" element={<SignIn />} />
 
@@ -34,5 +37,6 @@ export default function App() {
       <Route exact path="/unauthorized" element={<>Unauthorized User!!!!</>} />
       <Route path="*" element={<>Not Implemented!!!!</>} />
     </Routes>
+    </>
   );
 }

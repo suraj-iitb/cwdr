@@ -4,16 +4,12 @@ import Grid from "@mui/material/Grid";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import {
-  Box,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import "./Home.scss";
 import { Header } from "../../components";
 import { COLLECTIONS } from "../../constants/constants";
 
 export const Home = () => {
-
-
   const images = [
     {
       src: require("../../images/maithri.jpeg"),
@@ -35,7 +31,6 @@ export const Home = () => {
     },
   ];
 
-
   const renderCards = () => {
     return images.map((image, index) => (
       <div class="first card">
@@ -54,25 +49,28 @@ export const Home = () => {
   };
 
   return (
-    <>
-        <Box>
+    <div className="container">
       <CssBaseline />
-    
-      <Header />
-      <Box sx={{padding: "1rem"}}>
-        <Typography
-          variant="h5"
-          noWrap
-          title="Navigate to home"
-          style={{ color: "black",           justifyContent:"center",     display:"flex", color: "#9131b9"
 
-        }}
-        >
-          SELECT A PROGRAM TO ENROLL USERS
-        </Typography>
-      </Box>
-      <Grid className="overallContainer">{renderCards()}</Grid>
-      </Box>
-    </>
+      <Header />
+      <div className="contentBody">
+        <Box sx={{ padding: "1rem" }}>
+          <Typography
+            variant="h5"
+            noWrap
+            title="Navigate to home"
+            style={{
+              color: "black",
+              justifyContent: "center",
+              display: "flex",
+              color: "white",
+            }}
+          >
+            SELECT A PROGRAM TO ENROLL USERS
+          </Typography>
+        </Box>
+        <Grid className="overallContainer">{renderCards()}</Grid>
+      </div>
+    </div>
   );
 };
