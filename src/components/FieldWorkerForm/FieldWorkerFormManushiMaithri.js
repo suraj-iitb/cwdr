@@ -19,7 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useDispatch } from "react-redux";
 
 import useInput from "../../hooks/useInput";
-import {AddressInput} from "..";
+import { AddressInput } from "..";
 import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId, encrypt, decrypt } from "../../firebase";
@@ -321,19 +321,19 @@ export function FieldWorkerFormManushiMaithri(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                { (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Next Date of Renewal"
-                      onChange={renewalDateValueChangeHandler}
-                      renderInput={(params) => (
-                        <TextField {...params} error={renewalDateHasError} />
-                      )}
-                      value={renewalDate}
-                      minDate={new Date()}
-                    />
-                  </LocalizationProvider>
-                )}
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
+                <TextField
+                  type="date"
+                  id="date"
+                  label="Next Date of Renewal"
+                  onChange={renewalDateValueChangeHandler}
+                  inputProps={{
+                    min: new Date().toISOString().slice(0, 10),
+                  }}
+                  value={renewalDate || ''}
+                  InputLabelProps={{shrink: true}}
+                  />
+               {/* </LocalizationProvider> */}
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -380,7 +380,7 @@ export function FieldWorkerFormManushiMaithri(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Date Of Birth"
                     onChange={dobValueChangeHandler}
@@ -389,7 +389,14 @@ export function FieldWorkerFormManushiMaithri(props) {
                     )}
                     value={dob}
                   />
-                </LocalizationProvider>
+                </LocalizationProvider> */}
+                <TextField
+                  type="date"
+                  label="Date Of Birth"
+                  onChange={dobValueChangeHandler}
+                  value={dob}
+                  InputLabelProps={{shrink: true}}
+                  />
               </Grid>
             </Grid>
             <Grid item xs={12}>
