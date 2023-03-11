@@ -169,13 +169,9 @@ export function FieldWorkerFormSnehidi(props) {
     if (!formIsValid) {
       return;
     }
-
     
     setIsSubmit(true);
     setLoading(true)
-
-    const m1 = await getNextMemberId(org)
-    sessionStorage.setItem("memberId", JSON.stringify(m1));
 
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
