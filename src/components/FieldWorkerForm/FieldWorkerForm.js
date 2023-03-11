@@ -27,6 +27,14 @@ export const FieldWorkerForm = (props) => {
     setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
   };
 
+  const showSnackBar = (state, message) => {
+    setOpenSnackbar({
+      open: true,
+      state: state,
+      message: message,
+    });
+  }
+
   const saveData = async (collectionName, data) => {
     try {
       await addDocument(collectionName, { ...data, org });
@@ -62,6 +70,7 @@ export const FieldWorkerForm = (props) => {
               org={org}
               memberID={props.memberID}
               saveData={saveData}
+              showSnackBar={showSnackBar}
             />
           )}
           {org === COLLECTIONS.SNEHIDHI && (
@@ -69,6 +78,7 @@ export const FieldWorkerForm = (props) => {
               org={org}
               memberID={props.memberID}
               saveData={saveData}
+              showSnackBar={showSnackBar}
             />
           )}
         </Grid>

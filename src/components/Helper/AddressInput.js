@@ -17,14 +17,14 @@ export const AddressInput = forwardRef((props, ref) => {
     valueChangeHandler: addLine1ChangedHandler,
     inputBlurHandler: addLine1BlurHandler,
     reset: resetAddLine1Input,
-  } = useInput(isNotEmpty, addressDetails.addLine1);
+  } = useInput(isNotEmpty, addressDetails?.addLine1);
 
   const {
     value: addLine2,
     valueChangeHandler: addLine2ChangedHandler,
     inputBlurHandler: addLine2BlurHandler,
     reset: resetAddLine2Input,
-  } = useInput(() => {}, addressDetails.addLine2);
+  } = useInput(() => {}, addressDetails?.addLine2);
 
   const {
     value: city,
@@ -33,7 +33,7 @@ export const AddressInput = forwardRef((props, ref) => {
     valueChangeHandler: cityChangedHandler,
     inputBlurHandler: cityBlurHandler,
     reset: resetCityInput,
-  } = useInput(isNotEmpty, addressDetails.city);
+  } = useInput(isNotEmpty, addressDetails?.city);
 
   const {
     value: zip,
@@ -42,21 +42,21 @@ export const AddressInput = forwardRef((props, ref) => {
     valueChangeHandler: zipChangedHandler,
     inputBlurHandler: zipBlurHandler,
     reset: resetZipInput,
-  } = useInput(isValidZip, addressDetails.zip);
+  } = useInput(isValidZip, addressDetails?.zip);
 
   const {
     value: country,
     valueChangeHandler: countryChangedHandler,
     inputBlurHandler: countryBlurHandler,
     reset: resetCountryInput,
-  } = useInput(isNotEmpty, addressDetails.country);
+  } = useInput(isNotEmpty, addressDetails?.country);
 
   const {
     value: state,
     valueChangeHandler: stateChangedHandler,
     inputBlurHandler: stateBlurHandler,
     reset: resetStateInput,
-  } = useInput(() => {}, addressDetails.state);
+  } = useInput(() => {}, addressDetails?.state);
 
   useImperativeHandle(ref, () => ({
     addressIsValid() {

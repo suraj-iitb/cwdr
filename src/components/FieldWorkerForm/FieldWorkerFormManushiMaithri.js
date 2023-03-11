@@ -103,7 +103,7 @@ export function FieldWorkerFormManushiMaithri(props) {
     valueChangeHandler: firstNameValueChangeHandler,
     inputBlurHandler: firstNameInputBlurHandler,
     reset: firstNameReset,
-  } = useInput(isNotEmpty, memberData.firstName);
+  } = useInput(isNotEmpty, memberData?.firstName);
 
   const {
     value: lastName,
@@ -112,20 +112,20 @@ export function FieldWorkerFormManushiMaithri(props) {
     valueChangeHandler: lastNameValueChangeHandler,
     inputBlurHandler: lastNameInputBlurHandler,
     reset: lastNameReset,
-  } = useInput(isNotEmpty, memberData.lastName);
+  } = useInput(isNotEmpty, memberData?.lastName);
 
   const {
     value: dob,
     hasError: dobHasError,
     valueChangeHandler: dobValueChangeHandler,
     reset: dobReset,
-  } = useInput(() => {}, memberData.dob);
+  } = useInput(() => {}, memberData?.dob);
 
   const {
     value: aadhar,
     valueChangeHandler: aadharValueChangeHandler,
     reset: aadharReset,
-  } = useInput(() => {}, memberData.aadhar);
+  } = useInput(() => {}, memberData?.aadhar);
 
   const {
     value: phone,
@@ -134,56 +134,56 @@ export function FieldWorkerFormManushiMaithri(props) {
     valueChangeHandler: phoneValueChangeHandler,
     inputBlurHandler: phoneInputBlurHandler,
     reset: resetPhoneInput,
-  } = useInput(isValidPhone, memberData.phone);
+  } = useInput(isValidPhone, memberData?.phone);
 
   const {
     value: billNo,
     valueChangeHandler: billValueChangeHandler,
     reset: billNoInputReset,
-  } = useInput(() => {}, memberData.billNo);
+  } = useInput(() => {}, memberData?.billNo);
 
   const {
     value: refNo,
     valueChangeHandler: refValueChangeHandler,
     reset: refNoReset,
-  } = useInput(() => {}, memberData.refNo);
+  } = useInput(() => {}, memberData?.refNo);
 
   const {
     value: dependants,
     valueChangeHandler: dependantsValueChangeHandler,
     reset: dependantsReset,
-  } = useInput(() => {}, memberData.dependants);
+  } = useInput(() => {}, memberData?.dependants);
 
   const {
     value: companyName,
     valueChangeHandler: companyNameValueChangeHandler,
     reset: companyNameReset,
-  } = useInput(() => {}, memberData.companyName);
+  } = useInput(() => {}, memberData?.companyName);
 
   const {
     value: occupation,
     valueChangeHandler: occupationValueChangeHandler,
     reset: occupationReset,
-  } = useInput(() => {}, memberData.occupation);
+  } = useInput(() => {}, memberData?.occupation);
 
   const {
     value: yearsOfExp,
     valueChangeHandler: yearsOfExpValueChangeHandler,
     reset: yearsOfExpReset,
-  } = useInput(() => {}, memberData.yearsOfExp);
+  } = useInput(() => {}, memberData?.yearsOfExp);
 
   const {
     value: fieldStaffName,
     valueChangeHandler: staffNameValueChangeHandler,
     reset: staffNameReset,
-  } = useInput(() => {}, memberData.fieldStaffName);
+  } = useInput(() => {}, memberData?.fieldStaffName);
 
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateValueChangeHandler,
     reset: renewalDateReset,
-  } = useInput(() => {}, memberData.renewalDate);
+  } = useInput(() => {}, memberData?.renewalDate);
 
   let formIsValid = false;
   if (
@@ -271,18 +271,26 @@ export function FieldWorkerFormManushiMaithri(props) {
       interval = setTimeout(async () => {
         try {
           retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
-            const decryptedAadhar = await decrypt({
-              cipherText: response?.aadhar,
-            });
-            response.aadhar = decryptedAadhar?.data?.originalText;
+            if(!response) {
+              props.showSnackBar("error", "No member dound!")
+            }
+            let decryptedAadhar = null;
+            if(response?.aadhar) {
+              decryptedAadhar = await decrypt({
+                cipherText: response?.aadhar,
+              });
+              response.aadhar = decryptedAadhar?.data?.originalText;
+            }
             formRefs.current.addressInputRef.setAddress(response?.address);
-            setDocID(response.id);
-            setIsAssociatedUser(response.isAssociatedUser);
+            setDocID(response?.id);
+            setIsAssociatedUser(response?.isAssociatedUser);
             setMemberData(response);
             setLoading(false);
 
           });
-        } catch (error) {}
+        } catch (error) {
+          props.showSnackBar("error", "No member dound!")
+        }
       }, 2000);
     }
     return () => clearInterval(interval);

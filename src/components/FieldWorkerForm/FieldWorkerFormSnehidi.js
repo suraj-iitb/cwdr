@@ -93,7 +93,7 @@ export function FieldWorkerFormSnehidi(props) {
     valueChangeHandler: firstNameChangedHandler,
     inputBlurHandler: firstNameBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput(isNotEmpty, memberData.firstName);
+  } = useInput(isNotEmpty, memberData?.firstName);
 
   const {
     value: lastName,
@@ -102,56 +102,56 @@ export function FieldWorkerFormSnehidi(props) {
     valueChangeHandler: lastNameChangedHandler,
     inputBlurHandler: lastNameBlurHandler,
     reset: resetLastNameInput,
-  } = useInput(isNotEmpty, memberData.lastName);
+  } = useInput(isNotEmpty, memberData?.lastName);
 
   const {
     value: dob,
     hasError: dobInputHasError,
     valueChangeHandler: dobChangedHandler,
     reset: resetDobInput,
-  } = useInput(() => {}, memberData.dob);
+  } = useInput(() => {}, memberData?.dob);
 
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
-  } = useInput(() => {}, (memberData.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
+  } = useInput(() => {}, (memberData?.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
 
   const {
     value: aadhar,
     valueChangeHandler: aadharChangeHandler,
     reset: resetAadharInput,
-  } = useInput(() => {}, memberData.aadhar);
+  } = useInput(() => {}, memberData?.aadhar);
 
   const {
     value: institutionName,
     valueChangeHandler: institutionValueChangeHandler,
     reset: resetInsitutionInput,
-  } = useInput(() => {}, memberData.institutionName);
+  } = useInput(() => {}, memberData?.institutionName);
 
   const {
     value: courseName,
     valueChangeHandler: courseChangeHandler,
     reset: resetCourseInput,
-  } = useInput(() => {}, memberData.courseName);
+  } = useInput(() => {}, memberData?.courseName);
 
   const {
     value: billNo,
     valueChangeHandler: billChangeHandler,
     reset: resetBillNoInput,
-  } = useInput(() => {}, memberData.billNo);
+  } = useInput(() => {}, memberData?.billNo);
 
   const {
     value: refNo,
     valueChangeHandler: refChangeHandler,
     reset: resetRefNoInput,
-  } = useInput(() => {}, memberData.refNo);
+  } = useInput(() => {}, memberData?.refNo);
   const {
     value: fieldStaffName,
     valueChangeHandler: staffNameChangeHandler,
     reset: resetStaffNameInput,
-  } = useInput(() => {}, memberData.fieldStaffName);
+  } = useInput(() => {}, memberData?.fieldStaffName);
 
   let formIsValid = false;
 
@@ -238,15 +238,20 @@ export function FieldWorkerFormSnehidi(props) {
 
           retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then(
             (response) => {
+              if(!response) {
+                props.showSnackBar("error", "No member dound!")
+              }
               formRefs.current.addressInputRef.setAddress(response?.address);
-              setDocID(response.id);
-              setIsAssociatedUser(response.isAssociatedUser);
+              setDocID(response?.id);
+              setIsAssociatedUser(response?.isAssociatedUser);
               setMemberData(response);
               setLoading(false);
 
             }
           );
-        } catch (error) {}
+        } catch (error) {
+          props.showSnackBar("error", "No member dound!")
+        }
       }, 2000);
     }
     return () => clearInterval(interval);
