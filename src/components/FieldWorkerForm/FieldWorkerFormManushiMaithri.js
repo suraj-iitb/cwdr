@@ -297,7 +297,7 @@ export function FieldWorkerFormManushiMaithri(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }}>
+    <Container component="main" maxWidth="md" sx={{ width: "100%" }} style={{opacity:  loading && `0.7`}}>
       <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}

@@ -22,7 +22,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
 
 import useInput from "../../hooks/useInput";
-import {AddressInput} from "..";
+import { AddressInput } from "..";
 import { retrieveOrgDataUsingMemberId, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { getNextMemberId } from "../../firebase";
@@ -78,7 +78,7 @@ export function FieldWorkerFormSnehidi(props) {
     resetRenewalDateInput();
     formRefs.current.addressInputRef.handleReset();
     setIsAssociatedUser(false);
-    if(!isMember){
+    if (!isMember) {
       setMemberID(JSON.parse(sessionStorage.getItem("memberId")));
     }
   };
@@ -116,7 +116,8 @@ export function FieldWorkerFormSnehidi(props) {
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
-  } = useInput(() => {}, (memberData?.renewalDate ||  (new Date().setFullYear(new Date().getFullYear() + 1))));
+  } = useInput(() => {},
+  memberData?.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
 
   const {
     value: aadhar,
@@ -169,9 +170,9 @@ export function FieldWorkerFormSnehidi(props) {
     if (!formIsValid) {
       return;
     }
-    
+
     setIsSubmit(true);
-    setLoading(true)
+    setLoading(true);
 
     const address = formRefs.current.addressInputRef.getAddress();
     const memberDetails = {
@@ -206,7 +207,6 @@ export function FieldWorkerFormSnehidi(props) {
     event.target.reset();
     handleReset();
 
-
     updateDocument(COLLECTIONS.USER, currentUser.id, {
       noOfApplicants: currentUser.noOfApplicants + 1,
     });
@@ -214,7 +214,6 @@ export function FieldWorkerFormSnehidi(props) {
     dispatch(setOpenEditUserDialog(false));
     setLoading(false);
     setIsSubmit(false);
-
   };
 
   useEffect(() => {
@@ -235,22 +234,20 @@ export function FieldWorkerFormSnehidi(props) {
 
       interval = setTimeout(async () => {
         try {
-
           retrieveOrgDataUsingMemberId(COLLECTIONS.SNEHIDHI, memberID).then(
             (response) => {
-              if(!response) {
-                props.showSnackBar("error", "No member dound!")
+              if (!response) {
+                props.showSnackBar("error", "No member dound!");
               }
               formRefs.current.addressInputRef.setAddress(response?.address);
               setDocID(response?.id);
               setIsAssociatedUser(response?.isAssociatedUser);
               setMemberData(response);
               setLoading(false);
-
             }
           );
         } catch (error) {
-          props.showSnackBar("error", "No member dound!")
+          props.showSnackBar("error", "No member dound!");
         }
       }, 2000);
     }
@@ -258,7 +255,13 @@ export function FieldWorkerFormSnehidi(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }} className="formContainer">
+    <Container
+      component="main"
+      maxWidth="md"
+      sx={{ width: "100%" }}
+      style={{ opacity: loading && `0.7` }}
+    >
+      <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
@@ -463,20 +466,21 @@ export function FieldWorkerFormSnehidi(props) {
             </Button>
           </Box>
         </form>
-        { loading &&(
-              <CircularProgress
-                size={100}
-                sx={{
-                  color: green[500],
-                  margin:"auto",
-                  left:0,
-                  right:0,
-                  top:0,
-                  bottom:0,
-                  position:"fixed"
-                }}
-              />
-            )}
+        {loading && (
+          <CircularProgress
+            size={100}
+            sx={{
+              color: green[500],
+              margin: "auto",
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              position: "fixed",
+            }}
+          />
+        )}
+      </Paper>
     </Container>
   );
 }
