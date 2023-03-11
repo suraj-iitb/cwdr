@@ -267,6 +267,7 @@ export function FieldWorkerFormManushiMaithri(props) {
   useEffect(() => {
     let interval;
     if (memberID && isMember) {
+      setLoading(true);
       interval = setTimeout(async () => {
         try {
           retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
@@ -278,6 +279,8 @@ export function FieldWorkerFormManushiMaithri(props) {
             setDocID(response.id);
             setIsAssociatedUser(response.isAssociatedUser);
             setMemberData(response);
+            setLoading(false);
+
           });
         } catch (error) {}
       }, 2000);
@@ -563,11 +566,12 @@ export function FieldWorkerFormManushiMaithri(props) {
                 size={100}
                 sx={{
                   color: green[500],
-                  position: "absolute",
-                  top: "50%",
-                  left: "48%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
+                  margin:"auto",
+                  left:0,
+                  right:0,
+                  top:0,
+                  bottom:0,
+                  position:"fixed"
                 }}
               />
             )}

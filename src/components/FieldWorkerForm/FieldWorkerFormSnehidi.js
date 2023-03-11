@@ -231,6 +231,8 @@ export function FieldWorkerFormSnehidi(props) {
   useEffect(() => {
     let interval;
     if (memberID && isMember) {
+      setLoading(true);
+
       interval = setTimeout(async () => {
         try {
 
@@ -240,6 +242,8 @@ export function FieldWorkerFormSnehidi(props) {
               setDocID(response.id);
               setIsAssociatedUser(response.isAssociatedUser);
               setMemberData(response);
+              setLoading(false);
+
             }
           );
         } catch (error) {}
@@ -459,11 +463,12 @@ export function FieldWorkerFormSnehidi(props) {
                 size={100}
                 sx={{
                   color: green[500],
-                  position: "absolute",
-                  top: "70%",
-                  left: "48%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
+                  margin:"auto",
+                  left:0,
+                  right:0,
+                  top:0,
+                  bottom:0,
+                  position:"fixed"
                 }}
               />
             )}
