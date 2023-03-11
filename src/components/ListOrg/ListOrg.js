@@ -219,7 +219,7 @@ export function ListOrg() {
   };
 
   return (
-    <div style={{ height: 580, width: "100%" }}>
+    <>
       <Dialog
         open={openEditUserDialog}
         onClose={handleFormClose}
@@ -292,6 +292,6 @@ export function ListOrg() {
                 }}
               />
             )}
-    </div>
+    </>
   );
 }

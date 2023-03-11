@@ -44,6 +44,8 @@ export const Admin = () => {
           duration: theme.transitions.duration.enteringScreen,
         }),
         marginLeft: 0,
+        height: `calc(100vh - 8vh)`,
+        maxHeight: `calc(100vh - 8vh)`,
       }),
     })
   );
@@ -51,38 +53,46 @@ export const Admin = () => {
   return (
     <div className="container">
       <CssBaseline />
-      <Header open={open} handleDrawerOpen={handleDrawerOpen} drawerWidth={adminDrawerWidth}/>
-      <Drawer
-        variant="persistent"
-        sx={{
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            height:'100vh'
-          },
-        }}
+      <Header
         open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <SideBar
+        handleDrawerOpen={handleDrawerOpen}
+        drawerWidth={adminDrawerWidth}
+      />
+      <div className="contentBody">
+        <Drawer
+          variant="persistent"
+          sx={{
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              height: "100vh",
+            },
+          }}
           open={open}
-          drawerWidth={adminDrawerWidth}
-          handleDrawerClose={handleDrawerClose}
-        />
-      </Drawer>
-      <Main open={open} style={{marginLeft: open ? `${adminDrawerWidth}px` : `0px`}}>
-        {/* <DrawerHeader /> */}
-        <Outlet />
-      </Main>
-    
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <SideBar
+            open={open}
+            drawerWidth={adminDrawerWidth}
+            handleDrawerClose={handleDrawerClose}
+          />
+        </Drawer>
+        <Main
+          open={open}
+          style={{ marginLeft: open ? `${adminDrawerWidth}px` : `0px` }}
+        >
+          {/* <DrawerHeader /> */}
+          <Outlet />
+        </Main>
+      </div>
     </div>
   );
 };

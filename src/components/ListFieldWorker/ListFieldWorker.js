@@ -3,11 +3,19 @@ import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { DeleteOutline, EditOutlined } from "@mui/icons-material";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Container } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Container,
+} from "@mui/material";
 import { db, addUser, deleteUser, encrypt, decrypt } from "../../firebase";
-import { COLLECTIONS } from '../../constants/constants';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { COLLECTIONS } from "../../constants/constants";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -28,7 +36,7 @@ function BootstrapDialogTitle(props) {
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -42,7 +50,9 @@ function BootstrapDialogTitle(props) {
 }
 
 export function ListFieldWorker() {
-  const openEditFieldWorkerDialog = useSelector((state) => state.openEditFieldWorkerDialogReducer.value);
+  const openEditFieldWorkerDialog = useSelector(
+    (state) => state.openEditFieldWorkerDialogReducer.value
+  );
 
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -53,7 +63,6 @@ export function ListFieldWorker() {
   const [selectedWorkerId, setSelectedWorkerId] = React.useState(0);
   const [selectedRow, setSelectedRow] = React.useState(0);
 
-  
   const [selectedWorkerName, setSelectedWorkerName] = React.useState();
 
   const fetchData = async () => {
@@ -68,7 +77,6 @@ export function ListFieldWorker() {
       console.log(data, newData);
     });
     setLoading(false);
-
   };
 
   const handleFormClose = () => {
@@ -82,7 +90,7 @@ export function ListFieldWorker() {
   const handleDelete = async (id) => {
     setDisableForm(true);
     await deleteUser({
-      uid: id
+      uid: id,
     });
     fetchData();
     setOpenDialog(false);
@@ -102,7 +110,7 @@ export function ListFieldWorker() {
   const handleOpenFormDialog = (id, rowData) => {
     console.log(rowData);
     setSelectedWorkerId(id);
-    setSelectedRow(rowData)
+    setSelectedRow(rowData);
     dispatch(setOpenEditFieldWorkerDialog(true));
   };
 
@@ -122,7 +130,12 @@ export function ListFieldWorker() {
             </button>
             <DeleteOutline
               className="fieldWorkerDeleteButton"
-              onClick={() => handleOpenDialog(params.row.id, params.row.firstName + " " + params.row.lastName)}
+              onClick={() =>
+                handleOpenDialog(
+                  params.row.id,
+                  params.row.firstName + " " + params.row.lastName
+                )
+              }
             />
           </>
         );
@@ -140,20 +153,22 @@ export function ListFieldWorker() {
   ];
 
   return (
-<div style={{ height: 580, width: "100%" }}>
-
-    <Dialog
+    <>
+      <Dialog
         open={openEditFieldWorkerDialog}
         onClose={handleFormClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleFormClose}>
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleFormClose}
+        >
           Edit Field Worker
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <AddFieldWorker
-            action="edit" 
+            action="edit"
             uid={selectedWorkerId}
             row={selectedRow}
           />
@@ -175,10 +190,19 @@ export function ListFieldWorker() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleDelete(selectedWorkerId)} color="secondary" disabled={disableForm}>
+          <Button
+            onClick={() => handleDelete(selectedWorkerId)}
+            color="secondary"
+            disabled={disableForm}
+          >
             Yes
           </Button>
-          <Button onClick={() => handleCancelDelete()} color="primary" autoFocus disabled={disableForm}>
+          <Button
+            onClick={() => handleCancelDelete()}
+            color="primary"
+            autoFocus
+            disabled={disableForm}
+          >
             No
           </Button>
         </DialogActions>
@@ -194,19 +218,19 @@ export function ListFieldWorker() {
         pagination
         disableSelectionOnClick
       />
-      { loading &&(
-              <CircularProgress
-                size={100}
-                sx={{
-                  color: green[500],
-                  position: "absolute",
-                  top: "50%",
-                  left: "60%",
-                  marginTop: "-12px",
-                  marginLeft: "-12px",
-                }}
-              />
-            )}
-      </div>
+      {loading && (
+        <CircularProgress
+          size={100}
+          sx={{
+            color: green[500],
+            position: "absolute",
+            top: "50%",
+            left: "60%",
+            marginTop: "-12px",
+            marginLeft: "-12px",
+          }}
+        />
+      )}
+    </>
   );
 }
