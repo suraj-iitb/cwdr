@@ -26,7 +26,8 @@ import { FieldWorkerForm } from "..";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { setOpenEditUserDialog } from "../../redux/slices/openEditUserDialogSlice";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 function BootstrapDialogTitle(props) {
@@ -64,6 +65,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 
 export function ListOrg() {
+  const [loading, setLoading] = React.useState(false);
   const openEditUserDialog = useSelector((state) => state.openEditUsertDialogReducer.value);
 
   const dispatch = useDispatch();
@@ -114,42 +116,51 @@ export function ListOrg() {
     },
   ];
 
-  useEffect(() => {
-    retrieveAllDocs(org).then(async (response) => {
-      if (response.length > 0) {
-        const columns = Object.keys(response?.[0]).map((key) => {
-          const desiredColumn = usersListGridOrder[org].find(
-            (column) => column.key === key
-          );
-          return {
-            field: key,
-            headerName: desiredColumn
-              ? desiredColumn.headerName
-              : key.charAt(0).toUpperCase() + key.slice(1),
-            ...(key === "address" && {
-              valueGetter: (params) => params.row.address.addLine1,
-            }),
-            cellClassName: (params) =>
-            params.row.approved ? 'approved-row' : '',
-            width: 200,
-          };
-        });
-        dataGridCols.push(...columns.filter((column) => column.field !== "id"));
-        const sortedColumns =
-          usersListGridOrder[org].map((fieldName) => {
-            return dataGridCols.find((column) => {
-              return column.field === fieldName.key;
-            });
-          }) || [];
-          for (let i = 0; i < response.length; i++) {
-            const decryptedAadhar =  await decrypt({cipherText: response[i].aadhar});
-            response[i].aadhar = decryptedAadhar.data.originalText;
-          }
-        setGridInfo({ data: response, columns: sortedColumns });
-      } else {
-        setGridInfo({ data: [], columns: [] });
-      }
-    });
+  useEffect(() => {    
+
+    const fun = async () => {
+      setGridInfo({ data: [], columns: [] })
+      setLoading(true)
+      await retrieveAllDocs(org).then(async (response) => {
+        if (response.length > 0) {
+          const columns = Object.keys(response?.[0]).map((key) => {
+            const desiredColumn = usersListGridOrder[org].find(
+              (column) => column.key === key
+            );
+            return {
+              field: key,
+              headerName: desiredColumn
+                ? desiredColumn.headerName
+                : key.charAt(0).toUpperCase() + key.slice(1),
+              ...(key === "address" && {
+                valueGetter: (params) => params.row.address.addLine1,
+              }),
+              cellClassName: (params) =>
+              params.row.approved ? 'approved-row' : '',
+              width: 200,
+            };
+          });
+          dataGridCols.push(...columns.filter((column) => column.field !== "id"));
+          const sortedColumns =
+            usersListGridOrder[org].map((fieldName) => {
+              return dataGridCols.find((column) => {
+                return column.field === fieldName.key;
+              });
+            }) || [];
+            for (let i = 0; i < response.length; i++) {
+              const decryptedAadhar =  await decrypt({cipherText: response[i].aadhar});
+              response[i].aadhar = decryptedAadhar.data.originalText;
+            }
+          setGridInfo({ data: response, columns: sortedColumns });
+        } else {
+          setGridInfo({ data: [], columns: [] });
+        }
+      });
+      setLoading(false);
+    }
+   fun();
+
+
   }, [org]);
 
   const handleApproval = (rowData) => {
@@ -268,6 +279,19 @@ export function ListOrg() {
         rowsPerPageOptions={[10, 25, 50, 100]}
         pagination
       />
+       { loading &&(
+              <CircularProgress
+                size={100}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "55%",
+                  marginTop: "-20px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
     </div>
   );
 }

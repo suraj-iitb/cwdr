@@ -10,7 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 
 import "./ListFieldWorker.scss";
 import { AddFieldWorker } from "..";
@@ -44,6 +45,7 @@ export function ListFieldWorker() {
   const openEditFieldWorkerDialog = useSelector((state) => state.openEditFieldWorkerDialogReducer.value);
 
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
   const [pageSize, setPageSize] = React.useState(10);
   const [data, setData] = useState([]);
   const [disableForm, setDisableForm] = React.useState(false);
@@ -55,6 +57,8 @@ export function ListFieldWorker() {
   const [selectedWorkerName, setSelectedWorkerName] = React.useState();
 
   const fetchData = async () => {
+    setLoading(true);
+
     await getDocs(collection(db, COLLECTIONS.USER)).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -63,6 +67,8 @@ export function ListFieldWorker() {
       setData(newData);
       console.log(data, newData);
     });
+    setLoading(false);
+
   };
 
   const handleFormClose = () => {
@@ -188,6 +194,19 @@ export function ListFieldWorker() {
         pagination
         disableSelectionOnClick
       />
+      { loading &&(
+              <CircularProgress
+                size={100}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "60%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
       </div>
   );
 }
