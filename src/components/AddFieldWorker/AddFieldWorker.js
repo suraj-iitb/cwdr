@@ -226,12 +226,12 @@ export function AddFieldWorker(props) {
             </Button>
             {loading && (
               <CircularProgress
-                size={25}
+                size={50}
                 sx={{
                   color: green[500],
                   position: "absolute",
-                  top: "50%",
-                  left: "60%",
+                  top: "40%",
+                  left: "56%",
                   marginTop: "-12px",
                   marginLeft: "-12px",
                 }}
