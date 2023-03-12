@@ -37,9 +37,7 @@ export function FieldWorkerFormSnehidi(props) {
   const [memberData, setMemberData] = useState({});
   const [docID, setDocID] = useState(null);
   const [isMember, setIsMember] = useState(!!props?.memberID);
-  const [memberID, setMemberID] = useState(
-    props.memberID || JSON.parse(sessionStorage.getItem("memberId"))
-  );
+  const [memberID, setMemberID] = useState(props.memberID);
 
   const { currentUser } = useAuth();
 
