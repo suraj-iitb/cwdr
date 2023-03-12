@@ -117,7 +117,7 @@ export function FieldWorkerFormSnehidi(props) {
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
   } = useInput(() => {},
-  memberData?.renewalDate || new Date().setFullYear(new Date().getFullYear() + 1));
+  memberData?.renewalDate || new Date().toISOString().slice(0, 10));
 
   const {
     value: aadhar,
@@ -305,17 +305,17 @@ export function FieldWorkerFormSnehidi(props) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Next Date of Renewal"
-                    onChange={renewalDateChangedHandler}
-                    renderInput={(params) => (
-                      <TextField {...params} error={renewalDateHasError} />
-                    )}
-                    value={renewalDate}
-                    minDate={new Date()}
+                <TextField
+                  type="date"
+                  id="date"
+                  label="Next Date of Renewal"
+                  onChange={renewalDateChangedHandler}
+                  inputProps={{
+                    min: new Date().toISOString().slice(0, 10),
+                  }}
+                  value={renewalDate}
+                  InputLabelProps={{shrink: true}}
                   />
-                </LocalizationProvider>
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -351,17 +351,13 @@ export function FieldWorkerFormSnehidi(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
+                <TextField
+                  type="date"
                   label="Date Of Birth"
                   onChange={dobChangedHandler}
-                  renderInput={(params) => (
-                    <TextField {...params} error={dobInputHasError} />
-                  )}
                   value={dob}
-                  maxDate={new Date()}
-                />
-              </LocalizationProvider>
+                  InputLabelProps={{shrink: true}}
+                  />
             </Grid>
             <AddressInput
               ref={(ref) => (formRefs.current.addressInputRef = ref)}

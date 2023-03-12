@@ -183,7 +183,7 @@ export function FieldWorkerFormManushiMaithri(props) {
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateValueChangeHandler,
     reset: renewalDateReset,
-  } = useInput(() => {}, memberData?.renewalDate);
+  } = useInput(() => {}, memberData?.renewalDate || new Date().toISOString().slice(0, 10));
 
   let formIsValid = false;
   if (
