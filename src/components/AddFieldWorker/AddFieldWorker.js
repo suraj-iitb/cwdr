@@ -5,21 +5,19 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { collection, addDoc } from "firebase/firestore";
 import useInput from "../../hooks/useInput";
 import { Snackbar, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { green } from "@mui/material/colors";
-import { db, addUser, deleteUser, encrypt, decrypt, updateUser, updateDocument } from "../../firebase";
+import { addUser, updateUser, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
 import { useDispatch } from "react-redux";
 import { setOpenEditFieldWorkerDialog } from "../../redux/slices/openEditFieldWorkerDialogSlice";
-
+import { isNotEmpty } from "../../utils";
 
 export function AddFieldWorker(props) {
   const dispatch = useDispatch();
 
-  const [memberData, setMemberData] = React.useState({});
   const [loading, setLoading] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState({
     open: false,
@@ -34,10 +32,7 @@ export function AddFieldWorker(props) {
     setOpenSnackbar((prevState) => ({ ...prevState, open: false }));
   };
 
-  const isNotEmpty = (value) => value?.trim() !== "";
-
   const addUserInDB = async (e) => {
-    console.log(props)
     e.preventDefault();
 
     if (!formIsValid) {
@@ -48,13 +43,13 @@ export function AddFieldWorker(props) {
     }
 
     try {
-      if(props.action === "add") {
+      if (props.action === "add") {
         await addUser({
           firstName: firstName,
           lastName: lastName,
           email: email,
           password: password,
-        }) ;
+        });
       } else {
         await updateUser({
           uid: props.uid,
@@ -62,38 +57,34 @@ export function AddFieldWorker(props) {
           lastName: lastName,
           email: email,
           password: password,
-        }) ;
-        console.log('update auth')
+        });
         await updateDocument(COLLECTIONS.USER, props.uid, {
           firstName: firstName,
           lastName: lastName,
           email: email,
-        })
-        console.log('update user')
-
+        });
+        dispatch(setOpenEditFieldWorkerDialog(false));
       }
-      
+
       setOpenSnackbar({
         open: true,
         state: "success",
         message: "Field worker added successfully!",
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setOpenSnackbar({
         open: true,
         state: "error",
         message: "Error while submitted the form.",
       });
-    }       
-   
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetEmailInput();
-    resetPasswordInput();
-    setLoading(false)
-    dispatch(setOpenEditFieldWorkerDialog(false));
+    }
 
+    resetFirstNameInput("");
+    resetLastNameInput("");
+    resetEmailInput("");
+    resetPasswordInput("");
+    setLoading(false);
   };
   const {
     value: firstName,
@@ -133,12 +124,7 @@ export function AddFieldWorker(props) {
 
   let formIsValid = false;
 
-  if (
-    firstNameIsValid &&
-    lastNameIsValid &&
-    emailIsValid &&
-    passwordIsValid
-  ) {
+  if (firstNameIsValid && lastNameIsValid && emailIsValid && passwordIsValid) {
     formIsValid = true;
   }
 
@@ -149,13 +135,11 @@ export function AddFieldWorker(props) {
         sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
       >
         <React.Fragment>
-          
-            {
-              props.action === "add" && 
-              <Typography variant="h6" gutterBottom>
-                Add Field Worker
-              </Typography>
-            } 
+          {props.action === "add" && (
+            <Typography variant="h6" gutterBottom>
+              Add Field Worker
+            </Typography>
+          )}
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -204,9 +188,7 @@ export function AddFieldWorker(props) {
                 autoComplete="email"
                 variant="standard"
                 error={emailInputHasError}
-                helperText={
-                  emailInputHasError && "This field cannot be empty"
-                }
+                helperText={emailInputHasError && "This field cannot be empty"}
                 onChange={emailChangedHandler}
                 onBlur={emailBlurHandler}
                 value={email}
@@ -240,11 +222,7 @@ export function AddFieldWorker(props) {
               onClick={addUserInDB}
               disabled={!formIsValid}
             >
-              {
-              props.action === "add" ?
-              "Add User" :
-              "Update User"
-            }
+              {props.action === "add" ? "Add User" : "Update User"}
             </Button>
             {loading && (
               <CircularProgress
@@ -262,15 +240,15 @@ export function AddFieldWorker(props) {
           </Grid>
 
           <Snackbar
-          autoHideDuration={5000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          open={openSnackbar.open}
-          onClose={handleClose}
-        >
-          <Alert onClose={handleClose} severity={openSnackbar.state}>
-            {openSnackbar.message}
-          </Alert>
-        </Snackbar>
+            autoHideDuration={5000}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            open={openSnackbar.open}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity={openSnackbar.state}>
+              {openSnackbar.message}
+            </Alert>
+          </Snackbar>
         </React.Fragment>
       </Paper>
     </Container>
