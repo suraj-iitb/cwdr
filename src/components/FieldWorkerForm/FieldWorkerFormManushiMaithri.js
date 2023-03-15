@@ -180,13 +180,13 @@ export function FieldWorkerFormManushiMaithri(props) {
 
   let date = new Date();
   date.setFullYear(date.getFullYear() + 1);
+  date = date.toISOString().slice(0, 10);
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateValueChangeHandler,
     reset: renewalDateReset,
-  } = useInput(() => {},
-  memberData?.renewalDate || date.toISOString().slice(0, 10));
+  } = useInput(() => {}, memberData?.renewalDate || (!isMember && date));
 
   let formIsValid = false;
   if (
@@ -312,7 +312,7 @@ export function FieldWorkerFormManushiMaithri(props) {
         </Typography>
         <form onSubmit={formSubmissionHandler}>
           <Grid container spacing={3}>
-            {props.showHeader && (
+            {props.showHeader ? (
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel id="member-radio-group">
@@ -336,6 +336,8 @@ export function FieldWorkerFormManushiMaithri(props) {
                   </RadioGroup>
                 </FormControl>
               </Grid>
+            ) : (
+              <Box sx={{ m: 2 }} />
             )}
             <Grid item xs={12} container spacing={3}>
               <Grid item xs={6}>

@@ -111,13 +111,13 @@ export function FieldWorkerFormSnehidi(props) {
 
   let date = new Date();
   date.setFullYear(date.getFullYear() + 1);
+  date = date.toISOString().slice(0, 10);
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
-  } = useInput(() => {},
-  memberData?.renewalDate || date.toISOString().slice(0, 10));
+  } = useInput(() => {}, memberData?.renewalDate || (!isMember && date));
 
   const {
     value: aadhar,
@@ -268,7 +268,7 @@ export function FieldWorkerFormSnehidi(props) {
         </Typography>
         <form onSubmit={formSubmissionHandler}>
           <Grid container spacing={3}>
-            {props.showHeader && (
+            {props.showHeader ? (
               <Grid item xs={12}>
                 <FormControl component="fieldset">
                   <FormLabel id="member-radio-group">
@@ -292,6 +292,8 @@ export function FieldWorkerFormSnehidi(props) {
                   </RadioGroup>
                 </FormControl>
               </Grid>
+            ) : (
+              <Box sx={{ m: 2 }} />
             )}
             <Grid item xs={12} container spacing={3}>
               <Grid item xs={6}>
