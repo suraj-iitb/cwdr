@@ -70,6 +70,7 @@ export const FieldWorkerForm = (props) => {
               org={org}
               memberID={props.memberID}
               saveData={saveData}
+              showHeader={showHeader}
               showSnackBar={showSnackBar}
             />
           )}
@@ -77,6 +78,7 @@ export const FieldWorkerForm = (props) => {
             <FieldWorkerFormSnehidi
               org={org}
               memberID={props.memberID}
+              showHeader={showHeader}
               saveData={saveData}
               showSnackBar={showSnackBar}
             />

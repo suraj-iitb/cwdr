@@ -92,7 +92,7 @@ export function ListFieldWorker() {
     await deleteUser({
       uid: id,
     });
-    setTimeout(fetchData, 500);
+    setTimeout(fetchData, 1000);
     setOpenDialog(false);
     setDisableForm(false);
   };

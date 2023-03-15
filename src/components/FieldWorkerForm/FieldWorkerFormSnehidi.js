@@ -109,13 +109,15 @@ export function FieldWorkerFormSnehidi(props) {
     reset: resetDobInput,
   } = useInput(() => {}, memberData?.dob);
 
+  let date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateChangedHandler,
     reset: resetRenewalDateInput,
   } = useInput(() => {},
-  memberData?.renewalDate || new Date().toISOString().slice(0, 10));
+  memberData?.renewalDate || date.toISOString().slice(0, 10));
 
   const {
     value: aadhar,
@@ -194,6 +196,7 @@ export function FieldWorkerFormSnehidi(props) {
         await props.saveData(org, memberDetails);
       } else {
         await updateDocument(org, docID, memberDetails);
+        props.showSnackBar("success", "Form updated successfully!");
       }
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -265,29 +268,31 @@ export function FieldWorkerFormSnehidi(props) {
         </Typography>
         <form onSubmit={formSubmissionHandler}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel id="member-radio-group">
-                  Is user already a member?
-                </FormLabel>
-                <RadioGroup
-                  aria-label="member"
-                  value={isMember}
-                  onChange={handleMemberChange}
-                >
-                  <FormControlLabel
-                    value={false}
-                    control={<Radio />}
-                    label="No, not a member"
-                  />
-                  <FormControlLabel
-                    value={true}
-                    control={<Radio />}
-                    label="Yes, already a member"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+            {props.showHeader && (
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel id="member-radio-group">
+                    Is user already a member?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="member"
+                    value={isMember}
+                    onChange={handleMemberChange}
+                  >
+                    <FormControlLabel
+                      value={false}
+                      control={<Radio />}
+                      label="No, not a member"
+                    />
+                    <FormControlLabel
+                      value={true}
+                      control={<Radio />}
+                      label="Yes, already a member"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12} container spacing={3}>
               <Grid item xs={6}>
                 <TextField
@@ -312,8 +317,8 @@ export function FieldWorkerFormSnehidi(props) {
                     min: new Date().toISOString().slice(0, 10),
                   }}
                   value={renewalDate}
-                  InputLabelProps={{shrink: true}}
-                  />
+                  InputLabelProps={{ shrink: true }}
+                />
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -349,13 +354,13 @@ export function FieldWorkerFormSnehidi(props) {
               />
             </Grid>
             <Grid item xs={12}>
-                <TextField
-                  type="date"
-                  label="Date Of Birth"
-                  onChange={dobChangedHandler}
-                  value={dob}
-                  InputLabelProps={{shrink: true}}
-                  />
+              <TextField
+                type="date"
+                label="Date Of Birth"
+                onChange={dobChangedHandler}
+                value={dob}
+                InputLabelProps={{ shrink: true }}
+              />
             </Grid>
             <AddressInput
               ref={(ref) => (formRefs.current.addressInputRef = ref)}

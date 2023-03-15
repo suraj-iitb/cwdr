@@ -178,12 +178,15 @@ export function FieldWorkerFormManushiMaithri(props) {
     reset: staffNameReset,
   } = useInput(() => {}, memberData?.fieldStaffName);
 
+  let date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
   const {
     value: renewalDate,
     hasError: renewalDateHasError,
     valueChangeHandler: renewalDateValueChangeHandler,
     reset: renewalDateReset,
-  } = useInput(() => {}, memberData?.renewalDate || new Date().toISOString().slice(0, 10));
+  } = useInput(() => {},
+  memberData?.renewalDate || date.toISOString().slice(0, 10));
 
   let formIsValid = false;
   if (
@@ -202,7 +205,7 @@ export function FieldWorkerFormManushiMaithri(props) {
     }
 
     setIsSubmit(true);
-    setLoading(true)
+    setLoading(true);
 
     const address = formRefs.current.addressInputRef.getAddress();
     const encryptedAadhar = await encrypt({ originalText: aadhar });
@@ -233,6 +236,7 @@ export function FieldWorkerFormManushiMaithri(props) {
         await props.saveData(org, memberDetails);
       } else {
         await updateDocument(org, docID, memberDetails);
+        props.showSnackBar("success", "Form updated successfully!");
       }
     } catch (e) {
       console.error("Error submitting form: ", e);
@@ -271,11 +275,11 @@ export function FieldWorkerFormManushiMaithri(props) {
       interval = setTimeout(async () => {
         try {
           retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
-            if(!response) {
-              props.showSnackBar("error", "No member dound!")
+            if (!response) {
+              props.showSnackBar("error", "No member dound!");
             }
             let decryptedAadhar = null;
-            if(response?.aadhar) {
+            if (response?.aadhar) {
               decryptedAadhar = await decrypt({
                 cipherText: response?.aadhar,
               });
@@ -286,10 +290,9 @@ export function FieldWorkerFormManushiMaithri(props) {
             setIsAssociatedUser(response?.isAssociatedUser);
             setMemberData(response);
             setLoading(false);
-
           });
         } catch (error) {
-          props.showSnackBar("error", "No member dound!")
+          props.showSnackBar("error", "No member dound!");
         }
       }, 2000);
     }
@@ -297,36 +300,43 @@ export function FieldWorkerFormManushiMaithri(props) {
   }, [memberID, isMember]);
 
   return (
-    <Container component="main" maxWidth="md" sx={{ width: "100%" }} style={{opacity:  loading && `0.7`}}>
+    <Container
+      component="main"
+      maxWidth="md"
+      sx={{ width: "100%" }}
+      style={{ opacity: loading && `0.7` }}
+    >
       <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
         <Typography component="h4" variant="h4" align="center">
           {props.org.toUpperCase()}
         </Typography>
         <form onSubmit={formSubmissionHandler}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel id="member-radio-group">
-                  Is user already a member?
-                </FormLabel>
-                <RadioGroup
-                  aria-label="member"
-                  value={isMember}
-                  onChange={handleMemberChange}
-                >
-                  <FormControlLabel
-                    value={false}
-                    control={<Radio />}
-                    label="No, not a member"
-                  />
-                  <FormControlLabel
-                    value={true}
-                    control={<Radio />}
-                    label="Yes, already a member"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+            {props.showHeader && (
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel id="member-radio-group">
+                    Is user already a member?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="member"
+                    value={isMember}
+                    onChange={handleMemberChange}
+                  >
+                    <FormControlLabel
+                      value={false}
+                      control={<Radio />}
+                      label="No, not a member"
+                    />
+                    <FormControlLabel
+                      value={true}
+                      control={<Radio />}
+                      label="Yes, already a member"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            )}
             <Grid item xs={12} container spacing={3}>
               <Grid item xs={6}>
                 <TextField
@@ -350,10 +360,10 @@ export function FieldWorkerFormManushiMaithri(props) {
                   inputProps={{
                     min: new Date().toISOString().slice(0, 10),
                   }}
-                  value={renewalDate || ''}
-                  InputLabelProps={{shrink: true}}
-                  />
-               {/* </LocalizationProvider> */}
+                  value={renewalDate || ""}
+                  InputLabelProps={{ shrink: true }}
+                />
+                {/* </LocalizationProvider> */}
               </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -415,8 +425,8 @@ export function FieldWorkerFormManushiMaithri(props) {
                   label="Date Of Birth"
                   onChange={dobValueChangeHandler}
                   value={dob}
-                  InputLabelProps={{shrink: true}}
-                  />
+                  InputLabelProps={{ shrink: true }}
+                />
               </Grid>
             </Grid>
             <Grid item xs={12}>
@@ -569,20 +579,20 @@ export function FieldWorkerFormManushiMaithri(props) {
             </Button>
           </Box>
         </form>
-        { loading &&(
-              <CircularProgress
-                size={100}
-                sx={{
-                  color: green[500],
-                  margin:"auto",
-                  left:0,
-                  right:0,
-                  top:0,
-                  bottom:0,
-                  position:"fixed"
-                }}
-              />
-            )}
+        {loading && (
+          <CircularProgress
+            size={100}
+            sx={{
+              color: green[500],
+              margin: "auto",
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              position: "fixed",
+            }}
+          />
+        )}
       </Paper>
     </Container>
   );
