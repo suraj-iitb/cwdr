@@ -166,7 +166,7 @@ export function Header(props) {
                   PaperProps={{
                     style: {
                       left: '10%',
-                      transform: 'translateX(90vw) translateY(36%)',
+                      transform: 'translateX(87vw) translateY(36%)',
                     }
                   }}
                   MenuListProps={{
@@ -175,6 +175,7 @@ export function Header(props) {
                     },
                   }}
                 >
+                  <MenuItem><b>{currentUser.email}</b></MenuItem>
                   {currentUser?.roles?.includes(ROLES.ADMIN) && (
                     <MenuItem onClick={handleAdmin}>Admin</MenuItem>
                   )}
