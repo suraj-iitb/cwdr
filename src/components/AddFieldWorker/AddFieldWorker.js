@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import useInput from "../../hooks/useInput";
 import { Snackbar, Alert } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { green } from "@mui/material/colors";
 import { addUser, updateUser, updateDocument } from "../../firebase";
 import { COLLECTIONS } from "../../constants/constants";
@@ -19,11 +21,17 @@ export function AddFieldWorker(props) {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = React.useState(false);
+  const [status, setStatus] = React.useState(props?.row?.status);
   const [openSnackbar, setOpenSnackbar] = React.useState({
     open: false,
     state: "error",
     message: "Something went wrong",
   });
+
+  const handleStatusChange = (event) => {
+    if (event.target.checked) setStatus("active");
+    else setStatus("inactive");
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -62,6 +70,7 @@ export function AddFieldWorker(props) {
           firstName: firstName,
           lastName: lastName,
           email: email,
+          status: status,
         });
         dispatch(setOpenEditFieldWorkerDialog(false));
       }
@@ -213,6 +222,17 @@ export function AddFieldWorker(props) {
                 value={password}
               />
             </Grid>
+            {props.action === "edit" && (
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={status === "active" ? true : false} />
+                  }
+                  onChange={handleStatusChange}
+                  label="active"
+                />
+              </Grid>
+            )}
           </Grid>
           <Grid sx={{ display: "flex", justifyContent: "center" }}>
             <Button
