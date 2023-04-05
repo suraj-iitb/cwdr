@@ -33,16 +33,11 @@ export const FieldWorkerForm = (props) => {
       state: state,
       message: message,
     });
-  }
+  };
 
   const saveData = async (collectionName, data) => {
     try {
       await addDocument(collectionName, { ...data, org });
-      setOpenSnackbar({
-        open: true,
-        state: "success",
-        message: "Form submitted successfully!",
-      });
     } catch (error) {
       setOpenSnackbar({
         open: true,
@@ -53,17 +48,20 @@ export const FieldWorkerForm = (props) => {
   };
 
   return (
-    <div class="container"
+    <div
+      class="container"
       style={{
         background: `url("../images/background.jpeg") repeat`,
       }}
     >
       <CssBaseline />
       {showHeader && <Header />}
-      <div class="contentBody"
-      style={{
-        overflow: "scroll"
-      }}>
+      <div
+        class="contentBody"
+        style={{
+          overflow: "scroll",
+        }}
+      >
         <Grid container spacing={3} sx={{ mt: 0 }}>
           {(org === COLLECTIONS.MANUSHI || org === COLLECTIONS.MAITHRI) && (
             <FieldWorkerFormManushiMaithri

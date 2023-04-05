@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import useInput from "../../hooks/useInput";
 import { AddressInput } from "..";
@@ -43,6 +44,7 @@ export function FieldWorkerFormManushiMaithri(props) {
   const { currentUser } = useAuth();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formRefs = useRef({
     addressInputRef: null,
@@ -231,19 +233,21 @@ export function FieldWorkerFormManushiMaithri(props) {
       approved: false,
     };
 
+    let msg = "";
     try {
       if (!isMember) {
         await props.saveData(org, memberDetails);
+        msg = "Form submitted successfully!";
       } else {
         await updateDocument(org, docID, memberDetails);
-        props.showSnackBar("success", "Form updated successfully!");
+        msg = "Form updated successfully!";
       }
     } catch (e) {
       console.error("Error submitting form: ", e);
     }
 
-    const memberId = await getNextMemberId(org);
-    sessionStorage.setItem("memberId", JSON.stringify(memberId));
+    // const memberId = await getNextMemberId(org);
+    // sessionStorage.setItem("memberId", JSON.stringify(memberId));
 
     event.target.reset();
     handleReset();
@@ -255,6 +259,11 @@ export function FieldWorkerFormManushiMaithri(props) {
     dispatch(setOpenEditUserDialog(false));
     setLoading(false);
     setIsSubmit(false);
+    props.showSnackBar("success", msg);
+
+    setTimeout(function () {
+      navigate("/");
+    }, 500);
   };
 
   useEffect(() => {
