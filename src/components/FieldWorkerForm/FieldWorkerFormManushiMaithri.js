@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Container,
   Paper,
+  Tooltip
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -280,12 +281,12 @@ export function FieldWorkerFormManushiMaithri(props) {
   useEffect(() => {
     let interval;
     if (memberID && isMember) {
-      setLoading(true);
       interval = setTimeout(async () => {
+        setLoading(true);
         try {
           retrieveOrgDataUsingMemberId(org, memberID).then(async (response) => {
             if (!response) {
-              props.showSnackBar("error", "No member dound!");
+              props.showSnackBar("error", "No member found!");
             }
             let decryptedAadhar = null;
             if (response?.aadhar) {
@@ -301,7 +302,7 @@ export function FieldWorkerFormManushiMaithri(props) {
             setLoading(false);
           });
         } catch (error) {
-          props.showSnackBar("error", "No member dound!");
+          props.showSnackBar("error", "No member found!");
         }
       }, 2000);
     }
@@ -337,11 +338,13 @@ export function FieldWorkerFormManushiMaithri(props) {
                       control={<Radio />}
                       label="No, not a member"
                     />
-                    <FormControlLabel
-                      value={true}
-                      control={<Radio />}
-                      label="Yes, already a member"
-                    />
+                    <Tooltip title="Please fill member id to fetch & pre-populate details">
+                      <FormControlLabel
+                        value={true}
+                        control={<Radio />}
+                        label="Yes, already a member"
+                      />
+                    </Tooltip>
                   </RadioGroup>
                 </FormControl>
               </Grid>
@@ -353,12 +356,14 @@ export function FieldWorkerFormManushiMaithri(props) {
                 <TextField
                   required
                   id="memberID"
+                  label="Member ID"
                   fullWidth
                   disabled={!isMember}
                   error={!isNotEmpty}
                   helperText={!isNotEmpty && "This field cannot be empty"}
                   onChange={memberIDChangeHandler}
                   value={memberID}
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
               <Grid item xs={6}>
